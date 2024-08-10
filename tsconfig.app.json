@@ -9,8 +9,9 @@
     /* Bundler mode */
     "moduleResolution": "bundler",
     "allowImportingTsExtensions": true,
+    "resolveJsonModule": true,
     "isolatedModules": true,
-    "moduleDetection": "force",
+    "esModuleInterop": true,
     "noEmit": true,
     "jsx": "react-jsx",
 
@@ -18,7 +19,14 @@
     "strict": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
-    "noFallthroughCasesInSwitch": true
+    "noFallthroughCasesInSwitch": true,
+    "paths": {
+      "@/*": ["./src/*", "./dist/*"],
+      "@@/*": ["./src/components/*", "./dist/components/*"],
+      "@pages/*": ["./src/pages/*", "./dist/pages/*"],
+    },
+
+    "useUnknownInCatchVariables": true,
   },
-  "include": ["src"]
+  "include": ["src"],
 }

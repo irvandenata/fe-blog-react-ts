@@ -1,7 +1,9 @@
 {
   "compilerOptions": {
+    "baseUrl": ".",
     "target": "ES2022",
     "lib": ["ES2023"],
+    "useDefineForClassFields": true,
     "module": "ESNext",
     "skipLibCheck": true,
 
@@ -11,12 +13,18 @@
     "isolatedModules": true,
     "moduleDetection": "force",
     "noEmit": true,
-
+    "paths": {
+      "@/*": ["./src/*", "./dist/*"],
+      "@@/*": ["./src/components/*", "./dist/components/*"],
+      "@pages/*": ["./src/pages/*", "./dist/pages/*"],
+    },
     /* Linting */
     "strict": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
-    "noFallthroughCasesInSwitch": true
+    "noFallthroughCasesInSwitch": true,
+    
   },
-  "include": ["vite.config.ts"]
+  "include": ["vite.config.ts"],
 }
+  
