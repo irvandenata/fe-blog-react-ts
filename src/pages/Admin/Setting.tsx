@@ -1,15 +1,93 @@
-import { fetchSettingData } from "@/services/setting";
-import { useEffect, useState } from "react";
+import { fetchSettingData, updateSettingData } from "@/services/setting";
+import { useEffect, useRef, useState } from "react";
+import toast from "react-hot-toast";
 
 const SettingPage = () => {
-
     //get data from api
     const [data, setData] = useState<any>([]);
+    const [oldData, setOldData] = useState<any>([]);
+    const [imageData, setImageData] = useState<any>([]);
+    const preview = useRef<HTMLImageElement | null>(null);
+    const isLoading = useRef(false);
+    const fieldImage = useRef<any>("");
+    const fieldTitle = useRef<any>("");
+    const fieldDescription = useRef<any>("");
+    
     useEffect(() => {
-        fetchSettingData().then((res) => {
-            setData(res.data);
-        });
+        isLoading.current = true;
+        toast
+            .promise(fetchSettingData(), {
+                loading: "Loading...",
+                success: "Data has been loaded",
+                error: "Error when loading data",
+            })
+            .then((res) => {
+                changeField();
+                setData(res.data);
+                setOldData(res.data);
+                isLoading.current = false;
+            });
     }, []);
+
+    const resetData = (e: any) => {
+        e.preventDefault();
+        setData(oldData);
+        toast.success("Data has been reset");
+    };
+
+    const changeField = () => {
+        if (!isLoading.current) {
+            fieldImage.current.disabled = false;
+            fieldTitle.current.disabled = false;
+            fieldDescription.current.disabled = false;
+        } else {
+            fieldImage.current.disabled = true;
+            fieldTitle.current.disabled = true;
+            fieldDescription.current.disabled = true;
+        }
+    };
+
+    const handleSubmit = async (e: any) => {
+        e.preventDefault();
+        if (isLoading.current) {
+            toast.loading("Wait...", {
+                duration: 500,
+            });
+            return;
+        }
+
+        //disable button save
+        
+
+        // call api to update data
+        isLoading.current = true;
+        changeField();
+        const formData = new FormData();
+        formData.append("header_title", data.header.title);
+        formData.append("header_description", data.header.description);
+        if (imageData) {
+            formData.append("header_image", imageData);
+        }
+        toast
+            .promise(updateSettingData(formData), {
+                loading: "Updating...",
+                success: "Data has been updated",
+                error: "Error when updating data",
+            })
+            .then((res) => {
+                console.log(res);
+                setOldData(res);
+                isLoading.current = false;
+                setImageData(null);
+                changeField();
+            });
+    };
+
+    const handleFieldImageChange = (e: any) => {
+        const file = e.target.files[0];
+        setImageData(file);
+        preview.current!.src = URL.createObjectURL(file);
+    };
 
     return (
         <>
@@ -21,7 +99,7 @@ const SettingPage = () => {
                                 Landing Page Settings
                             </h3>
                         </div>
-                        <form action="" method="post">
+                        <form onSubmit={handleSubmit} method="post">
                             <div className="flex flex-col gap-5.5 p-6.5">
                                 <div>
                                     <label className="mb-3 block text-black dark:text-white">
@@ -30,9 +108,24 @@ const SettingPage = () => {
                                     <input
                                         type="text"
                                         placeholder="Header Title"
-                                        value={data!.header && data.header.title}
+                                        value={
+                                            (data!.header &&
+                                                data.header.title) ||
+                                            ""
+                                        }
+                                        onChange={(e) =>
+                                            setData({
+                                                ...data,
+                                                header: {
+                                                    ...data.header,
+                                                    title: e.target.value,
+                                                },
+                                            })
+                                        }
+                                        ref={fieldTitle}
                                         required
-                                        className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                                        disabled
+                                        className="w-full disabled rounded-lg border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-not-allowed disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                                     />
                                 </div>
 
@@ -42,13 +135,25 @@ const SettingPage = () => {
                                     </label>
                                     <textarea
                                         rows={6}
-
                                         placeholder="Header Description"
-                                        value={data!.header && data.header.description}
-                                        className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                                    >
-                                        
-                                    </textarea>
+                                        value={
+                                            (data!.header &&
+                                                data.header.description) ||
+                                            ""
+                                        }
+                                        onChange={(e) =>
+                                            setData({
+                                                ...data,
+                                                header: {
+                                                    ...data.header,
+                                                    description: e.target.value,
+                                                },
+                                            })
+                                        }
+                                        ref={fieldDescription}
+                                        disabled
+                                        className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-not-allowed disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                                    ></textarea>
                                 </div>
 
                                 <div>
@@ -57,13 +162,29 @@ const SettingPage = () => {
                                     </label>
                                     <input
                                         type="file"
-                                        className="w-full cursor-pointer rounded-lg border-[1.5px] border-stroke bg-transparent outline-none transition file:mr-5 file:border-collapse file:cursor-pointer file:border-0 file:border-r file:border-solid file:border-stroke file:bg-whiter file:py-3 file:px-5 file:hover:bg-primary file:hover:bg-opacity-10 focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:file:border-form-strokedark dark:file:bg-white/30 dark:file:text-white dark:focus:border-primary"
+                                        accept="image/*"
+                                        onChange={handleFieldImageChange}
+                                        disabled
+                                        ref={fieldImage}
+                                        className="w-full cursor-pointer rounded-lg border-[1.5px] border-stroke bg-transparent outline-none transition file:mr-5 file:border-collapse file:cursor-pointer file:border-0 file:border-r file:border-solid file:border-stroke file:bg-whiter file:py-3 file:px-5 file:hover:bg-primary file:hover:bg-opacity-10 focus:border-primary active:border-primary disabled:cursor-not-allowed disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:file:border-form-strokedark dark:file:bg-white/30 dark:file:text-white dark:focus:border-primary"
+                                    />
+                                </div>
+
+                                <div
+                                    id="previewImage"
+                                    className="grid place-content-center mb-4"
+                                >
+                                    <img
+                                        src={data!.header && data.header.image}
+                                        alt="preview"
+                                        className="w-[400px]"
+                                        ref={preview}
                                     />
                                 </div>
                                 <div className="flex justify-end gap-4.5">
                                     <button
                                         className="flex justify-center rounded border border-stroke py-2 px-6 font-medium text-black hover:shadow-1 dark:border-strokedark dark:text-white"
-                                        type="submit"
+                                        onClick={(e) => resetData(e)}
                                     >
                                         Reset
                                     </button>

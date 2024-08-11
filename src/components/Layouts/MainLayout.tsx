@@ -1,5 +1,5 @@
 import { Outlet } from "react-router-dom";
-import StickyNavbar from "@/components/ui/StickyNavbar";
+import StickyNavbar from "@/components/UI/StickyNavbar";
 function MainLayout() {
     return (
         <>

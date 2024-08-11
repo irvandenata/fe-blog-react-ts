@@ -1,7 +1,7 @@
 "use client";
 import React from "react";
-import { Label } from "../ui/label";
-import { Input } from "../ui/input";
+import { Label } from "../UI/label";
+import { Input } from "../UI/input";
 import { cn } from "@/utils/aceternity.ts";
 import {
   IconBrandGithub,

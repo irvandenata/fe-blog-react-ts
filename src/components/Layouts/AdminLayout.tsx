@@ -2,11 +2,22 @@ import Header from "@/components/Header";
 import Sidebar from "@/components/Sidebar";
 import { useState } from "react";
 import { Outlet } from "react-router-dom";
+import { Toaster } from "react-hot-toast";
 
 function AdminLayout() {
     const [sidebarOpen, setSidebarOpen] = useState(false);
     return (
         <>
+            <Toaster
+                toastOptions={{
+                    className:
+                        "dark:bg-dark-custom-200 dark:text-white text-sm",
+                }}
+            />
+            <div
+                id="background"
+                className="p-5 bg-white dark:bg-boxdark-2 h-screen w-full"
+            ></div>
             <div className="dark:bg-boxdark-2 dark:text-bodydark">
                 {/* <!-- ===== Page Wrapper Start ===== --> */}
                 <div className="flex h-screen overflow-hidden">

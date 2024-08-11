@@ -1,5 +1,6 @@
 import axios, { AxiosRequestConfig } from "axios";
 import Cookies from "js-cookie";
+import { removeToken } from "./auth";
 
 
 interface CallAPIProps extends AxiosRequestConfig {
@@ -39,6 +40,10 @@ export default async function callAPI({
     
     if (response.status > 300) {
         throw response.data;
+    }
+
+    if (response.status === 401) {
+        removeToken();
     }
 
     const { length } = Object.keys(response.data);

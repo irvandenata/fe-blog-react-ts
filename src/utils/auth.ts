@@ -30,8 +30,11 @@ export const ifLogin = () => {
 }
 
 export const logout = () => {
-    console.log("jalankan logout");
     Cookies.remove("token");
-    console.log(getAuthToken());
     return redirect("/login");
 };
+
+
+export const removeToken = () => {
+    Cookies.remove("token");
+}

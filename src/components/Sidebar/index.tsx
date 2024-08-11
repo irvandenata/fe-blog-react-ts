@@ -177,8 +177,8 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                             {/* <!-- Menu Item Forms --> */}
                             <SidebarLinkGroup
                                 activeCondition={
-                                    pathname === "/forms" ||
-                                    pathname.includes("forms")
+                                    pathname === "/admin/articles" ||
+                                    pathname.includes("admin/articles")
                                 }
                             >
                                 {(handleClick, open) => {
@@ -311,7 +311,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                             {/* <!-- Menu Item Custom Information --> */}
                             <li>
                                 <NavLink
-                                    to="/custom-informations"
+                                    to="/admin/custom-informations"
                                     className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${
                                         pathname.includes("profile") &&
                                         "bg-graydark dark:bg-meta-4"

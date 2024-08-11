@@ -10,8 +10,6 @@ const useColorMode = () => {
         } else {
             document.documentElement.classList.remove("dark");
         }
-          
-
     }, [colorMode]);
 
     return [colorMode, setColorMode];
