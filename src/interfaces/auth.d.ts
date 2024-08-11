@@ -1,5 +1,5 @@
 
-export interface LoginTypes {
+export interface ILogin {
     email: string;
     password: string;
 }

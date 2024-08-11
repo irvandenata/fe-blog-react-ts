@@ -1,18 +1,26 @@
+import { ISetting } from "@/interfaces/setting";
+import { setMenu } from "@/redux/slices/menuSlice";
+import { useDispatch } from "react-redux";
 import { fetchSettingData, updateSettingData } from "@/services/setting";
 import { useEffect, useRef, useState } from "react";
 import toast from "react-hot-toast";
 
 const SettingPage = () => {
+    const dispatch = useDispatch();
+    useEffect(() => {
+        dispatch(setMenu("Settings"));
+    });
+    
     //get data from api
-    const [data, setData] = useState<any>([]);
-    const [oldData, setOldData] = useState<any>([]);
-    const [imageData, setImageData] = useState<any>([]);
+    const [data, setData] = useState<ISetting>();
+    const [oldData, setOldData] = useState<ISetting>();
+    const [imageData, setImageData] = useState<File>();
     const preview = useRef<HTMLImageElement | null>(null);
     const isLoading = useRef(false);
     const fieldImage = useRef<any>("");
     const fieldTitle = useRef<any>("");
     const fieldDescription = useRef<any>("");
-    
+
     useEffect(() => {
         isLoading.current = true;
         toast
@@ -23,8 +31,17 @@ const SettingPage = () => {
             })
             .then((res) => {
                 changeField();
-                setData(res.data);
-                setOldData(res.data);
+                setData({
+                    header_title: res.data.header.title,
+                    header_description: res.data.header.description,
+                    header_image: res.data.header.image,
+                });
+                setOldData({
+                    header_title: res.data.header.title,
+                    header_description: res.data.header.description,
+                    header_image: res.data.header.image,
+                });
+
                 isLoading.current = false;
             });
     }, []);
@@ -57,14 +74,13 @@ const SettingPage = () => {
         }
 
         //disable button save
-        
 
         // call api to update data
         isLoading.current = true;
         changeField();
         const formData = new FormData();
-        formData.append("header_title", data.header.title);
-        formData.append("header_description", data.header.description);
+        formData.append("header_title", data!.header_title);
+        formData.append("header_description", data!.header_description);
         if (imageData) {
             formData.append("header_image", imageData);
         }
@@ -78,7 +94,7 @@ const SettingPage = () => {
                 console.log(res);
                 setOldData(res);
                 isLoading.current = false;
-                setImageData(null);
+                setImageData(undefined);
                 changeField();
             });
     };
@@ -108,18 +124,11 @@ const SettingPage = () => {
                                     <input
                                         type="text"
                                         placeholder="Header Title"
-                                        value={
-                                            (data!.header &&
-                                                data.header.title) ||
-                                            ""
-                                        }
+                                        value={data?.header_title || ""}
                                         onChange={(e) =>
                                             setData({
-                                                ...data,
-                                                header: {
-                                                    ...data.header,
-                                                    title: e.target.value,
-                                                },
+                                                ...data!,
+                                                header_title: e.target.value,
                                             })
                                         }
                                         ref={fieldTitle}
@@ -136,18 +145,12 @@ const SettingPage = () => {
                                     <textarea
                                         rows={6}
                                         placeholder="Header Description"
-                                        value={
-                                            (data!.header &&
-                                                data.header.description) ||
-                                            ""
-                                        }
+                                        value={data?.header_description || ""}
                                         onChange={(e) =>
                                             setData({
-                                                ...data,
-                                                header: {
-                                                    ...data.header,
-                                                    description: e.target.value,
-                                                },
+                                                ...data!,
+                                                header_description:
+                                                    e.target.value,
                                             })
                                         }
                                         ref={fieldDescription}
@@ -175,7 +178,7 @@ const SettingPage = () => {
                                     className="grid place-content-center mb-4"
                                 >
                                     <img
-                                        src={data!.header && data.header.image}
+                                        src={data?.header_image || ""}
                                         alt="preview"
                                         className="w-[400px]"
                                         ref={preview}

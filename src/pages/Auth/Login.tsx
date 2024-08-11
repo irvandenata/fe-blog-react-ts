@@ -4,7 +4,7 @@ import { Label } from "@/components/UI/label";
 import { Input } from "@/components/UI/input";
 import toast, { Toaster } from "react-hot-toast";
 import { login } from "@/services/auth";
-import { LoginTypes } from "@/interfaces/auth";
+import { ILogin } from "@/interfaces/auth";
 import { useNavigate } from "react-router-dom";
 import Cookies from 'js-cookie';
 
@@ -17,7 +17,7 @@ const Login = () => {
     const btnSubmit = useRef<HTMLButtonElement | null>(null);
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-        const data: LoginTypes = {
+        const data: ILogin = {
             email,
             password,
         };

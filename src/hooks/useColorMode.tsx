@@ -3,7 +3,6 @@ import useLocalStorage from "./useLocalStorage";
 
 const useColorMode = () => {
     const [colorMode, setColorMode] = useLocalStorage("color-theme", "light");
-
     useEffect(() => {
         if (colorMode === "dark") {
             document.documentElement.classList.add("dark");
@@ -11,7 +10,6 @@ const useColorMode = () => {
             document.documentElement.classList.remove("dark");
         }
     }, [colorMode]);
-
     return [colorMode, setColorMode];
 };
 

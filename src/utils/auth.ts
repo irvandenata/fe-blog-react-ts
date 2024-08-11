@@ -27,14 +27,20 @@ export const ifLogin = () => {
         return redirect("/admin/dashboard");
     }
     return true;
-}
+};
 
 export const logout = () => {
     Cookies.remove("token");
+    console.log("Unauthorized");
     return redirect("/login");
 };
 
+export const forceLogout = () => {
+    Cookies.remove("token");
+    console.log("Unauthorized");
+    window.location.href = "/login";
+};
 
 export const removeToken = () => {
     Cookies.remove("token");
-}
+};
