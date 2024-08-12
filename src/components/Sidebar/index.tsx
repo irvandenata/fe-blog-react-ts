@@ -1,7 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { NavLink, useLocation } from "react-router-dom";
 import SidebarLinkGroup from "./SidebarLinkGroup";
-import Logo from "../../images/logo/logo.svg";
 
 interface SidebarProps {
     sidebarOpen: boolean;
@@ -62,7 +61,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
     return (
         <aside
             ref={sidebar}
-            className={`absolute left-0 top-0 z-9999 flex h-screen w-72.5 flex-col overflow-y-hidden bg-black duration-300 ease-linear dark:bg-boxdark lg:static lg:translate-x-0 ${
+            className={`absolute left-0 top-0 z-999 flex h-screen w-72.5 flex-col overflow-y-hidden bg-dark-custom-300 duration-300 ease-linear dark:bg-dark-custom-700 lg:static lg:translate-x-0 ${
                 sidebarOpen ? "translate-x-0" : "-translate-x-full"
             }`}
         >

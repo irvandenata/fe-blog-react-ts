@@ -1,10 +1,10 @@
-import { ICustomInformationCreate } from "@/interfaces/customInformation";
+import { ICustomInformationTypeCreate } from "@/interfaces/customInformation";
 import callAPI from "../utils/callApi";
 import { API_ENDPOINT, API_VERSION, ROOT_API } from "@/constants/api";
 
 export async function fetchData(query?: {}): Promise<any> {
     const queryParam = new URLSearchParams(query).toString();
-    const url = `${API_ENDPOINT}/custom-informations?${queryParam}`;
+    const url = `${API_ENDPOINT}/information-types?${queryParam}`;
     // handling when error
     const response = await callAPI({
         url,
@@ -14,8 +14,10 @@ export async function fetchData(query?: {}): Promise<any> {
     return response;
 }
 
-export async function createData(data: FormData): Promise<any> {
-    const url = `${ROOT_API}/${API_VERSION}/custom-informations`;
+export async function createData(
+    data: ICustomInformationTypeCreate
+): Promise<any> {
+    const url = `${ROOT_API}/${API_VERSION}/information-types`;
     // handling when error
     const response = await callAPI({
         url,
@@ -28,7 +30,7 @@ export async function createData(data: FormData): Promise<any> {
 }
 
 export async function getDataById(id: number): Promise<any> {
-    const url = `${API_ENDPOINT}/custom-informations/${id}`;
+    const url = `${API_ENDPOINT}/information-types/${id}`;
     // handling when error
     const response = await callAPI({
         url,
@@ -38,12 +40,15 @@ export async function getDataById(id: number): Promise<any> {
     return response;
 }
 
-export async function updateData(data: FormData, id: number): Promise<any> {
-    const url = `${ROOT_API}/${API_VERSION}/custom-informations/${id}?_method=PATCH`;
+export async function updateData(
+    data: ICustomInformationTypeCreate,
+    id: number
+): Promise<any> {
+    const url = `${ROOT_API}/${API_VERSION}/information-types/${id}`;
     // handling when error
     const response = await callAPI({
         url,
-        method: "POST",
+        method: "PATCH",
         data,
         token: true,
     });
@@ -51,8 +56,9 @@ export async function updateData(data: FormData, id: number): Promise<any> {
     return response;
 }
 
+
 export async function deleteDataById(id: number): Promise<any> {
-    const url = `${API_ENDPOINT}/custom-informations/${id}`;
+    const url = `${API_ENDPOINT}/information-types/${id}`;
     // handling when error
     const response = await callAPI({
         url,

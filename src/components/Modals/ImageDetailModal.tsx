@@ -1,14 +1,14 @@
-import { DynamicModalProps } from "@/interfaces/common";
+import { ImageDetailModalProps } from "@/interfaces/common";
 import React from "react";
 import { useSelector } from "react-redux";
 
-const DynamicModal: React.FC<DynamicModalProps> = ({
+const ImageDetailModal: React.FC<ImageDetailModalProps> = ({
     onSubmit,
     onClose,
     onUpdate,
     children,
 }) => {
-    const modal = useSelector((state: any) => state.modal);
+    const modal = useSelector((state: any) => state.imageModal);
     const handleSubmit = () => {
         onSubmit!();
     };
@@ -34,7 +34,10 @@ const DynamicModal: React.FC<DynamicModalProps> = ({
                         &times;
                     </button>
                 </div>
-                <div className="p-4">{children}</div>
+                <div className="p-4">
+                    
+                    <img src={modal.imageUrl} alt="image" className="w-full  object-cover" />    
+                </div>
                 <div className="flex justify-end p-4 dark:border-graydark border-t">
                     <button
                         onClick={onClose}
@@ -73,4 +76,4 @@ const DynamicModal: React.FC<DynamicModalProps> = ({
     );
 };
 
-export default DynamicModal;
+export default ImageDetailModal;

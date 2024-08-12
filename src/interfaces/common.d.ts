@@ -8,7 +8,15 @@ export interface ITable {
 }
 
 interface DynamicModalProps {
-    onSubmit: () => void;
+    onSubmit?: () => void;
+    children?: React.ReactNode;
+    onClose?: () => void;
+    onUpdate?: (id:number) => void;
+}
+
+
+interface ImageDetailModalProps {
+    onSubmit?: () => void;
     children?: React.ReactNode;
     onClose?: () => void;
     onUpdate?: (id:number) => void;
@@ -16,7 +24,7 @@ interface DynamicModalProps {
 
 
 interface CustomTableProps {
-    fieldTable: string[];
+    fieldTable:any;
     data: any;
     onProccess?: boolean;
     setQuery: any;

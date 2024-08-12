@@ -3,15 +3,22 @@ import Sidebar from "@/components/Sidebar";
 import { useState } from "react";
 import { Outlet } from "react-router-dom";
 import { Toaster } from "react-hot-toast";
+import ImageDetailModal from "../Modals/ImageDetailModal";
+import { useDispatch } from "react-redux";
+import { resetModal} from "@/redux/slices/imageModalSlice";
 
 function AdminLayout() {
     const [sidebarOpen, setSidebarOpen] = useState(false);
+    const dispatch = useDispatch();
     return (
         <>
             <Toaster
                 toastOptions={{
                     className:
-                        "dark:bg-dark-custom-200 dark:text-white text-sm",
+                        "dark:bg-dark-custom-200 dark:text-white text-sm z-[9999]",
+                    style: {
+                        zIndex: 9999,
+                    },
                 }}
             />
             <div
@@ -49,6 +56,13 @@ function AdminLayout() {
                 </div>
                 {/* <!-- ===== Page Wrapper End ===== --> */}
             </div>
+            <ImageDetailModal
+                onClose={() => {
+                    dispatch(resetModal());
+                }}
+            >
+                <h1>Image Detail Modal</h1>
+            </ImageDetailModal>
         </>
     );
 }

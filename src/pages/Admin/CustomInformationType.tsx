@@ -13,14 +13,13 @@ import {
     fetchData,
     getDataById,
     updateData,
-} from "@/services/customInformations";
+} from "@/services/customInformationTypes";
 import { useEffect, useRef, useState } from "react";
 import toast from "react-hot-toast";
 import { useDispatch } from "react-redux";
 
-const CustomInformation = () => {
+const CustomInformationType = () => {
     const dispatch = useDispatch();
-
     useEffect(() => {
         dispatch(setMenu("Custom Information"));
     });
@@ -195,7 +194,7 @@ const CustomInformation = () => {
             });
     };
 
-    const fieldTable: string[] = ["No", "Name", "Action"];
+    const fieldTable: any = [{ field: "name", name: "Name" }];
 
     return (
         <>
@@ -254,4 +253,4 @@ const CustomInformation = () => {
     );
 };
 
-export default CustomInformation;
+export default CustomInformationType;

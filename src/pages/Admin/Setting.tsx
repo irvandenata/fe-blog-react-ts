@@ -7,6 +7,7 @@ import toast from "react-hot-toast";
 
 const SettingPage = () => {
     const dispatch = useDispatch();
+
     useEffect(() => {
         dispatch(setMenu("Settings"));
     });

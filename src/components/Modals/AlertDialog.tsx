@@ -23,7 +23,11 @@ const AlertDialog: React.FC<AlertDialogProps> = ({
              rounded-lg shadow-lg overflow-hidden max-w-sm w-full p-6`}
             >
                 <div className="flex justify-center mb-4">
-                    {icon && <span className="text-2xl">{icon}</span>}
+                    {icon && <span className="text-2xl">
+                      
+                      <div dangerouslySetInnerHTML={{ __html: icon }}/>
+                      
+                      </span>}
                 </div>
                 <h2 className="text-xl font-semibold text-center mb-2">
                     {title}
