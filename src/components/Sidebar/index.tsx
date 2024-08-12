@@ -175,8 +175,8 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                             {/* <!-- Menu Item Articles --> */}
                             <SidebarLinkGroup
                                 activeCondition={
-                                    pathname === "/admin/articles" ||
-                                    pathname.includes("admin/articles")
+                                    pathname === "/admin/article" ||
+                                    pathname.includes("admin/article")
                                 }
                             >
                                 {(handleClick, open) => {
@@ -185,9 +185,9 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                                             <NavLink
                                                 to="#"
                                                 className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${
-                                                    (pathname === "/articles" ||
+                                                    (pathname === "/article" ||
                                                         pathname.includes(
-                                                            "articles"
+                                                            "article"
                                                         )) &&
                                                     "bg-graydark dark:bg-meta-4"
                                                 }`}
@@ -257,7 +257,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                                                 <ul className="mt-4 mb-5.5 flex flex-col gap-2.5 pl-6">
                                                     <li>
                                                         <NavLink
-                                                            to="/articles/posts"
+                                                            to="/admin/article/posts"
                                                             className={({
                                                                 isActive,
                                                             }) =>
@@ -271,7 +271,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                                                     </li>
                                                     <li>
                                                         <NavLink
-                                                            to="/articles/article-categories"
+                                                            to="/admin/article/categories"
                                                             className={({
                                                                 isActive,
                                                             }) =>
@@ -285,7 +285,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                                                     </li>
                                                     <li>
                                                         <NavLink
-                                                            to="/articles/tags"
+                                                            to="/admin/article/tags"
                                                             className={({
                                                                 isActive,
                                                             }) =>
@@ -309,8 +309,8 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                             {/* <!-- Menu Item Custom Information --> */}
                             <SidebarLinkGroup
                                 activeCondition={
-                                    pathname === "/admin/articles" ||
-                                    pathname.includes("admin/articles")
+                                    pathname === "/admin/article" ||
+                                    pathname.includes("admin/article")
                                 }
                             >
                                 {(handleClick, open) => {

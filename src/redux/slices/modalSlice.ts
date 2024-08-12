@@ -16,7 +16,7 @@ const modalSlice = createSlice({
                 isOpen: boolean;
                 title?: string;
                 isUpdate?: boolean;
-                keyId?: number;
+                keyId?: any;
             }>
         ) => {
             state.isOpen = action.payload.isOpen

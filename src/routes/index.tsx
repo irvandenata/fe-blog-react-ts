@@ -5,6 +5,8 @@ import LoginPage from "../pages/Auth/Login";
 import DashboardPage from "../pages/Admin/Dashboard";
 import SettingPage from "../pages/Admin/Setting";
 import CustomInformationPage from "../pages/Admin/CustomInformation";
+import ArticleCategoryPage from "../pages/Admin/ArticleCategory";
+import ArticleTagPage from "../pages/Admin/ArticleTag";
 import CustomInformationTypePage from "../pages/Admin/CustomInformationType";
 import { checkAuthLoader, ifLogin, logout } from "@/utils/auth";
 import MainLayout from "@/components/Layouts/MainLayout";
@@ -65,6 +67,21 @@ export default createBrowserRouter(
                     path: "custom-informations/items",
                     element: <CustomInformationPage />,
                     loader: middlewareLoader,
+                },
+
+                {
+                    path: "article",
+                    loader: middlewareLoader,
+                    children:[
+                        {
+                            path: "categories",
+                            element: <ArticleCategoryPage />,
+                        },
+                        {
+                            path: "tags",
+                            element: <ArticleTagPage />,
+                        }
+                    ]
                 },
             ],
         },

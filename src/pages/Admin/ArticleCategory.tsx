@@ -1,7 +1,7 @@
 import SearchableSelect from "@/components/Forms/SearchAbleSelect";
 import DynamicModal from "@/components/Modals/DynamicModal";
 import CustomTable from "@/components/Tables/CustomTable";
-import { ICustomInformationTable } from "@/interfaces/customInformation";
+import { IArticleCategoryTable } from "@/interfaces/article";
 import { setMenu } from "@/redux/slices/menuSlice";
 import {
     endProccess,
@@ -13,26 +13,24 @@ import { openModal as openModalImage } from "@/redux/slices/imageModalSlice";
 
 import {
     createData,
-    deleteDataById,
+    deleteDataBySlug,
     fetchData,
-    getDataById,
+    getDataBySlug,
     updateData,
-} from "@/services/customInformations";
-
-import { fetchData as getDataType } from "@/services/customInformationTypes";
+} from "@/services/articleCategory";
 import { useEffect, useRef, useState } from "react";
 import toast from "react-hot-toast";
 import { useDispatch } from "react-redux";
 
-const CustomInformation = () => {
+const ArticleCategory = () => {
     const dispatch = useDispatch();
 
     useEffect(() => {
-        dispatch(setMenu("Custom Information"));
+        dispatch(setMenu("Article Category"));
     });
 
     const [onProccess, setOnProccess] = useState(false);
-    const [data, setData] = useState<ICustomInformationTable>();
+    const [data, setData] = useState<IArticleCategoryTable>();
     const [query, setQuery] = useState({
         page: 1,
         per_page: 10,
@@ -43,13 +41,8 @@ const CustomInformation = () => {
     const [imageFile, setImageData] = useState<File>();
     const preview = useRef<any>();
 
-    const titleField = useRef<any>("");
-    const subtitleField = useRef<any>("");
-    const descriptionField = useRef<any>("");
-    const iconField = useRef<any>("");
-    const linkField = useRef<any>("");
+    const nameField = useRef<any>("");
     const imageField = useRef<any>("");
-    const typeField = useRef<any>("");
 
     const loadData = () => {
         toast
@@ -80,11 +73,7 @@ const CustomInformation = () => {
     }, [query]);
 
     const handleCreate = () => {
-        titleField!.current.value = "";
-        subtitleField!.current.value = "";
-        descriptionField!.current.value = "";
-        iconField!.current.value = "";
-        linkField!.current.value = "";
+        nameField!.current.value = "";
         preview.current!.hidden = true;
         imageField.current.value = "";
         setImageData(undefined);
@@ -96,43 +85,16 @@ const CustomInformation = () => {
         );
     };
 
-    const resetFields = () => {
-        titleField.current.value = "";
-        subtitleField.current.value = "";
-        descriptionField.current.value = "";
-        iconField.current.value = "";
-        linkField.current.value = "";
-        imageField.current.value = "";
-        typeField.current.value = "";
-        setImageData(undefined);
-        preview.current!.src = "";
-        preview.current!.hidden = true;
-    };
-
     const handleSubmit = () => {
         //validation
-        if (!titleField.current.value) {
-            toast.error("Title is required");
-            titleField.current.focus();
-            return;
-        }
-
-        if (!typeField.current.value) {
-            toast.error("Type is required");
-            typeField.current.focus();
+        if (!nameField.current.value) {
+            toast.error("Name is required");
+            nameField.current.focus();
             return;
         }
 
         const formData = new FormData();
-        formData.append("title", titleField.current.value);
-        formData.append("subtitle", subtitleField.current.value);
-        formData.append("description", descriptionField.current.value);
-        formData.append("icon", iconField.current.value);
-        formData.append("link", linkField.current.value);
-        formData.append(
-            "information_type_id",
-            typeField.current.getAttribute("data-id")
-        );
+        formData.append("name", nameField.current.value);
         if (imageFile) {
             formData.append("image", imageFile);
         }
@@ -169,45 +131,31 @@ const CustomInformation = () => {
         );
     };
 
-    const handleEdit: (id: number) => void = (id: number) => {
+    const resetFields = () => {
+        nameField.current.value = "";
+        setImageData(undefined);
+        preview.current!.src = "";
+        preview.current!.hidden = true;
+    };
+
+    const handleEdit: (slug: string) => void = (slug: string) => {
         dispatch(
             setModal({
                 isOpen: true,
                 title: "Edit Item",
                 isUpdate: true,
-                keyId: id,
+                keyId: slug,
             })
         );
         dispatch(startProccess());
-        titleField.current.disabled = true;
-        titleField.current.value = "Please wait...";
-        subtitleField.current.disabled = true;
-        subtitleField.current.value = "Please wait...";
-        descriptionField.current.disabled = true;
-        descriptionField.current.value = "Please wait...";
-        iconField.current.disabled = true;
-        iconField.current.value = "Please wait...";
-        typeField.current.disabled = true;
-        typeField.current.value = "Please wait...";
-        linkField.current.disabled = true;
-        linkField.current.value = "Please wait...";
+        nameField.current.disabled = true;
+        nameField.current.value = "Please wait...";
         imageField.current.disabled = true;
         preview.current.hidden = true;
 
-        getDataById(id).then((res) => {
-            titleField.current.disabled = false;
-            titleField.current.value = res.data.title;
-            subtitleField.current.disabled = false;
-            subtitleField.current.value = res.data.subtitle;
-            descriptionField.current.disabled = false;
-            descriptionField.current.value = res.data.description;
-            iconField.current.disabled = false;
-            iconField.current.value = res.data.icon;
-            linkField.current.disabled = false;
-            typeField.current.setAttribute("data-id", res.data.type_id);
-            typeField.current.value = res.data.type;
-            typeField.current.disabled = false;
-            linkField.current.value = res.data.link;
+        getDataBySlug(slug).then((res) => {
+            nameField.current.disabled = false;
+            nameField.current.value = res.data.name;
             imageField.current.disabled = false;
             preview.current.src = res.data.image_url;
             preview.current.hidden = false;
@@ -215,32 +163,22 @@ const CustomInformation = () => {
         });
     };
 
-    const handleUpdate = (id: number) => {
-        if (!titleField.current.value) {
-            toast.error("Title is required");
-            titleField.current.focus();
-            return;
-        }
-
-        if (!typeField.current.value) {
-            toast.error("Type is required");
-            typeField.current.focus();
+    const handleUpdate = (slug: string) => {
+        if (!nameField.current.value) {
+            toast.error("Name is required");
+            nameField.current.focus();
             return;
         }
 
         const formData = new FormData();
-        formData.append("title", titleField.current.value);
-        formData.append("subtitle", subtitleField.current.value);
-        formData.append("description", descriptionField.current.value);
-        formData.append("icon", iconField.current.value);
-        formData.append("link", linkField.current.value);
+        formData.append("name", nameField.current.value);
         if (imageFile) {
             formData.append("image", imageFile);
         }
 
         dispatch(startProccess());
         toast
-            .promise(updateData(formData, id), {
+            .promise(updateData(formData, slug), {
                 loading: "Loading...",
                 success: "Data has been updated",
                 error: "Error when loading data",
@@ -264,10 +202,10 @@ const CustomInformation = () => {
             });
     };
 
-    const handleDelete = (id: number) => {
+    const handleDelete = (slug: string) => {
         setOnProccess(true);
         toast
-            .promise(deleteDataById(id), {
+            .promise(deleteDataBySlug(slug), {
                 loading: "Loading...",
                 success: "Data has been deleted",
                 error: "Error when loading data",
@@ -282,13 +220,9 @@ const CustomInformation = () => {
     };
 
     const fieldTable: any = [
-        { field: "title", name: "Title" },
-        { field: "subtitle", name: "Subtitle" },
-        { field: "description", name: "Description" },
+        { field: "name", name: "Name" },
+        { field: "slug", name: "Slug" },
         { field: "image_url", name: "Image", type: "image" },
-        { field: "link", name: "Link" },
-        { field: "icon", name: "Icon" },
-        { field: "type", name: "Type Information" },
     ];
 
     const handleFieldImageChange = (e: any) => {
@@ -315,66 +249,18 @@ const CustomInformation = () => {
                         >
                             <div className="mb-4">
                                 <label className="block text-gray-700 text-sm font-bold mb-2">
-                                    Title
+                                    Name
                                 </label>
                                 <input
                                     type="text"
                                     className="shadow dark:bg-slate-200 dark:text-dark appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                                    id="title"
-                                    placeholder="Title"
+                                    id="name"
+                                    placeholder="Name"
                                     required
-                                    ref={titleField}
+                                    ref={nameField}
                                 />
                             </div>
-                            <div className="mb-4">
-                                <label className="block text-gray-700 text-sm font-bold mb-2">
-                                    Subtitle
-                                </label>
-                                <input
-                                    type="text"
-                                    className="shadow dark:bg-slate-200 dark:text-dark appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                                    id="subtitle"
-                                    placeholder="Subtitle"
-                                    required
-                                    ref={subtitleField}
-                                />
-                            </div>
-                            <div className="mb-4">
-                                <label className="block text-gray-700 text-sm font-bold mb-2">
-                                    Information Type
-                                </label>
-                                <SearchableSelect
-                                    field={typeField}
-                                    getData={getDataType}
-                                    placeholder="Select Information Type"
-                                />
-                            </div>
-                            <div className="mb-4">
-                                <label className="block text-gray-700 text-sm font-bold mb-2">
-                                    Link
-                                </label>
-                                <input
-                                    type="text"
-                                    className="shadow dark:bg-slate-200 dark:text-dark appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                                    id="link"
-                                    placeholder="Link"
-                                    required
-                                    ref={linkField}
-                                />
-                            </div>
-                            <div className="mb-4">
-                                <label className="block text-gray-700 text-sm font-bold mb-2">
-                                    Icon
-                                </label>
-                                <input
-                                    type="text"
-                                    className="shadow dark:bg-slate-200 dark:text-dark appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                                    id="icon"
-                                    placeholder="Icon"
-                                    required
-                                    ref={iconField}
-                                />
-                            </div>
+
                             <div className="mb-4">
                                 <label className="block text-gray-700 text-sm font-bold mb-2">
                                     Image
@@ -407,18 +293,6 @@ const CustomInformation = () => {
                                         />
                                     </div>
                                 </div>
-                            </div>
-                            <div className="mb-4">
-                                <label className="block text-gray-700 text-sm font-bold mb-2">
-                                    Description
-                                </label>
-                                <textarea
-                                    className="shadow dark:bg-slate-200 dark:text-dark appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                                    id="description"
-                                    placeholder="Description"
-                                    required
-                                    ref={descriptionField}
-                                />
                             </div>
                         </form>
                     </div>
@@ -453,4 +327,4 @@ const CustomInformation = () => {
     );
 };
 
-export default CustomInformation;
+export default ArticleCategory;

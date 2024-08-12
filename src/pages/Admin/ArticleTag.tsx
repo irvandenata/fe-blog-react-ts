@@ -1,6 +1,6 @@
 import DynamicModal from "@/components/Modals/DynamicModal";
 import CustomTable from "@/components/Tables/CustomTable";
-import { ICustomInformationTypeTable } from "@/interfaces/customInformation";
+import { IArticleTagTable } from "@/interfaces/article";
 import { setMenu } from "@/redux/slices/menuSlice";
 import {
     endProccess,
@@ -9,22 +9,22 @@ import {
 } from "@/redux/slices/modalSlice";
 import {
     createData,
-    deleteDataById,
+    deleteDataBySlug,
     fetchData,
-    getDataById,
+    getDataBySlug,
     updateData,
-} from "@/services/customInformationTypes";
+} from "@/services/articleTag";
 import { useEffect, useRef, useState } from "react";
 import toast from "react-hot-toast";
 import { useDispatch } from "react-redux";
 
-const CustomInformationType = () => {
+const ArticleTag = () => {
     const dispatch = useDispatch();
     useEffect(() => {
-        dispatch(setMenu("Custom Information"));
+        dispatch(setMenu("Article Tag"));
     });
     const [onProccess, setOnProccess] = useState(false);
-    const [data, setData] = useState<ICustomInformationTypeTable>();
+    const [data, setData] = useState<IArticleTagTable>();
     const [query, setQuery] = useState({
         page: 1,
         per_page: 10,
@@ -79,17 +79,15 @@ const CustomInformationType = () => {
             return;
         }
         dispatch(startProccess());
+
+        const formData = new FormData();
+        formData.append("name", nameField.current.value);
         toast
-            .promise(
-                createData({
-                    name: nameField.current.value,
-                }),
-                {
-                    loading: "Loading...",
-                    success: "Data has been created",
-                    error: "Error when loading data",
-                }
-            )
+            .promise(createData(formData), {
+                loading: "Loading...",
+                success: "Data has been created",
+                error: "Error when loading data",
+            })
             .then((_) => {
                 loadData();
                 setOnProccess(false);
@@ -116,27 +114,27 @@ const CustomInformationType = () => {
         );
     };
 
-    const handleEdit: (id: number) => void = (id: number) => {
+    const handleEdit: (slug: string) => void = (slug: string) => {
         dispatch(
             setModal({
                 isOpen: true,
                 title: "Edit Item",
                 isUpdate: true,
-                keyId: id,
+                keyId: slug,
             })
         );
         dispatch(startProccess());
         nameField.current.disabled = true;
         nameField.current.value = "Please wait...";
 
-        getDataById(id).then((res) => {
+        getDataBySlug(slug).then((res) => {
             nameField.current.disabled = false;
             nameField.current.value = res.data.name;
             dispatch(endProccess());
         });
     };
 
-    const handleUpdate = (id: number) => {
+    const handleUpdate = (slug: string) => {
         //validation
         if (!nameField.current.value) {
             toast.error("Name is required");
@@ -144,20 +142,14 @@ const CustomInformationType = () => {
             return;
         }
         dispatch(startProccess());
+        const formData = new FormData();
+        formData.append("name", nameField.current.value);
         toast
-            .promise(
-                updateData(
-                    {
-                        name: nameField.current.value,
-                    },
-                    id
-                ),
-                {
-                    loading: "Loading...",
-                    success: "Data has been updated",
-                    error: "Error when loading data",
-                }
-            )
+            .promise(updateData(formData, slug), {
+                loading: "Loading...",
+                success: "Data has been updated",
+                error: "Error when loading data",
+            })
             .then((_) => {
                 loadData();
                 setOnProccess(false);
@@ -177,10 +169,10 @@ const CustomInformationType = () => {
             });
     };
 
-    const handleDelete = (id: number) => {
+    const handleDelete = (slug: string) => {
         setOnProccess(true);
         toast
-            .promise(deleteDataById(id), {
+            .promise(deleteDataBySlug(slug), {
                 loading: "Loading...",
                 success: "Data has been deleted",
                 error: "Error when loading data",
@@ -194,7 +186,7 @@ const CustomInformationType = () => {
             });
     };
 
-    const fieldTable: any = [{ field: "name", name: "Name" }];
+    const fieldTable: any = [{ field: "name", name: "Name" },{ field: "slug", name: "Slug" }];
 
     return (
         <>
@@ -204,12 +196,13 @@ const CustomInformationType = () => {
                 onClose={handleCloseModal}
             >
                 <div className="mx-2">
-                    <form
-                        onSubmit={(e) => {
-                            e.preventDefault();
-                            handleSubmit();
-                        }}
-                    >
+                    <form onSubmit={(e) => 
+                    {
+                        e.preventDefault();
+                        handleSubmit();
+                     }
+                    
+                    } >
                         <div className="mb-4">
                             <label className="block text-gray-700 text-sm font-bold mb-2">
                                 Name
@@ -258,4 +251,4 @@ const CustomInformationType = () => {
     );
 };
 
-export default CustomInformationType;
+export default ArticleTag;

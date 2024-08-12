@@ -11,7 +11,7 @@ interface DynamicModalProps {
     onSubmit?: () => void;
     children?: React.ReactNode;
     onClose?: () => void;
-    onUpdate?: (id:number) => void;
+    onUpdate?: (id:any) => void;
 }
 
 
@@ -30,8 +30,8 @@ interface CustomTableProps {
     setQuery: any;
     query?: any;
     children?: React.ReactNode;
-    onDelete?: (id:number) => void;
-    onEdit?: (id:number) => void;
+    onDelete?: (id:any) => void;
+    onEdit?: (id:any) => void;
 }
 
 

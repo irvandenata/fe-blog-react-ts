@@ -214,7 +214,7 @@ export const CustomTable: React.FC<CustomTableProps> = ({
                             )}
                         {!onProccess && data?.data.length === 0 && (
                             <tr>
-                                <td colSpan={fieldTable.length}>
+                                <td colSpan={fieldTable.length + 2}>
                                     <div className="text-center py-4">
                                         No data available
                                     </div>
