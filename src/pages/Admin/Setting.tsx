@@ -30,7 +30,7 @@ const SettingPage = () => {
                 error: "Error when loading data",
             })
             .then((res) => {
-                changeField();
+                
                 setData({
                     header_title: res.data.header.title,
                     header_description: res.data.header.description,
@@ -41,8 +41,10 @@ const SettingPage = () => {
                     header_description: res.data.header.description,
                     header_image: res.data.header.image,
                 });
-
                 isLoading.current = false;
+
+                changeField();
+
             });
     }, []);
 

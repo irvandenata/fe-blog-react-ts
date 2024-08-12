@@ -1,21 +1,18 @@
 import { ICustomInformationType } from "@/interfaces/customInformation";
 import { usePagination } from "@/hooks/usePagination";
-import { useEffect, useRef, useState } from "react";
-
-interface CustomTableProps {
-    fieldTable: string[];
-    data: any;
-    onProccess?: boolean;
-    setQuery: any;
-    query?: any;
-}
+import { useRef, useState } from "react";
+import { CustomTableProps } from "@/interfaces/common";
+import AlertDialog from "../Modals/AlertDialog";
 
 export const CustomTable: React.FC<CustomTableProps> = ({
     fieldTable,
     data,
     onProccess,
+    onDelete,
+    onEdit,
     setQuery,
     query,
+    children,
 }) => {
     const pagination = usePagination({
         totalCount: data?.total,
@@ -23,8 +20,6 @@ export const CustomTable: React.FC<CustomTableProps> = ({
         siblingCount: 1,
         currentPage: data?.current_page,
     });
-
-    const searchValue = useRef();
 
     const handleChangePage = (page: number) => {
         if (page === data?.current_page) return;
@@ -47,14 +42,28 @@ export const CustomTable: React.FC<CustomTableProps> = ({
         }, 500);
     };
 
+    const deleteId = useRef<number>(0);
+    const handleDelete = () => {
+        onDelete!(deleteId.current);
+        setIsDialogOpen(false);
+    };
+
+    const [isDialogOpen, setIsDialogOpen] = useState(false);
+
     return (
         <div className="">
+            <AlertDialog
+                isOpen={isDialogOpen}
+                title="Are you sure?"
+                message="Do you really want to delete this item? This process cannot be undone."
+                icon="⚠️"
+                onConfirm={handleDelete}
+                onCancel={() => setIsDialogOpen(false)}
+                confirmText="Yes, delete it!"
+                cancelText="No, cancel!"
+            />
             <div className="mx-4 my-4 flex">
-                <div>
-                    <button className="px-4 py-2 rounded-xl bg-primary text-slate-200">
-                        Create New Item
-                    </button>
-                </div>
+                <div>{children}</div>
                 <div className="flex-grow"></div>
                 <div>
                     <input
@@ -66,7 +75,7 @@ export const CustomTable: React.FC<CustomTableProps> = ({
                 </div>
             </div>
             <table className="w-full text-sm text-left  dark:bg-dark rtl:text-right text-gray-500 dark:text-gray-400">
-                <thead className="text-xs text-gray-900 dark:border-graydark border-b dark:bg-slate-800 uppercase dark:text-gray-400">
+                <thead className="text-xs text-gray-900 dark:border-graydark border-slate-300 border-b dark:bg-slate-800 uppercase dark:text-gray-400">
                     <tr>
                         {fieldTable.map((field, index) => (
                             <th key={index} scope="col" className="px-6 py-3">
@@ -82,7 +91,7 @@ export const CustomTable: React.FC<CustomTableProps> = ({
                                 return (
                                     <tr
                                         key={index}
-                                        className="bg-white dark:border-graydark border-b dark:bg-slate-700"
+                                        className="bg-white dark:border-graydark border-slate-200 border-b dark:bg-dark"
                                     >
                                         <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                                             {(data?.current_page - 1) *
@@ -93,11 +102,28 @@ export const CustomTable: React.FC<CustomTableProps> = ({
                                         <td className="px-6 py-4">
                                             {field.name}
                                         </td>
-                                        <td className="px-6 py-4">
-                                            <button className="px-2 py-1 bg-warning text-white mx-2">
+                                        <td className="px-6 py-4 w-1/4">
+                                            <button
+                                                onClick={() =>
+                                                    onEdit
+                                                        ? onEdit(field.id)
+                                                        : null
+                                                }
+                                                className="px-2 py-1 rounded-md bg-warning hover:bg-primary hover:text-white text-white mx-2"
+                                            >
                                                 Edit
                                             </button>
-                                            <button className="px-2 py-1 bg-danger text-white mx-2">
+
+                                            <button
+                                                onClick={() =>
+                                                    onDelete
+                                                        ? (deleteId.current =
+                                                              field.id) &&
+                                                          setIsDialogOpen(true)
+                                                        : null
+                                                }
+                                                className="px-2 py-1 rounded-md bg-danger hover:bg-primary hover:text-white text-white mx-2"
+                                            >
                                                 Delete
                                             </button>
                                         </td>

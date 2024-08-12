@@ -1,6 +1,6 @@
 import axios, { AxiosRequestConfig } from "axios";
 import Cookies from "js-cookie";
-import { logout } from "./auth";
+import { forceLogout } from "./auth";
 
 
 interface CallAPIProps extends AxiosRequestConfig {
