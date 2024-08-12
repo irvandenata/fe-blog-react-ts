@@ -164,6 +164,7 @@ const CustomInformationType = () => {
                 dispatch(
                     setModal({
                         isOpen: false,
+                        isUpdate: false,
                         keyId: 0,
                     })
                 );

@@ -189,6 +189,7 @@ const ArticleCategory = () => {
                 dispatch(
                     setModal({
                         isOpen: false,
+                        isUpdate: false,
                         keyId: 0,
                     })
                 );

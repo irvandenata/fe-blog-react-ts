@@ -11,7 +11,7 @@ const SettingPage = () => {
     useEffect(() => {
         dispatch(setMenu("Settings"));
     });
-    
+
     //get data from api
     const [data, setData] = useState<ISetting>();
     const [oldData, setOldData] = useState<ISetting>();
@@ -31,7 +31,6 @@ const SettingPage = () => {
                 error: "Error when loading data",
             })
             .then((res) => {
-                
                 setData({
                     header_title: res.data.header.title,
                     header_description: res.data.header.description,
@@ -43,9 +42,9 @@ const SettingPage = () => {
                     header_image: res.data.header.image,
                 });
                 isLoading.current = false;
+                preview.current!.classList.remove("hidden");
 
                 changeField();
-
             });
     }, []);
 
@@ -106,6 +105,7 @@ const SettingPage = () => {
         const file = e.target.files[0];
         setImageData(file);
         preview.current!.src = URL.createObjectURL(file);
+        preview.current!.classList.remove("hidden");
     };
 
     return (
@@ -183,7 +183,7 @@ const SettingPage = () => {
                                     <img
                                         src={data?.header_image || ""}
                                         alt="preview"
-                                        className="w-[400px]"
+                                        className="w-[400px] hidden"
                                         ref={preview}
                                     />
                                 </div>

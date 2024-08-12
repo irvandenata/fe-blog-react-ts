@@ -85,6 +85,8 @@ const CustomInformation = () => {
         descriptionField!.current.value = "";
         iconField!.current.value = "";
         linkField!.current.value = "";
+        typeField!.current.value = "";
+        typeField!.current.setAttribute("data-id", "0");
         preview.current!.hidden = true;
         imageField.current.value = "";
         setImageData(undefined);
@@ -234,6 +236,10 @@ const CustomInformation = () => {
         formData.append("description", descriptionField.current.value);
         formData.append("icon", iconField.current.value);
         formData.append("link", linkField.current.value);
+        formData.append(
+            "information_type_id",
+            typeField.current.getAttribute("data-id")
+        );
         if (imageFile) {
             formData.append("image", imageFile);
         }
@@ -251,6 +257,7 @@ const CustomInformation = () => {
                 dispatch(
                     setModal({
                         isOpen: false,
+                        isUpdate: false,
                         keyId: 0,
                     })
                 );

@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 export default function StickyNavbar() {
     const [openNav, setOpenNav] = React.useState(false);
@@ -36,24 +37,9 @@ export default function StickyNavbar() {
     const navList = (
         <ul className="mt-2 mb-4 flex flex-col gap-2 lg:mb-0 lg:mt-0 lg:flex-row lg:items-center lg:gap-6">
             <li className="p-1 dark:text-white font-normal">
-                <a href="#" className="flex items-center">
-                    Pages
-                </a>
-            </li>
-            <li className="p-1 dark:text-white font-normal">
-                <a href="#" className="flex items-center">
-                    Account
-                </a>
-            </li>
-            <li className="p-1 dark:text-white font-normal">
-                <a href="#" className="flex items-center">
-                    Blocks
-                </a>
-            </li>
-            <li className="p-1 dark:text-white font-normal">
-                <a href="#" className="flex items-center">
-                    Docs
-                </a>
+                <Link to="/login" className="flex items-center">
+                    Login
+                </Link>
             </li>
         </ul>
     );
@@ -61,9 +47,9 @@ export default function StickyNavbar() {
     return (
         <nav className="absolute top-0 z-10 w-full  max-w-full dark:border-dark dark:bg-dark bg-white  dark:text-white rounded-none px-4 py-2 lg:px-8 lg:py-4">
             <div className="flex items-center dark:text-white justify-between text-blue-gray-900">
-                <a href="#" className="mr-4 cursor-pointer py-1.5 font-medium">
+                <Link to="/" className="mr-4 cursor-pointer py-1.5 font-medium">
                     Ivd
-                </a>
+                </Link>
                 <div className="flex items-center gap-4">
                     <div className="mr-4 hidden lg:block">{navList}</div>
                     <div className="flex items-center gap-x-1">

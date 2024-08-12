@@ -18,7 +18,6 @@ const SearchableSelect: React.FC<{
                 const response = await getData({
                     all_data: 1,
                 });
-                console.log(response);
                 if (field.current.getAttribute("data-id") != "0") {
                     field.previous = field.current;
                     const selected = response.data.find(
@@ -52,7 +51,18 @@ const SearchableSelect: React.FC<{
                 placeholder={placeholder}
                 data-id={0}
                 ref={field}
-                onFocus={() => optionList.current?.classList.remove("hidden")}
+                onFocus={() => {
+                    if (searchTerm) {
+                        if (field.current.getAttribute("data-id") !== "0") {
+                            setSearchTerm(field.current.value);
+                        }
+                    }
+                    if (field.current.getAttribute("data-id") == "0") {
+                        setSearchTerm("");
+                        setSelectedOption(null);
+                    }
+                    optionList.current?.classList.remove("hidden");
+                }}
                 onBlur={() => {
                     setTimeout(() => {
                         if (field.current.getAttribute("data-id") === "0") {
