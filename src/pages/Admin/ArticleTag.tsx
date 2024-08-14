@@ -9,9 +9,9 @@ import {
 } from "@/redux/slices/modalSlice";
 import {
     createData,
-    deleteDataBySlug,
+    deleteDataById,
     fetchData,
-    getDataBySlug,
+    getDataById,
     updateData,
 } from "@/services/articleTag";
 import { useEffect, useRef, useState } from "react";
@@ -114,27 +114,27 @@ const ArticleTag = () => {
         );
     };
 
-    const handleEdit: (slug: string) => void = (slug: string) => {
+    const handleEdit: (id: number) => void = (id: number) => {
         dispatch(
             setModal({
                 isOpen: true,
                 title: "Edit Item",
                 isUpdate: true,
-                keyId: slug,
+                keyId: id,
             })
         );
         dispatch(startProccess());
         nameField.current.disabled = true;
         nameField.current.value = "Please wait...";
 
-        getDataBySlug(slug).then((res) => {
+        getDataById(id).then((res) => {
             nameField.current.disabled = false;
             nameField.current.value = res.data.name;
             dispatch(endProccess());
         });
     };
 
-    const handleUpdate = (slug: string) => {
+    const handleUpdate = (id: number) => {
         //validation
         if (!nameField.current.value) {
             toast.error("Name is required");
@@ -145,7 +145,7 @@ const ArticleTag = () => {
         const formData = new FormData();
         formData.append("name", nameField.current.value);
         toast
-            .promise(updateData(formData, slug), {
+            .promise(updateData(formData, id), {
                 loading: "Loading...",
                 success: "Data has been updated",
                 error: "Error when loading data",
@@ -170,10 +170,10 @@ const ArticleTag = () => {
             });
     };
 
-    const handleDelete = (slug: string) => {
+    const handleDelete = (id: number) => {
         setOnProccess(true);
         toast
-            .promise(deleteDataBySlug(slug), {
+            .promise(deleteDataById(id), {
                 loading: "Loading...",
                 success: "Data has been deleted",
                 error: "Error when loading data",

@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { cn } from "@/utils/aceternity";
 import { Label } from "@/components/UI/label";
 import { Input } from "@/components/UI/input";
@@ -6,16 +6,22 @@ import toast, { Toaster } from "react-hot-toast";
 import { login } from "@/services/auth";
 import { ILogin } from "@/interfaces/auth";
 import { useNavigate } from "react-router-dom";
-import Cookies from 'js-cookie';
-
+import Cookies from "js-cookie";
+import { decodeJwt } from "@/utils/jwt";
+import { useDispatch } from "react-redux";
+import { resetDataUserState, setDataUserState } from "@/redux/slices/userSlice";
 const Login = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     let Router = useNavigate();
+    const dispatch = useDispatch();
     let loading = false;
     const loader = useRef<SVGSVGElement | null>(null);
     const btnSubmit = useRef<HTMLButtonElement | null>(null);
 
+    useEffect(() => {
+        dispatch(resetDataUserState());
+    }, []);
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         const data: ILogin = {
             email,
@@ -32,8 +38,19 @@ const Login = () => {
                 loading = false;
                 toast.success("Success login, Hola Master 👋");
                 const { token } = result.data;
+                //decode token and get payload
+                const decoded = decodeJwt(token);
+
+                // Mengambil payload
+                dispatch(
+                    setDataUserState({
+                        email: decoded.email,
+                        name: decoded.name,
+                    })
+                );
+
                 const tokenBase64 = btoa(token);
-                Cookies.set('token', tokenBase64, { expires: 1 });
+                Cookies.set("token", tokenBase64, { expires: 1 });
                 loading = false;
                 loader?.current?.classList.add("hidden");
                 btnSubmit?.current?.classList.remove("cursor-not-allowed");

@@ -1,4 +1,3 @@
-import SearchableSelect from "@/components/Forms/SearchAbleSelect";
 import DynamicModal from "@/components/Modals/DynamicModal";
 import CustomTable from "@/components/Tables/CustomTable";
 import { IArticleCategoryTable } from "@/interfaces/article";
@@ -13,9 +12,9 @@ import { openModal as openModalImage } from "@/redux/slices/imageModalSlice";
 
 import {
     createData,
-    deleteDataBySlug,
+    deleteDataById,
     fetchData,
-    getDataBySlug,
+    getDataById,
     updateData,
 } from "@/services/articleCategory";
 import { useEffect, useRef, useState } from "react";
@@ -138,13 +137,13 @@ const ArticleCategory = () => {
         preview.current!.hidden = true;
     };
 
-    const handleEdit: (slug: string) => void = (slug: string) => {
+    const handleEdit: (id: number) => void = (id: number) => {
         dispatch(
             setModal({
                 isOpen: true,
                 title: "Edit Item",
                 isUpdate: true,
-                keyId: slug,
+                keyId: id,
             })
         );
         dispatch(startProccess());
@@ -153,7 +152,7 @@ const ArticleCategory = () => {
         imageField.current.disabled = true;
         preview.current.hidden = true;
 
-        getDataBySlug(slug).then((res) => {
+        getDataById(id).then((res) => {
             nameField.current.disabled = false;
             nameField.current.value = res.data.name;
             imageField.current.disabled = false;
@@ -163,7 +162,7 @@ const ArticleCategory = () => {
         });
     };
 
-    const handleUpdate = (slug: string) => {
+    const handleUpdate = (id: number) => {
         if (!nameField.current.value) {
             toast.error("Name is required");
             nameField.current.focus();
@@ -178,7 +177,7 @@ const ArticleCategory = () => {
 
         dispatch(startProccess());
         toast
-            .promise(updateData(formData, slug), {
+            .promise(updateData(formData, id), {
                 loading: "Loading...",
                 success: "Data has been updated",
                 error: "Error when loading data",
@@ -203,10 +202,10 @@ const ArticleCategory = () => {
             });
     };
 
-    const handleDelete = (slug: string) => {
+    const handleDelete = (id: number) => {
         setOnProccess(true);
         toast
-            .promise(deleteDataBySlug(slug), {
+            .promise(deleteDataById(id), {
                 loading: "Loading...",
                 success: "Data has been deleted",
                 error: "Error when loading data",

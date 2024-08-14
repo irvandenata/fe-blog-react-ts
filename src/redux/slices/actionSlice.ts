@@ -4,10 +4,14 @@ const menuSlice = createSlice({
     name: "action",
     initialState: {
         onProccess: false,
+        name : "view-data",
     },
     reducers: {
         startProccess: (state) => {
             state.onProccess = true;
+        },
+        setAction : (state, action) => {
+            state.name = action.payload.name;
         },
         stopProccess: (state) => {
             state.onProccess = false;
@@ -15,5 +19,5 @@ const menuSlice = createSlice({
     },
 });
 
-export const { startProccess, stopProccess } = menuSlice.actions;
+export const { startProccess, stopProccess,setAction } = menuSlice.actions;
 export default menuSlice.reducer;

@@ -166,7 +166,7 @@ export const CustomTable: React.FC<CustomTableProps> = ({
                                                                                 }` ??
                                                                                 ""
                                                                             }
-                                                                            className="w-10 h-10 rounded"
+                                                                            className="w-10 h-10 rounded cursor-zoom-in"
                                                                         />
                                                                     ) : (
                                                                         "-"

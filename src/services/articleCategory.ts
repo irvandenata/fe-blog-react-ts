@@ -26,8 +26,8 @@ export async function createData(data: FormData): Promise<any> {
     return response;
 }
 
-export async function getDataBySlug(slug: string): Promise<any> {
-    const url = `${API_ENDPOINT}/article-categories/${slug}`;
+export async function getDataById(id: number): Promise<any> {
+    const url = `${API_ENDPOINT}/article-categories/${id}`;
     // handling when error
     const response = await callAPI({
         url,
@@ -37,8 +37,8 @@ export async function getDataBySlug(slug: string): Promise<any> {
     return response;
 }
 
-export async function updateData(data: FormData, slug: string): Promise<any> {
-    const url = `${ROOT_API}/${API_VERSION}/article-categories/${slug}?_method=PATCH`;
+export async function updateData(data: FormData, id: number): Promise<any> {
+    const url = `${ROOT_API}/${API_VERSION}/article-categories/${id}?_method=PATCH`;
     // handling when error
     const response = await callAPI({
         url,
@@ -50,8 +50,8 @@ export async function updateData(data: FormData, slug: string): Promise<any> {
     return response;
 }
 
-export async function deleteDataBySlug(slug: string): Promise<any> {
-    const url = `${API_ENDPOINT}/article-categories/${slug}`;
+export async function deleteDataById(id: number): Promise<any> {
+    const url = `${API_ENDPOINT}/article-categories/${id}`;
     // handling when error
     const response = await callAPI({
         url,

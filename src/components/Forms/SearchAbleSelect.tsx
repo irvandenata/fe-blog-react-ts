@@ -1,5 +1,4 @@
 import React, { useState, useEffect, Ref } from "react";
-import axios from "axios";
 
 const SearchableSelect: React.FC<{
     getData: (params: any) => Promise<any>;
@@ -18,12 +17,12 @@ const SearchableSelect: React.FC<{
                 const response = await getData({
                     all_data: 1,
                 });
-                if (field.current.getAttribute("data-id") != "0") {
+                if (field.current && field.current.getAttribute("data-id") != "0") {
                     field.previous = field.current;
                     const selected = response.data.find(
-                        (option: any) => option.id === field.current.value
+                        (option: any) => option.name === field.current.value
                     );
-                    setSearchTerm(selected.name);
+                    if (selected) setSelectedOption(selected.name);
                 }
                 setOptions(response.data); // Assuming the data is in the 'data' property of the response
             } catch (error) {
@@ -31,7 +30,7 @@ const SearchableSelect: React.FC<{
             }
         };
         fetchData();
-    }, [getData]);
+    },[]);
 
     // initial value
 
@@ -80,13 +79,13 @@ const SearchableSelect: React.FC<{
             />
             <div
                 ref={optionList}
-                className="absolute mt-2 w-full hidden bg-white border rounded-md shadow-lg max-h-60 overflow-y-auto z-10"
+                className="absolute mt-2 w-full hidden bg-white border rounded-md shadow-lg max-h-60 overflow-y-auto z-50"
             >
                 {filteredOptions.length > 0 ? (
                     filteredOptions.map((option: any) => (
                         <div
                             key={option.id}
-                            className={`cursor-pointer px-4 py-2 hover:bg-primary dark:hover:text-white  hover:text-white ${
+                            className={`cursor-pointer px-4 py-2 z-50 hover:bg-primary dark:hover:text-white  hover:text-white ${
                                 selectedOption === option.id
                                     ? "bg-boxdark text-white"
                                     : "dark:text-dark"
@@ -107,7 +106,7 @@ const SearchableSelect: React.FC<{
                         </div>
                     ))
                 ) : (
-                    <div className="px-4 py-2 text-gray-500">
+                    <div className="px-4 py-2 text-gray-500 z-50">
                         No options found
                     </div>
                 )}

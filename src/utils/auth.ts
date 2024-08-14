@@ -33,6 +33,7 @@ export const logout = () => {
     Cookies.remove("token");
     console.log("Unauthorized");
     return redirect("/login");
+    // dispatch(resetDataUserState());
 };
 
 export const forceLogout = () => {
