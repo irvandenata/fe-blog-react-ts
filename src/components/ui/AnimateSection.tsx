@@ -3,17 +3,36 @@ import React, { useEffect, useState } from "react";
 const AnimateSection: React.FC<{
     children: React.ReactNode;
     id: string;
+    parentId: string;
     className?: string;
     outAnimate?: string;
-}> = ({ children, id, className = "", outAnimate = "animate-fade-out" }) => {
+    inAnimate?: string;
+    top?: number;
+    bottom?: number;
+}> = ({
+    children,
+    id,
+    parentId,
+    className = "",
+    outAnimate = "",
+    inAnimate = "animate-fade-in",
+    top = 300,
+    bottom = 0,
+}) => {
     const [isVisible, setIsVisible] = useState(false);
+    const componentRef = React.useRef<HTMLDivElement>(null);
     useEffect(() => {
         const handleScroll = () => {
-            const section = document.getElementById(id);
+            const section = document.getElementById(parentId);
             const rect = section!.getBoundingClientRect();
+            if(id === "we-title"){
+                console.log("rect top ", rect.top);
+                console.log("rect bottom ", rect.bottom);
+                console.log("window.innerHeight ", window.innerHeight);
 
+            }
             const isInViewport =
-                rect.top + 100 >= 0 && rect.bottom - 100 <= window.innerHeight;
+                rect.top + top >= 0 && rect.bottom - bottom <= window.innerHeight ;
             if (isInViewport) {
                 //remove hidden
                 setIsVisible(true);
@@ -24,15 +43,15 @@ const AnimateSection: React.FC<{
         window.addEventListener("scroll", handleScroll);
         handleScroll(); // Initial check on component mount
         return () => window.removeEventListener("scroll", handleScroll);
-    }, [id]);
+    }, [parentId]);
 
     return (
         <div
             id={id}
-            className={`${className}  ${
-                isVisible ? ` opacity-100` : `opacity-0 ${outAnimate}`
-            }`}
-            onAnimationEnd={() => !isVisible && setIsVisible(false)}
+            ref={componentRef}
+            className={` ${className} ${
+                isVisible ? `  ${inAnimate} ` : ` ${outAnimate}`
+            }   opacity-0`}
         >
             {children}
         </div>

@@ -1,8 +1,11 @@
 import FloatingButton from "@/components/FloatingButton";
 import AnimateSection from "@/components/UI/AnimateSection";
+import { BorderMoveCard } from "@/components/UI/BorderMoveCard";
+import { TechStack } from "@/components/UI/TechStack";
+import { InfiniteMovingCards } from "@/components/UI/infinite-moving-cards";
 import { Meteors } from "@/components/UI/meteors";
-import { setHeader } from "@/redux/slices/landingSlice";
-import { fetchDataSetting } from "@/services/landing";
+import { setHeader, setTechStack } from "@/redux/slices/landingSlice";
+import { fetchDataSetting, fetchDataTechStack } from "@/services/landing";
 import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -12,6 +15,7 @@ const LandingPage = () => {
     const [isLoad, setIsLoad] = useState(false);
     const header = useSelector((state: any) => state.landing.header);
     const loader = useRef<HTMLDivElement | null>(null);
+    const techStack = useSelector((state: any) => state.landing.techStack);
     const handleDirectToSection = (id: string) => {
         const element = document.getElementById(id);
         element?.scrollIntoView({
@@ -30,23 +34,94 @@ const LandingPage = () => {
     });
 
     useEffect(() => {
-        if (!header.is_load) {
-            fetchDataSetting().then((res) => {
-                dispatch(setHeader(res.data.header));
-                // animate make loader fade out
-                loader.current?.classList.add("animate-fade-out");
-                loader.current?.addEventListener("animationend", () => {
-                    loader.current?.classList.add("hidden");
+        const loadPage = async () => {
+            if (!header.is_load) {
+                fetchDataSetting().then((res) => {
+                    dispatch(setHeader(res.data.header));
+                    // animate make loader fade out
+                    loader.current?.classList.add("animate-fade-out");
+                    loader.current?.addEventListener("animationend", () => {
+                        loader.current?.classList.add("hidden");
+                    });
+                    setTimeout(() => {
+                        setIsLoad(true);
+                    }, 700);
                 });
-                setTimeout(() => {
-                    setIsLoad(true);
-                }, 700);
-            });
-        }
-        if (url) {
-            handleDirectToSection(url);
-        }
+
+                fetchDataTechStack().then((res) => {
+                    const response = res.data;
+                    let fe: any = [];
+                    let be: any = [];
+                    let ot: any = [];
+                    response.forEach((item: any) => {
+                        if (item.subtitle === "frontend") {
+                            fe.push(item);
+                        } else if (item.subtitle === "backend") {
+                            be.push(item);
+                        } else if (item.subtitle === "others") {
+                            ot.push(item);
+                        }
+                    });
+                    dispatch(
+                        setTechStack({ frontend: fe, backend: be, others: ot })
+                    );
+                });
+            }
+            if (url) {
+                handleDirectToSection(url);
+            }
+        };
+
+        loadPage();
     }, [url]);
+
+    const onMouseEnter = (e: any) => {
+        const captions = document.getElementsByClassName("icon-caption");
+        for (let i = 0; i < captions.length; i++) {
+            captions[i].classList.add("invisible");
+        }
+
+        const caption = e.target.parentNode.nextSibling;
+        if (caption) {
+            caption.classList.remove("invisible");
+        }
+    };
+
+    const onMouseLeave = (e: any) => {
+        // get all caption and hide
+        const captions = document.getElementsByClassName("icon-caption");
+        for (let i = 0; i < captions.length; i++) {
+            captions[i].classList.add("invisible");
+        }
+    };
+
+    const testimonials = [
+        {
+            quote: "It was the best of times, it was the worst of times, it was the age of wisdom, it was the age of foolishness, it was the epoch of belief, it was the epoch of incredulity, it was the season of Light, it was the season of Darkness, it was the spring of hope, it was the winter of despair.",
+            name: "Charles Dickens",
+            title: "A Tale of Two Cities",
+        },
+        {
+            quote: "To be, or not to be, that is the question: Whether 'tis nobler in the mind to suffer The slings and arrows of outrageous fortune, Or to take Arms against a Sea of troubles, And by opposing end them: to die, to sleep.",
+            name: "William Shakespeare",
+            title: "Hamlet",
+        },
+        {
+            quote: "All that we see or seem is but a dream within a dream.",
+            name: "Edgar Allan Poe",
+            title: "A Dream Within a Dream",
+        },
+        {
+            quote: "It is a truth universally acknowledged, that a single man in possession of a good fortune, must be in want of a wife.",
+            name: "Jane Austen",
+            title: "Pride and Prejudice",
+        },
+        {
+            quote: "Call me Ishmael. Some years ago—never mind how long precisely—having little or no money in my purse, and nothing particular to interest me on shore, I thought I would sail about a little and see the watery part of the world.",
+            name: "Herman Melville",
+            title: "Moby-Dick",
+        },
+    ];
 
     return !isLoad ? (
         <div className="dark:bg-dark h-screen w-screen relative z-999999">
@@ -55,7 +130,7 @@ const LandingPage = () => {
                 ref={loader}
                 className="w-full bg-white 
             
-            h-screen z-99999 flex justify-center bg-background items-center fixed top-0 left-0"
+            h-screen z-99999 flex justify-center  items-center fixed top-0 left-0"
             >
                 <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -84,23 +159,32 @@ const LandingPage = () => {
                         <div className="w-1/2  my-auto ">
                             <div className="mx-auto text-center">
                                 <AnimateSection
-                                    id="home"
-                                    className="animate-jump-in duration-500 delay-1400"
-                                    outAnimate="animate-jump-out"
+                                    id="home-image"
+                                    parentId="home"
+                                    className="delay-1200 max-w-[50%] relative z-10 mx-auto"
+                                    inAnimate="animate-jump-in"
+                                    outAnimate="animate-go-away"
                                 >
-                                    <img
-                                        src={header.data.image}
-                                        alt="profile"
-                                        className="p-10 relative z-9999 rounded w-full max-w-[60%] mx-auto"
-                                    />
+                                    <BorderMoveCard borderRadius="10px"
+                                    className="w-full border-2"
+                                    >
+                                        <img
+                                            src={header.data.image}
+                                            alt="profile"
+                                            className="rounded-xl w-full max-w-[100%] mx-auto"
+                                        />
+                                    </BorderMoveCard>
                                 </AnimateSection>
                             </div>
                         </div>
 
                         <div className="w-1/2  my-auto  ">
                             <AnimateSection
-                                id="home"
-                                className="animate-fade-in duration-1000 delay-500"
+                                id="home-title"
+                                parentId="home"
+                                className="delay-500"
+                                inAnimate="animate-fade-in"
+                                outAnimate="animate-go-away"
                             >
                                 <h1 className="md:text-3xl text-left mx-auto text-2xl lg:text-6xl font-bold dark:text-white text-dark-custom-200 relative z-20">
                                     <span
@@ -111,8 +195,11 @@ const LandingPage = () => {
                                 </h1>
                             </AnimateSection>
                             <AnimateSection
-                                id="home"
-                                className="animate-fade-in duration-1000 delay-1000"
+                                id="home-description"
+                                parentId="home"
+                                className="delay-1000"
+                                inAnimate="animate-fade-in"
+                                outAnimate="animate-go-away"
                             >
                                 <div
                                     className="lg:pr-32 mt-3"
@@ -126,15 +213,281 @@ const LandingPage = () => {
                 </div>
                 <div
                     id="work-experience"
-                    className="w-full h-screen grid place-content-center"
+                    className="w-full relative z-10 h-screen grid grid-cols-1 place-content-center"
                 >
-                    Work Experience
+                    <AnimateSection
+                        className="text-3xl py-10  text-center font-bold dark:text-white text-dark-custom-200"
+                        id="we-t"
+                        parentId="work-experience"
+                        inAnimate="animate-fade-on"
+                        outAnimate="animate-go-away"
+                        top={600}
+                        bottom={200}
+                    >
+                        <div>Work Experience</div>
+                    </AnimateSection>
+                    <div className="w-full ">
+                        <div className="flex w-full">
+                            {/* <div className="w-1/4  my-auto ">box1</div>
+                            <div className="w-1/4  my-auto ">box1</div>
+                            <div className="w-1/4  my-auto ">box1</div>
+                            <div className="w-1/4  my-auto ">box1</div> */}
+
+                            <div className="rounded-md w-full flex flex-col antialiased dark:bg-grid-white/[0.05] items-center justify-center relative overflow-hidden">
+                                <AnimateSection
+                                    className="text-3xl py-10  text-center font-bold dark:text-white text-dark-custom-200"
+                                    id="we-t"
+                                    parentId="work-experience"
+                                    inAnimate="animate-fade-on"
+                                    outAnimate="animate-go-away"
+                                    top={600}
+                                    bottom={200}
+                                >
+                                    <InfiniteMovingCards
+                                        items={testimonials}
+                                        direction="right"
+                                        speed="slow"
+                                    />
+                                </AnimateSection>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <div
                     id="tech-stack"
-                    className="w-full h-screen grid place-content-center"
+                    className="w-full relative z-10 h-screen grid grid-cols-1 place-content-center"
                 >
-                    Tech Stack
+                    <AnimateSection
+                        className="text-3xl py-10 mb-10  text-center font-bold dark:text-white text-dark-custom-200"
+                        id="we-t"
+                        parentId="tech-stack"
+                        inAnimate="animate-fade-on"
+                        outAnimate="animate-go-away"
+                        top={600}
+                        bottom={200}
+                    >
+                        <div>Tech Stack</div>
+                    </AnimateSection>
+                    <div className="w-full">
+                        <div className="flex">
+                            <div className="w-1/3 lg:mx-6">
+                                <AnimateSection
+                                    className="text-start"
+                                    id="be-title"
+                                    parentId="tech-stack"
+                                    inAnimate="animate-fade-on"
+                                    outAnimate="animate-go-away"
+                                    top={600}
+                                    bottom={200}
+                                >
+                                    <h2 className="text-lg">Frontend</h2>
+                                </AnimateSection>
+                                <div className="grid lg:grid-cols-4  md:grid-cols-3 sm:grid-cols-4 gap-5 md:gap-3 mt-4">
+                                    {techStack.frontend.map(
+                                        (item: any, index: number) => (
+                                            <div
+                                                key={item.id}
+                                                id={`icon-stack-` + item.id}
+                                                className="flex-row justify-center static"
+                                            >
+                                                <AnimateSection
+                                                    className={`text-center `}
+                                                    id={`icon-stack-` + item.id}
+                                                    parentId="tech-stack"
+                                                    inAnimate={`animate-fade-in delay-${
+                                                        400 * index
+                                                    }`}
+                                                    outAnimate="animate-go-away"
+                                                    top={600}
+                                                    bottom={200}
+                                                >
+                                                    <div className="relative z-100">
+                                                        <div
+                                                            onMouseEnter={
+                                                                onMouseEnter
+                                                            }
+                                                            onMouseLeave={
+                                                                onMouseLeave
+                                                            }
+                                                            className="absolute bg-transparent  top-0 left-0 z-999 h-full w-full"
+                                                        ></div>
+                                                        <TechStack
+                                                            captionId={
+                                                                `caption-id-` +
+                                                                item.id
+                                                            }
+                                                            borderRadius="10px"
+                                                            className="icon-stack p-2 bg-gray-dark rounded-lg hover:border-primary dark:hover:border-primary  hover:border-2 border-2 dark:border-dark border-bodydark2 cursor-pointer flex items-center justify-center"
+                                                        >
+                                                            <div
+                                                                className=""
+                                                                dangerouslySetInnerHTML={{
+                                                                    __html: item.icon,
+                                                                }}
+                                                            />
+                                                        </TechStack>
+                                                    </div>
+                                                    <p
+                                                        id={
+                                                            `caption-id-` +
+                                                            item.id
+                                                        }
+                                                        className="icon-caption border border-gray dark:border text-sm absolute invisible  font-thin text-center mt-2 bg-gray-dark p-1 rounded"
+                                                    >
+                                                        {item.title}
+                                                    </p>
+                                                </AnimateSection>
+                                            </div>
+                                        )
+                                    )}
+                                </div>
+                            </div>
+                            <div className="w-1/3 lg:mx-6">
+                                <AnimateSection
+                                    className="text-start"
+                                    id="be-title"
+                                    parentId="tech-stack"
+                                    inAnimate="animate-fade-on"
+                                    outAnimate="animate-go-away"
+                                    top={600}
+                                    bottom={200}
+                                >
+                                    <h2 className="text-lg">Backend</h2>
+                                </AnimateSection>
+                                <div className="grid lg:grid-cols-4  md:grid-cols-3 sm:grid-cols-4 gap-5 md:gap-3 mt-4">
+                                    {techStack.backend.map(
+                                        (item: any, index: number) => (
+                                            <div
+                                                key={item.id}
+                                                id={`icon-stack-` + item.id}
+                                                className="flex-row justify-center static"
+                                            >
+                                                <AnimateSection
+                                                    className={`text-center `}
+                                                    id={`icon-stack-` + item.id}
+                                                    parentId="tech-stack"
+                                                    inAnimate={`animate-fade-in delay-${
+                                                        400 * index
+                                                    }`}
+                                                    outAnimate="animate-go-away"
+                                                    top={600}
+                                                    bottom={200}
+                                                >
+                                                    <div className="relative z-100">
+                                                        <div
+                                                            onMouseEnter={
+                                                                onMouseEnter
+                                                            }
+                                                            onMouseLeave={
+                                                                onMouseLeave
+                                                            }
+                                                            className="absolute bg-transparent  top-0 left-0 z-999 h-full w-full"
+                                                        ></div>
+                                                        <TechStack
+                                                            captionId={
+                                                                `caption-id-` +
+                                                                item.id
+                                                            }
+                                                            borderRadius="10px"
+                                                            className="icon-stack p-2 bg-gray-dark rounded-lg hover:border-primary dark:hover:border-primary  hover:border-2 border-2 dark:border-dark border-bodydark2 cursor-pointer flex items-center justify-center"
+                                                        >
+                                                            <div
+                                                                className=""
+                                                                dangerouslySetInnerHTML={{
+                                                                    __html: item.icon,
+                                                                }}
+                                                            />
+                                                        </TechStack>
+                                                    </div>
+                                                    <p
+                                                        id={
+                                                            `caption-id-` +
+                                                            item.id
+                                                        }
+                                                        className="icon-caption border border-gray dark:border text-sm absolute invisible  font-thin text-center mt-2 bg-gray-dark p-1 rounded"
+                                                    >
+                                                        {item.title}
+                                                    </p>
+                                                </AnimateSection>
+                                            </div>
+                                        )
+                                    )}
+                                </div>
+                            </div>
+                            <div className="w-1/3 lg:mx-6">
+                                <AnimateSection
+                                    className="text-start"
+                                    id="be-title"
+                                    parentId="tech-stack"
+                                    inAnimate="animate-fade-on"
+                                    outAnimate="animate-go-away"
+                                    top={600}
+                                    bottom={200}
+                                >
+                                    <h2 className="text-lg">Others</h2>
+                                </AnimateSection>
+                                <div className="grid lg:grid-cols-4  md:grid-cols-3 sm:grid-cols-4 gap-5 md:gap-3 mt-4">
+                                    {techStack.backend.map(
+                                        (item: any, index: number) => (
+                                            <div
+                                                key={item.id}
+                                                id={`icon-stack-` + item.id}
+                                                className="flex-row justify-center static"
+                                            >
+                                                <AnimateSection
+                                                    className={`text-center `}
+                                                    id={`icon-stack-` + item.id}
+                                                    parentId="tech-stack"
+                                                    inAnimate={`animate-fade-in delay-${
+                                                        400 * index
+                                                    }`}
+                                                    outAnimate="animate-go-away"
+                                                    top={600}
+                                                    bottom={200}
+                                                >
+                                                    <div className="relative z-100">
+                                                        <div
+                                                            onMouseEnter={
+                                                                onMouseEnter
+                                                            }
+                                                            onMouseLeave={
+                                                                onMouseLeave
+                                                            }
+                                                            className="absolute bg-transparent  top-0 left-0 z-999 h-full w-full"
+                                                        ></div>
+                                                        <TechStack
+                                                            captionId={
+                                                                `caption-id-` +
+                                                                item.id
+                                                            }
+                                                            borderRadius="10px"
+                                                            className="icon-stack p-2 bg-gray-dark rounded-lg hover:border-primary dark:hover:border-primary  hover:border-2 border-2 dark:border-dark border-bodydark2 cursor-pointer flex items-center justify-center"
+                                                        >
+                                                            <div
+                                                                className=""
+                                                                dangerouslySetInnerHTML={{
+                                                                    __html: item.icon,
+                                                                }}
+                                                            />
+                                                        </TechStack>
+                                                    </div>
+                                                    <p
+                                                        id={
+                                                            `caption-id-` +
+                                                            item.id
+                                                        }
+                                                        className="icon-caption border border-gray dark:border text-sm absolute invisible  font-thin text-center mt-2 bg-gray-dark p-1 rounded"
+                                                    >
+                                                        {item.title}
+                                                    </p>
+                                                </AnimateSection>
+                                            </div>
+                                        )
+                                    )}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <div
                     id="projects"

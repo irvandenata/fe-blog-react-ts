@@ -30,6 +30,12 @@ module.exports = {
             },
         },
         extend: {
+            animationFillMode: {
+                none: "none",
+                forwards: "forwards",
+                backwards: "backwards",
+                both: "both",
+            },
             scrollbar: {
                 thin: "scrollbar-thin",
                 thick: "scrollbar-thick",
@@ -80,22 +86,71 @@ module.exports = {
                     "0%": {
                         opacity: "1",
                     },
-                    "10%": {
+                    "100%": {
                         opacity: "0",
-                        display: "none",
+                    },
+                },
+                "fade-in": {
+                    "0%": {
+                        opacity: "0",
+                    },
+                    "100%": {
+                        opacity: "1",
                     },
                 },
                 jump: {
-                    "0%": { transform: "scale(0)" },
-                    "60%": { transform: "scale(1.1)" },
-                    "100%": { transform: "scale(1)" },
+                    "0%": {
+                        transform: "scale(0)",
+                        opacity: "0",
+                    },
+                    "60%": {
+                        transform: "scale(1.1)",
+                    },
+                    "100%": { transform: "scale(1)", opacity: "1" },
                 },
-                hide:{
-                    "0%": { scale: "1" },
-                    "100%": { scale: "0" },
-                }
+                hide: {
+                    "0%": { opacity: "1" },
+                    "100%": {
+                        opacity: "0",
+                    },
+                },
+
+                "hide-fade": {
+                    "0%": { opacity: "1" },
+                    "100%": {
+                        opacity: "0",
+                    },
+                },
+                scroll: {
+                    to: {
+                        transform: "translate(calc(-50% - 0.5rem))",
+                    },
+                },
+            },
+            animation: {
+                "accordion-down": "accordion-down 0.2s ease-out",
+                "accordion-up": "accordion-up 0.2s ease-out",
+                "modal-open": "modal-open 0.2s ease-out",
+                "modal-close": "modal-close 0.2s ease-in",
+                "meteor-effect": "meteor 5s linear infinite",
+                "fade-in": "fade 1s both",
+                "fade-on": "fade-in 1s both",
+                "fade-out": "fade-out 0.1s both",
+                "jump-in": "jump 1s both",
+                "jump-out": "jump 1s both",
+                "go-away": "hide 0.5s both",
+                "hide-fade": "fade-out 0.5s both",
+                hide: "hide 0.1s",
+                scroll: "scroll var(--animation-duration, 40s) var(--animation-direction, forwards) linear infinite",
             },
             transitionDelay: {
+                400: "400ms",
+                500: "500ms",
+                600: "600ms",
+                700: "700ms",
+                800: "800ms",
+                900: "900ms",
+                1000: "1000ms",
                 1100: "1100ms",
                 1200: "1200ms",
                 1300: "1300ms",
@@ -106,20 +161,26 @@ module.exports = {
                 1800: "1800ms",
                 1900: "1900ms",
                 2000: "2000ms",
+                2100: "2100ms",
+                2200: "2200ms",
+                2300: "2300ms",
+                2400: "2400ms",
+                2500: "2500ms",
+                2600: "2600ms",
+                2700: "2700ms",
+                2800: "2800ms",
+                2900: "2900ms",
                 3000: "3000ms",
+                3200: "3200ms",
+                3400: "3400ms",
+                3600: "3600ms",
                 4000: "4000ms",
+                4200: "4200ms",
+                4400: "4400ms",
+                4600: "4600ms",
+                5000: "5000ms",
             },
-            animation: {
-                "accordion-down": "accordion-down 0.2s ease-out",
-                "accordion-up": "accordion-up 0.2s ease-out",
-                "modal-open": "modal-open 0.2s ease-out",
-                "modal-close": "modal-close 0.2s ease-in",
-                "meteor-effect": "meteor 5s linear infinite",
-                "fade-in": "fade 0.5s",
-                "fade-out": "fade-out 0.1s",
-                "jump-in": "jump 1s",
-                "hide": "hide 0.1s",
-            },
+
             colors: {
                 primary: "#000365",
                 secondary: "#FF5C00",

@@ -12,3 +12,16 @@ export async function fetchDataSetting(): Promise<any> {
 
     return response;
 }   
+
+
+
+export async function fetchDataTechStack(): Promise<any> {
+    const url = `${ROOT_API}/${API_VERSION}/data/custom-informations?per_page=1000&search_subtitles[]=others&search_subtitles[]=frontend&search_subtitles[]=backend&"`
+    // handling when error
+    const response = await callAPI({
+        url,
+        method: "GET",
+    });
+
+    return response;
+}   
