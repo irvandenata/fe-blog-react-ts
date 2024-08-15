@@ -31,9 +31,9 @@ module.exports = {
         },
         extend: {
             scrollbar: {
-                thin: 'scrollbar-thin',
-                thick: 'scrollbar-thick',
-              },
+                thin: "scrollbar-thin",
+                thick: "scrollbar-thick",
+            },
             keyframes: {
                 "accordion-down": {
                     from: { height: "0" },
@@ -51,12 +51,74 @@ module.exports = {
                     "0%": { opacity: "1", transform: "scale(1)" },
                     "100%": { opacity: "0", transform: "scale(0.95)" },
                 },
+                meteor: {
+                    "0%": {
+                        transform: "rotate(215deg) translateX(0)",
+                        opacity: "1",
+                    },
+                    "70%": { opacity: "1" },
+                    "100%": {
+                        // full height of the screen
+                        transform: "rotate(215deg) translateX(-90vw)",
+                        opacity: "0",
+                    },
+                },
+                fade: {
+                    "0%": {
+                        opacity: "0",
+                        transform: "translateY(100px)",
+                    },
+                    "40%": {
+                        opacity: "0.9",
+                    },
+                    "100%": {
+                        opacity: "1",
+                        transform: "translateY(0)",
+                    },
+                },
+                "fade-out": {
+                    "0%": {
+                        opacity: "1",
+                    },
+                    "10%": {
+                        opacity: "0",
+                        display: "none",
+                    },
+                },
+                jump: {
+                    "0%": { transform: "scale(0)" },
+                    "60%": { transform: "scale(1.1)" },
+                    "100%": { transform: "scale(1)" },
+                },
+                hide:{
+                    "0%": { scale: "1" },
+                    "100%": { scale: "0" },
+                }
+            },
+            transitionDelay: {
+                1100: "1100ms",
+                1200: "1200ms",
+                1300: "1300ms",
+                1400: "1400ms",
+                1500: "1500ms",
+                1600: "1600ms",
+                1700: "1700ms",
+                1800: "1800ms",
+                1900: "1900ms",
+                2000: "2000ms",
+                3000: "3000ms",
+                4000: "4000ms",
             },
             animation: {
                 "accordion-down": "accordion-down 0.2s ease-out",
                 "accordion-up": "accordion-up 0.2s ease-out",
                 "modal-open": "modal-open 0.2s ease-out",
                 "modal-close": "modal-close 0.2s ease-in",
+                "meteor-effect": "meteor 5s linear infinite",
+                "fade-in": "fade 0.5s",
+                "fade-out": "fade-out 0.1s",
+                "jump-in": "jump 1s",
+                "hide": "hide 0.1s",
             },
             colors: {
                 primary: "#000365",
@@ -292,7 +354,7 @@ module.exports = {
     },
     plugins: [
         require("tailwindcss-animate"),
-        require('tailwind-scrollbar'),
+        require("tailwind-scrollbar"),
         addVariablesForColors,
         flowbite.plugin(),
     ],

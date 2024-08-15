@@ -33,7 +33,7 @@ export const CustomTable: React.FC<CustomTableProps> = ({
         });
     };
 
-    const debounceTimeoutRef = useRef(0);
+    const debounceTimeoutRef = useRef<any>();
 
     const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
         const value = e.target.value;
