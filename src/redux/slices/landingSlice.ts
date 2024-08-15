@@ -13,6 +13,14 @@ const landingSlice = createSlice({
             backend: [],
             others: [],
         },
+        workExperience: {
+            is_load: false,
+            data: [],
+        },
+        projects: {
+            is_load: false,
+            data: [],
+        },
     },
     reducers: {
         setHeader: (state, action: PayloadAction<any>) => {
@@ -25,8 +33,17 @@ const landingSlice = createSlice({
             state.techStack.others = action.payload.others;
             state.techStack.is_load = true;
         },
+        setWorkExperience: (state, action: PayloadAction<any>) => {
+            state.workExperience.data = action.payload.data;
+            state.workExperience.is_load = true;
+        },
+        setProjects: (state, action: PayloadAction<any>) => {
+            state.projects.data = action.payload.data;
+            state.projects.is_load = true;
+        }
     },
 });
 
-export const { setHeader,setTechStack } = landingSlice.actions;
+export const { setHeader, setTechStack, setWorkExperience , setProjects } =
+    landingSlice.actions;
 export default landingSlice.reducer;

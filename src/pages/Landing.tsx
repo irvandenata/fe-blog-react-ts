@@ -1,11 +1,23 @@
+import GlowBackgroundCard from "@/components/Cards/GlowBackgroundCard";
 import FloatingButton from "@/components/FloatingButton";
 import AnimateSection from "@/components/UI/AnimateSection";
 import { BorderMoveCard } from "@/components/UI/BorderMoveCard";
 import { TechStack } from "@/components/UI/TechStack";
 import { InfiniteMovingCards } from "@/components/UI/infinite-moving-cards";
 import { Meteors } from "@/components/UI/meteors";
-import { setHeader, setTechStack } from "@/redux/slices/landingSlice";
-import { fetchDataSetting, fetchDataTechStack } from "@/services/landing";
+import { Button } from "@/components/UI/moving-border";
+import {
+    setHeader,
+    setProjects,
+    setTechStack,
+    setWorkExperience,
+} from "@/redux/slices/landingSlice";
+import {
+    fetchDataProjects,
+    fetchDataSetting,
+    fetchDataTechStack,
+    fetchDataWorkExperience,
+} from "@/services/landing";
 import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -16,6 +28,10 @@ const LandingPage = () => {
     const header = useSelector((state: any) => state.landing.header);
     const loader = useRef<HTMLDivElement | null>(null);
     const techStack = useSelector((state: any) => state.landing.techStack);
+    const projects = useSelector((state: any) => state.landing.projects);
+    const workExperience = useSelector(
+        (state: any) => state.landing.workExperience
+    );
     const handleDirectToSection = (id: string) => {
         const element = document.getElementById(id);
         element?.scrollIntoView({
@@ -66,6 +82,18 @@ const LandingPage = () => {
                         setTechStack({ frontend: fe, backend: be, others: ot })
                     );
                 });
+
+                fetchDataWorkExperience().then((res) => {
+                    const response = res.data;
+                    dispatch(
+                        setWorkExperience({ data: response, is_load: true })
+                    );
+                });
+
+                fetchDataProjects().then((res) => {
+                    const response = res.data;
+                    dispatch(setProjects({ data: response, is_load: true }));
+                });
             }
             if (url) {
                 handleDirectToSection(url);
@@ -94,34 +122,6 @@ const LandingPage = () => {
             captions[i].classList.add("invisible");
         }
     };
-
-    const testimonials = [
-        {
-            quote: "It was the best of times, it was the worst of times, it was the age of wisdom, it was the age of foolishness, it was the epoch of belief, it was the epoch of incredulity, it was the season of Light, it was the season of Darkness, it was the spring of hope, it was the winter of despair.",
-            name: "Charles Dickens",
-            title: "A Tale of Two Cities",
-        },
-        {
-            quote: "To be, or not to be, that is the question: Whether 'tis nobler in the mind to suffer The slings and arrows of outrageous fortune, Or to take Arms against a Sea of troubles, And by opposing end them: to die, to sleep.",
-            name: "William Shakespeare",
-            title: "Hamlet",
-        },
-        {
-            quote: "All that we see or seem is but a dream within a dream.",
-            name: "Edgar Allan Poe",
-            title: "A Dream Within a Dream",
-        },
-        {
-            quote: "It is a truth universally acknowledged, that a single man in possession of a good fortune, must be in want of a wife.",
-            name: "Jane Austen",
-            title: "Pride and Prejudice",
-        },
-        {
-            quote: "Call me Ishmael. Some years ago—never mind how long precisely—having little or no money in my purse, and nothing particular to interest me on shore, I thought I would sail about a little and see the watery part of the world.",
-            name: "Herman Melville",
-            title: "Moby-Dick",
-        },
-    ];
 
     return !isLoad ? (
         <div className="dark:bg-dark h-screen w-screen relative z-999999">
@@ -165,8 +165,9 @@ const LandingPage = () => {
                                     inAnimate="animate-jump-in"
                                     outAnimate="animate-go-away"
                                 >
-                                    <BorderMoveCard borderRadius="10px"
-                                    className="w-full border-2"
+                                    <BorderMoveCard
+                                        borderRadius="10px"
+                                        className="w-full border-2"
                                     >
                                         <img
                                             src={header.data.image}
@@ -186,7 +187,7 @@ const LandingPage = () => {
                                 inAnimate="animate-fade-in"
                                 outAnimate="animate-go-away"
                             >
-                                <h1 className="md:text-3xl text-left mx-auto text-2xl lg:text-6xl font-bold dark:text-white text-dark-custom-200 relative z-20">
+                                <h1 className="md:text-2xl text-left mx-auto text-xl lg:text-4xl font-bold dark:text-white text-dark-custom-200 relative z-20">
                                     <span
                                         dangerouslySetInnerHTML={{
                                             __html: header.data.title,
@@ -213,7 +214,7 @@ const LandingPage = () => {
                 </div>
                 <div
                     id="work-experience"
-                    className="w-full relative z-10 h-screen grid grid-cols-1 place-content-center"
+                    className="w-full relative z-10 h-[80vh] grid grid-cols-1 place-content-center"
                 >
                     <AnimateSection
                         className="text-3xl py-10  text-center font-bold dark:text-white text-dark-custom-200"
@@ -228,11 +229,6 @@ const LandingPage = () => {
                     </AnimateSection>
                     <div className="w-full ">
                         <div className="flex w-full">
-                            {/* <div className="w-1/4  my-auto ">box1</div>
-                            <div className="w-1/4  my-auto ">box1</div>
-                            <div className="w-1/4  my-auto ">box1</div>
-                            <div className="w-1/4  my-auto ">box1</div> */}
-
                             <div className="rounded-md w-full flex flex-col antialiased dark:bg-grid-white/[0.05] items-center justify-center relative overflow-hidden">
                                 <AnimateSection
                                     className="text-3xl py-10  text-center font-bold dark:text-white text-dark-custom-200"
@@ -244,9 +240,9 @@ const LandingPage = () => {
                                     bottom={200}
                                 >
                                     <InfiniteMovingCards
-                                        items={testimonials}
+                                        items={workExperience.data}
                                         direction="right"
-                                        speed="slow"
+                                        speed="fast"
                                     />
                                 </AnimateSection>
                             </div>
@@ -255,7 +251,7 @@ const LandingPage = () => {
                 </div>
                 <div
                     id="tech-stack"
-                    className="w-full relative z-10 h-screen grid grid-cols-1 place-content-center"
+                    className="w-full relative z-10 h-[80vh] grid grid-cols-1 place-content-center"
                 >
                     <AnimateSection
                         className="text-3xl py-10 mb-10  text-center font-bold dark:text-white text-dark-custom-200"
@@ -291,7 +287,7 @@ const LandingPage = () => {
                                                 className="flex-row justify-center static"
                                             >
                                                 <AnimateSection
-                                                    className={`text-center `}
+                                                    className={`text-start `}
                                                     id={`icon-stack-` + item.id}
                                                     parentId="tech-stack"
                                                     inAnimate={`animate-fade-in delay-${
@@ -363,7 +359,7 @@ const LandingPage = () => {
                                                 className="flex-row justify-center static"
                                             >
                                                 <AnimateSection
-                                                    className={`text-center `}
+                                                    className={`text-start `}
                                                     id={`icon-stack-` + item.id}
                                                     parentId="tech-stack"
                                                     inAnimate={`animate-fade-in delay-${
@@ -435,7 +431,7 @@ const LandingPage = () => {
                                                 className="flex-row justify-center static"
                                             >
                                                 <AnimateSection
-                                                    className={`text-center `}
+                                                    className={`text-start `}
                                                     id={`icon-stack-` + item.id}
                                                     parentId="tech-stack"
                                                     inAnimate={`animate-fade-in delay-${
@@ -491,9 +487,61 @@ const LandingPage = () => {
                 </div>
                 <div
                     id="projects"
-                    className="w-full h-screen grid place-content-center"
+                    className="w-full relative z-10 h-screen grid grid-cols-1 place-content-center"
                 >
-                    Project
+                    <AnimateSection
+                        className="text-3xl py-10 mb-10  text-center font-bold dark:text-white text-dark-custom-200"
+                        id="prj"
+                        parentId="projects"
+                        inAnimate="animate-fade-on"
+                        outAnimate="animate-go-away"
+                        top={100}
+                        bottom={200}
+                    >
+                        <div>Projects</div>
+                    </AnimateSection>
+                    <div className="w-full">
+                        <div className="flex">
+                            {projects.data.map((item: any, index: number) => (
+                                <div
+                                    key={index + "-projects"}
+                                    className="w-1/3 lg:mx-6"
+                                >
+                                    <AnimateSection
+                                        className=""
+                                        id={`project-content-` + item.id}
+                                        parentId="projects"
+                                        inAnimate={`animate-fade-in delay-${
+                                            500 * index
+                                        }`}
+                                        outAnimate="animate-go-away"
+                                        top={600}
+                                        bottom={200}
+                                    >
+                                        <GlowBackgroundCard
+                                            title={item.title}
+                                            category={item.category}
+                                            content={item.content}
+                                            image_url={item.image_url}
+                                            slug={item.slug}
+                                        />
+                                    </AnimateSection>
+                                </div>
+                            ))}
+                        </div>
+                        <div className="flex mt-20">
+                            <div className="w-full text-center">
+                                <Button
+                                    borderRadius="1.75rem"
+                                    className="bg-white px-10 py-2
+                                        dark:hover:bg-primary
+                                    dark:bg-slate-900 text-black font-extrabold dark:text-white border-neutral-200 dark:border-slate-800"
+                                >
+                                    More Projects
+                                </Button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <div
                     id="get-in-touch"
