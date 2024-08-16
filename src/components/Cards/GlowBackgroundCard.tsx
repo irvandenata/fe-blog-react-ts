@@ -9,8 +9,10 @@ const GlowBackgroundCard: React.FC<{
     slug: string;
 }> = ({ title, category, content, image_url, slug }) => {
     return (
-        <div>
-            <BackgroundGradient className="rounded-[22px] relative min-h-[430px]  p-4 sm:p-10 bg-white dark:bg-zinc-900">
+        <div
+        className="mx-[25px]"
+        >
+            <BackgroundGradient className="rounded-[22px] relative min-h-[430px]   p-4 sm:p-10 bg-white dark:bg-zinc-900">
                 <div className="h-[160px]">
                     <img
                         src={image_url}

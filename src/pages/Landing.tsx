@@ -1,20 +1,24 @@
-import GlowBackgroundCard from "@/components/Cards/GlowBackgroundCard";
+import { Card3D } from "@/components/Cards/Card3D";
+import CardGetInTouch from "@/components/Cards/CardGetInTouch";
+import WorkExperienceCard from "@/components/Cards/WorkExperienceCard";
 import FloatingButton from "@/components/FloatingButton";
+import SocialMediaButton from "@/components/SocialMediaButton";
 import AnimateSection from "@/components/UI/AnimateSection";
 import { BorderMoveCard } from "@/components/UI/BorderMoveCard";
 import { TechStack } from "@/components/UI/TechStack";
-import { InfiniteMovingCards } from "@/components/UI/infinite-moving-cards";
 import { Meteors } from "@/components/UI/meteors";
 import { Button } from "@/components/UI/moving-border";
 import {
     setHeader,
     setProjects,
+    setSocialMedia,
     setTechStack,
     setWorkExperience,
 } from "@/redux/slices/landingSlice";
 import {
     fetchDataProjects,
     fetchDataSetting,
+    fetchDataSocialMedia,
     fetchDataTechStack,
     fetchDataWorkExperience,
 } from "@/services/landing";
@@ -32,6 +36,7 @@ const LandingPage = () => {
     const workExperience = useSelector(
         (state: any) => state.landing.workExperience
     );
+    const socialMedia = useSelector((state: any) => state.landing.socialMedia);
     const handleDirectToSection = (id: string) => {
         const element = document.getElementById(id);
         element?.scrollIntoView({
@@ -94,6 +99,13 @@ const LandingPage = () => {
                     const response = res.data;
                     dispatch(setProjects({ data: response, is_load: true }));
                 });
+
+                fetchDataSocialMedia().then((res) => {
+                    const response = res.data;
+                    dispatch(setSocialMedia({ data: response, is_load: true }));
+                });
+            } else {
+                setIsLoad(true);
             }
             if (url) {
                 handleDirectToSection(url);
@@ -149,25 +161,48 @@ const LandingPage = () => {
                 id="background"
                 className="p-5 bg-white dark:bg-dark h-screen w-full"
             ></div>
-            <div className="lg:mx-20">
+            <div className="lg:mx-20 md:mx-20 mx-6">
                 <FloatingButton />
+                <div className="fixed z-9999 bottom-0 left-4">
+                    <AnimateSection
+                        id="btn-social-media"
+                        parentId=""
+                        className="delay-1200"
+                        inAnimate="animate-fade-in"
+                        outAnimate=""
+                    >
+                        <div className="flex items-center">
+                            {socialMedia.data.map((item: any) => {
+                                return (
+                                    <SocialMediaButton
+                                        id={item.id + "-social-media"}
+                                        icon={item.icon}
+                                        link={item.link}
+                                        label={item.subtitle}
+                                    />
+                                );
+                            })}
+                        </div>
+                    </AnimateSection>
+                </div>
+
                 <div
                     id="home"
-                    className="justify-center items-center h-screen w-full"
+                    className="relative justify-center items-center h-screen w-full"
                 >
-                    <div className="flex h-screen">
-                        <div className="w-1/2  my-auto ">
+                    <div className="flex lg:flex-row flex-col  h-screen">
+                        <div className=" mt-10 lg:my-auto md:my-auto ">
                             <div className="mx-auto text-center">
                                 <AnimateSection
                                     id="home-image"
                                     parentId="home"
-                                    className="delay-1200 max-w-[50%] relative z-10 mx-auto"
+                                    className="delay-1200 lg:max-w-[50%] max-w-[70%]   relative z-10 mx-auto mt-10 lg:mt-0 md:mt-0" 
                                     inAnimate="animate-jump-in"
                                     outAnimate="animate-go-away"
                                 >
                                     <BorderMoveCard
                                         borderRadius="10px"
-                                        className="w-full border-2"
+                                        className="w-full border-2 "
                                     >
                                         <img
                                             src={header.data.image}
@@ -179,7 +214,7 @@ const LandingPage = () => {
                             </div>
                         </div>
 
-                        <div className="w-1/2  my-auto  ">
+                        <div className=" my-auto  ">
                             <AnimateSection
                                 id="home-title"
                                 parentId="home"
@@ -189,6 +224,7 @@ const LandingPage = () => {
                             >
                                 <h1 className="md:text-2xl text-left mx-auto text-xl lg:text-4xl font-bold dark:text-white text-dark-custom-200 relative z-20">
                                     <span
+                                       className="text-justify"
                                         dangerouslySetInnerHTML={{
                                             __html: header.data.title,
                                         }}
@@ -214,10 +250,10 @@ const LandingPage = () => {
                 </div>
                 <div
                     id="work-experience"
-                    className="w-full relative z-10 h-[80vh] grid grid-cols-1 place-content-center"
+                    className="w-full z-10 lg:pt-2 md:pt-20 min-h-[80vh]"
                 >
                     <AnimateSection
-                        className="text-3xl py-10  text-center font-bold dark:text-white text-dark-custom-200"
+                        className="text-3xl  text-center font-bold dark:text-white text-dark-custom-200"
                         id="we-t"
                         parentId="work-experience"
                         inAnimate="animate-fade-on"
@@ -228,34 +264,20 @@ const LandingPage = () => {
                         <div>Work Experience</div>
                     </AnimateSection>
                     <div className="w-full ">
-                        <div className="flex w-full">
-                            <div className="rounded-md w-full flex flex-col antialiased dark:bg-grid-white/[0.05] items-center justify-center relative overflow-hidden">
-                                <AnimateSection
-                                    className="text-3xl py-10  text-center font-bold dark:text-white text-dark-custom-200"
-                                    id="we-t"
-                                    parentId="work-experience"
-                                    inAnimate="animate-fade-on"
-                                    outAnimate="animate-go-away"
-                                    top={600}
-                                    bottom={200}
-                                >
-                                    <InfiniteMovingCards
-                                        items={workExperience.data}
-                                        direction="right"
-                                        speed="fast"
-                                    />
-                                </AnimateSection>
-                            </div>
+                        <div className="flex lg:md:px-10  rounded-2xl mx-auto lg:w-3/4 md:w-3/4 w-full">
+                            <WorkExperienceCard
+                                workExperience={workExperience.data}
+                            />
                         </div>
                     </div>
                 </div>
                 <div
                     id="tech-stack"
-                    className="w-full relative z-10 h-[80vh] grid grid-cols-1 place-content-center"
+                    className="w-full z-10 min-h-[80vh]"
                 >
                     <AnimateSection
                         className="text-3xl py-10 mb-10  text-center font-bold dark:text-white text-dark-custom-200"
-                        id="we-t"
+                        id="ts-t"
                         parentId="tech-stack"
                         inAnimate="animate-fade-on"
                         outAnimate="animate-go-away"
@@ -278,7 +300,7 @@ const LandingPage = () => {
                                 >
                                     <h2 className="text-lg">Frontend</h2>
                                 </AnimateSection>
-                                <div className="grid lg:grid-cols-4  md:grid-cols-3 sm:grid-cols-4 gap-5 md:gap-3 mt-4">
+                                <div className="grid lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-4 gap-5 md:gap-3 mt-4">
                                     {techStack.frontend.map(
                                         (item: any, index: number) => (
                                             <div
@@ -313,7 +335,7 @@ const LandingPage = () => {
                                                                 item.id
                                                             }
                                                             borderRadius="10px"
-                                                            className="icon-stack p-2 bg-gray-dark rounded-lg hover:border-primary dark:hover:border-primary  hover:border-2 border-2 dark:border-dark border-bodydark2 cursor-pointer flex items-center justify-center"
+                                                            className="icon-stack p-2 dark:bg-gray-dark bg-slate-50 rounded-lg hover:border-primary dark:hover:border-primary  hover:border-2 border-2 dark:border-dark border-bodydark2 cursor-pointer flex items-center justify-center"
                                                         >
                                                             <div
                                                                 className=""
@@ -328,7 +350,7 @@ const LandingPage = () => {
                                                             `caption-id-` +
                                                             item.id
                                                         }
-                                                        className="icon-caption border border-gray dark:border text-sm absolute invisible  font-thin text-center mt-2 bg-gray-dark p-1 rounded"
+                                                        className="icon-caption border-2 dark:border-2 dark:border-gray-dark border-bodydark2  text-sm absolute invisible  font-thin text-center mt-2 bg-slate-50 dark:bg-gray-dark p-1 rounded"
                                                     >
                                                         {item.title}
                                                     </p>
@@ -350,7 +372,7 @@ const LandingPage = () => {
                                 >
                                     <h2 className="text-lg">Backend</h2>
                                 </AnimateSection>
-                                <div className="grid lg:grid-cols-4  md:grid-cols-3 sm:grid-cols-4 gap-5 md:gap-3 mt-4">
+                                <div className="grid lg:grid-cols-4   md:grid-cols-3 sm:grid-cols-4 gap-5 md:gap-3 mt-4">
                                     {techStack.backend.map(
                                         (item: any, index: number) => (
                                             <div
@@ -385,7 +407,7 @@ const LandingPage = () => {
                                                                 item.id
                                                             }
                                                             borderRadius="10px"
-                                                            className="icon-stack p-2 bg-gray-dark rounded-lg hover:border-primary dark:hover:border-primary  hover:border-2 border-2 dark:border-dark border-bodydark2 cursor-pointer flex items-center justify-center"
+                                                            className="icon-stack p-2 dark:bg-gray-dark bg-slate-50 rounded-lg hover:border-primary dark:hover:border-primary  hover:border-2 border-2 dark:border-dark border-bodydark2 cursor-pointer flex items-center justify-center"
                                                         >
                                                             <div
                                                                 className=""
@@ -400,7 +422,7 @@ const LandingPage = () => {
                                                             `caption-id-` +
                                                             item.id
                                                         }
-                                                        className="icon-caption border border-gray dark:border text-sm absolute invisible  font-thin text-center mt-2 bg-gray-dark p-1 rounded"
+                                                        className="icon-caption border-2 dark:border-2 dark:border-gray-dark border-bodydark2 bg-slate-50 text-sm absolute invisible  font-thin text-center mt-2 dark:bg-gray-dark p-1 rounded"
                                                     >
                                                         {item.title}
                                                     </p>
@@ -423,7 +445,7 @@ const LandingPage = () => {
                                     <h2 className="text-lg">Others</h2>
                                 </AnimateSection>
                                 <div className="grid lg:grid-cols-4  md:grid-cols-3 sm:grid-cols-4 gap-5 md:gap-3 mt-4">
-                                    {techStack.backend.map(
+                                    {techStack.others.map(
                                         (item: any, index: number) => (
                                             <div
                                                 key={item.id}
@@ -457,7 +479,7 @@ const LandingPage = () => {
                                                                 item.id
                                                             }
                                                             borderRadius="10px"
-                                                            className="icon-stack p-2 bg-gray-dark rounded-lg hover:border-primary dark:hover:border-primary  hover:border-2 border-2 dark:border-dark border-bodydark2 cursor-pointer flex items-center justify-center"
+                                                            className="icon-stack p-2 dark:bg-gray-dark rounded-lg bg-slate-50 hover:border-primary dark:hover:border-primary  hover:border-2 border-2 dark:border-dark border-bodydark2 cursor-pointer flex items-center justify-center"
                                                         >
                                                             <div
                                                                 className=""
@@ -472,7 +494,7 @@ const LandingPage = () => {
                                                             `caption-id-` +
                                                             item.id
                                                         }
-                                                        className="icon-caption border border-gray dark:border text-sm absolute invisible  font-thin text-center mt-2 bg-gray-dark p-1 rounded"
+                                                        className="icon-caption border-2 dark:border-2 dark:border-gray-dark border-bodydark2  text-sm absolute invisible  font-thin text-center mt-2 bg-slate-10 p-1 rounded"
                                                     >
                                                         {item.title}
                                                     </p>
@@ -487,10 +509,10 @@ const LandingPage = () => {
                 </div>
                 <div
                     id="projects"
-                    className="w-full relative z-10 h-screen grid grid-cols-1 place-content-center"
+                    className="w-full relative z-10 h-screen"
                 >
                     <AnimateSection
-                        className="text-3xl py-10 mb-10  text-center font-bold dark:text-white text-dark-custom-200"
+                        className="text-3xl py-2 text-center font-bold dark:text-white text-dark-custom-200"
                         id="prj"
                         parentId="projects"
                         inAnimate="animate-fade-on"
@@ -518,10 +540,9 @@ const LandingPage = () => {
                                         top={600}
                                         bottom={200}
                                     >
-                                        <GlowBackgroundCard
+                                        <Card3D
                                             title={item.title}
-                                            category={item.category}
-                                            content={item.content}
+                                            category={item.category.name}
                                             image_url={item.image_url}
                                             slug={item.slug}
                                         />
@@ -529,25 +550,34 @@ const LandingPage = () => {
                                 </div>
                             ))}
                         </div>
-                        <div className="flex mt-20">
+                        <div className="flex">
                             <div className="w-full text-center">
-                                <Button
-                                    borderRadius="1.75rem"
-                                    className="bg-white px-10 py-2
+                                <AnimateSection
+                                    className=""
+                                    id="more-project"
+                                    parentId="projects"
+                                    inAnimate="animate-fade-on delay-1500"
+                                    outAnimate="animate-go-away"
+                                    bottom={200}
+                                >
+                                    <Button
+                                        borderRadius="1.75rem"
+                                        className="bg-white px-10 py-2
                                         dark:hover:bg-primary
                                     dark:bg-slate-900 text-black font-extrabold dark:text-white border-neutral-200 dark:border-slate-800"
-                                >
-                                    More Projects
-                                </Button>
+                                    >
+                                        More Projects
+                                    </Button>
+                                </AnimateSection>
                             </div>
                         </div>
                     </div>
                 </div>
                 <div
                     id="get-in-touch"
-                    className="w-full h-screen grid place-content-center"
+                    className="w-full mx-auto relative z-10 h-screen"
                 >
-                    Get in touch
+                    <CardGetInTouch />
                 </div>
                 <div className="fixed inset-0 max-h-screen max-w-screen overflow-hidden">
                     <Meteors number={80} className="" />

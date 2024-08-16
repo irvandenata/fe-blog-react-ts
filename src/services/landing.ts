@@ -23,6 +23,18 @@ export async function fetchDataTechStack(): Promise<any> {
     return response;
 }
 
+
+export async function fetchDataSocialMedia(): Promise<any> {
+    const url = `${ROOT_API}/${API_VERSION}/data/custom-informations?per_page=1000&search_type_id=1&"`;
+    // handling when error
+    const response = await callAPI({
+        url,
+        method: "GET",
+    });
+
+    return response;
+}
+
 export async function fetchDataWorkExperience(): Promise<any> {
     const url = `${ROOT_API}/${API_VERSION}/data/custom-informations?per_page=1000&search_type_id=3&"`;
     // handling when error

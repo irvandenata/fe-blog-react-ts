@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { FaChevronUp } from "react-icons/fa";
 import { Button } from "./UI/moving-border";
+import { Link } from "react-router-dom";
 const FloatingButton = () => {
     const [showButton, setShowButton] = useState(false);
 
@@ -21,10 +22,18 @@ const FloatingButton = () => {
         return () => window.removeEventListener("scroll", handleScroll);
     }, []);
 
+    const handleDirectToSection = (id: string) => {
+        const element = document.getElementById(id);
+        element?.scrollIntoView({
+            behavior: "smooth",
+        });
+    };
+
     return (
         <>
-            <a
-                href="#home"
+            <Link
+                onClick={() => handleDirectToSection("home")}
+                to="/#home"
                 className={`fixed bottom-4 z-9999 right-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full shadow-lg transition-all duration-300 ease-in-out ${
                     showButton
                         ? "opacity-100 translate-y-0"
@@ -39,7 +48,7 @@ const FloatingButton = () => {
                         <FaChevronUp className="h-6 w-6 text-white" />
                     </Button>
                 </div>
-            </a>
+            </Link>
         </>
     );
 };

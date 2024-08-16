@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 const AnimateSection: React.FC<{
     children: React.ReactNode;
     id: string;
-    parentId: string;
+    parentId?: string;
     className?: string;
     outAnimate?: string;
     inAnimate?: string;
@@ -23,6 +23,10 @@ const AnimateSection: React.FC<{
     const componentRef = React.useRef<HTMLDivElement>(null);
     useEffect(() => {
         const handleScroll = () => {
+            if (!parentId){
+                setIsVisible(true);
+                return;
+            }
             const section = document.getElementById(parentId);
             const rect = section!.getBoundingClientRect();
             if(id === "we-title"){
