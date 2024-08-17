@@ -4,7 +4,7 @@ import AnimateSection from "../UI/AnimateSection";
 
 const CardGetInTouch = () => {
     return (
-        <div className="w-full p-10">
+        <div className="w-full lg:p-10 ">
             <AnimateSection
                 className=""
                 id="content-get-in-touch"

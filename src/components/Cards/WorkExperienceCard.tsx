@@ -1,23 +1,26 @@
 import { convertDate } from "@/utils/common";
 import AnimateSection from "../UI/AnimateSection";
+import { useEffect, useRef } from "react";
 
 const WorkExperienceCard: React.FC<{ workExperience: any }> = ({
     workExperience,
 }) => {
     return (
         <div className="flex-row mx-auto  rounded-xl">
-            <ol className="relative   border-dark dark:border-gray-dark">
+            <ol
+                className="relative   border-dark dark:border-gray-dark"
+                id="ol-we"
+            >
                 {workExperience.map((exp: any, index: number) => {
                     return (
                         <AnimateSection
                             key={exp.id + "-work-exp"}
                             className="bg-slate-50 dark:bg-dark p-6 border-gray-dark my-4 rounded-xl border-2"
-                            id={exp.id+ "-work-exp-card"}
-                            parentId="work-experience"
+                            id={exp.id + "-work-exp-card"}
+                            parentId="work-experience-container"
                             inAnimate={`animate-fade-on delay-${500 * index}`}
                             outAnimate="animate-go-away"
-                            top={600}
-                            bottom={200}
+                            bottom={600}
                         >
                             <li className="lg:mb-6 md:mb-6 ms-6 lg:px-4 md:px-4 ">
                                 <span className="absolute border-s-2 dark:border-s-primary flex mt-2 items-center justify-center w-6 h-6 bg-slate-50 dark:bg-dark rounded-full -start-3 ring-8 ring-dark dark:ring-gray-dark dark:border-gray-900 dark:bg-blue-900">

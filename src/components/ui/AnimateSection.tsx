@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 const AnimateSection: React.FC<{
     children: React.ReactNode;
@@ -7,7 +7,6 @@ const AnimateSection: React.FC<{
     className?: string;
     outAnimate?: string;
     inAnimate?: string;
-    top?: number;
     bottom?: number;
 }> = ({
     children,
@@ -16,23 +15,35 @@ const AnimateSection: React.FC<{
     className = "",
     outAnimate = "",
     inAnimate = "animate-fade-in",
-    top = 300,
     bottom = 0,
 }) => {
     const [isVisible, setIsVisible] = useState(false);
     const componentRef = React.useRef<HTMLDivElement>(null);
+    const height = useRef(0);
     useEffect(() => {
         const handleScroll = () => {
+            height.current = document.getElementById(
+                "work-experience-container"
+            )?.offsetHeight!;
+            const top = height.current - 200;
             if (!parentId){
                 setIsVisible(true);
                 return;
             }
             const section = document.getElementById(parentId);
             const rect = section!.getBoundingClientRect();
-            if(id === "we-title"){
+            // get bottom by parent id
+            
+            if(id === "project-content-5"){
                 console.log("rect top ", rect.top);
                 console.log("rect bottom ", rect.bottom);
+                console.log("bottom ", bottom);
+                console.log("top ", top);
                 console.log("window.innerHeight ", window.innerHeight);
+                console.log("rect.top + top ", rect.top + top);
+                console.log("rect.bottom - bottom ", rect.bottom - bottom);
+                console.log("res bottom ", rect.bottom - bottom <= window.innerHeight);
+                console.log("res",rect.top + top >= 0 && rect.bottom - bottom <= window.innerHeight);
 
             }
             const isInViewport =
@@ -47,7 +58,7 @@ const AnimateSection: React.FC<{
         window.addEventListener("scroll", handleScroll);
         handleScroll(); // Initial check on component mount
         return () => window.removeEventListener("scroll", handleScroll);
-    }, [parentId]);
+    }, [parentId,top,bottom]);
 
     return (
         <div

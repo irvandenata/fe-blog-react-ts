@@ -27,6 +27,9 @@ module.exports = {
             padding: "2rem",
             screens: {
                 "2xl": "1400px",
+                "xl": "1400px",
+               
+
             },
         },
         extend: {
@@ -411,6 +414,7 @@ module.exports = {
             borderWidth: {
                 6: "6px",
             },
+            
         },
     },
     plugins: [
