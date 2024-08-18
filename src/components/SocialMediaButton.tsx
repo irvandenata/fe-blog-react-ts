@@ -49,7 +49,7 @@ const SocialMediaButton: React.FC<{
                 </div>
                 <p
                     id={`sm-caption-id-` + id}
-                    className="icon-caption top-1 border-2 dark:border-2 -mt-10 dark:border-gray-dark border-bodydark2  text-sm absolute invisible  font-thin text-center bg-slate-10 p-1 rounded"
+                    className="icon-caption top-1 border-2 dark:border-2 -mt-10 text-dark dark:text-white font-bold dark:border-gray-dark border-bodydark2  text-sm absolute invisible   text-center bg-slate-10 p-1 rounded"
                 >
                     {label}
                 </p>

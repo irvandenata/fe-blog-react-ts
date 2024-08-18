@@ -143,6 +143,7 @@ module.exports = {
                 "jump-out": "jump 1s both",
                 "go-away": "hide 0.5s both",
                 "hide-fade": "fade-out 0.5s both",
+                "fade-in-hold": "fade-in 0.5s 0.5s forwards",
                 hide: "hide 0.1s",
                 scroll: "scroll var(--animation-duration, 40s) var(--animation-direction, forwards) linear infinite",
             },
@@ -185,7 +186,9 @@ module.exports = {
             },
 
             colors: {
-                primary: "#000365",
+                background:'#212121',
+                background2:'#2F2F2F',
+                primary: "#81263A",
                 secondary: "#FF5C00",
                 blue: "#1fb6ff",
                 purple: "#7e5bef",
@@ -206,7 +209,6 @@ module.exports = {
                 bodydark: "#AEB7C0",
                 bodydark1: "#DEE4EE",
                 bodydark2: "#8A99AF",
-                primary: "#4C3BCF",
                 secondary: "#80CAEE",
                 stroke: "#E2E8F0",
                 gray: "#EFF4FB",

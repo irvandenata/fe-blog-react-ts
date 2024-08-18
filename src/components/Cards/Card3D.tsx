@@ -1,5 +1,6 @@
 "use client";
 
+import { Link } from "react-router-dom";
 import { CardBody, CardContainer, CardItem } from "../UI/3d-card";
 
 export const Card3D: React.FC<{
@@ -8,7 +9,7 @@ export const Card3D: React.FC<{
     category: any;
     image_url: string;
     slug: string;
-}> = ({ title, content, category, image_url }) => {
+}> = ({ title, content, category, image_url,slug }) => {
     return (
         <CardContainer className="inter-var w-full">
             <CardBody className="bg-gray-50 relative group/card  dark:hover :shadow-2xl dark:hover:shadow-emerald-500/[0.1] bg-slate-100 dark:bg-dark dark:border-gray-dark dark:border-2 border-bodydark2 w-full  h-auto rounded-xl p-6 border-2  ">
@@ -23,13 +24,13 @@ export const Card3D: React.FC<{
                 </CardItem>
                 <CardItem
                     translateZ="50"
-                    className="py-2 mt-4 text-xl font-extrabold text-neutral-600 dark:text-white"
+                    className="py-2 mt-4 text-xl font-extrabold text-dark dark:text-white"
                 >
                     {title}
                 </CardItem>
                 <CardItem
                     translateZ="60"
-                    className="  rounded-xl font-bold  text-md  dark:text-white"
+                    className="  rounded-xl font-bold  text-md  dark:text-white text-neutral-800"
                 >
                     {category}
                 </CardItem>
@@ -53,6 +54,7 @@ export const Card3D: React.FC<{
                 )}
 
                 <div className="flex justify-between items-center mt-8">
+                    <Link to={`/blogs/${slug}`}>
                     <CardItem
                         translateZ={20}
                         as="button"
@@ -60,6 +62,7 @@ export const Card3D: React.FC<{
                     >
                         Read More <span className="ml-2">→</span>
                     </CardItem>
+                    </Link>
                 </div>
             </CardBody>
         </CardContainer>

@@ -23,7 +23,7 @@ const AnimateSection: React.FC<{
     useEffect(() => {
         const handleScroll = () => {
             height.current = document.getElementById(
-                "work-experience-container"
+                parentId || id
             )?.offsetHeight!;
             const top = height.current - 200;
             if (!parentId){
@@ -34,18 +34,18 @@ const AnimateSection: React.FC<{
             const rect = section!.getBoundingClientRect();
             // get bottom by parent id
             
-            if(id === "project-content-5"){
-                console.log("rect top ", rect.top);
-                console.log("rect bottom ", rect.bottom);
-                console.log("bottom ", bottom);
-                console.log("top ", top);
-                console.log("window.innerHeight ", window.innerHeight);
-                console.log("rect.top + top ", rect.top + top);
-                console.log("rect.bottom - bottom ", rect.bottom - bottom);
-                console.log("res bottom ", rect.bottom - bottom <= window.innerHeight);
-                console.log("res",rect.top + top >= 0 && rect.bottom - bottom <= window.innerHeight);
+            // if(id === "article-content-1"){
+            //     console.log("rect top ", rect.top);
+            //     console.log("rect bottom ", rect.bottom);
+            //     console.log("bottom ", bottom);
+            //     console.log("top ", top);
+            //     console.log("window.innerHeight ", window.innerHeight);
+            //     console.log("rect.top + top ", rect.top + top);
+            //     console.log("rect.bottom - bottom ", rect.bottom - bottom);
+            //     console.log("res bottom ", rect.bottom - bottom <= window.innerHeight);
+            //     console.log("res",rect.top + top >= 0 && rect.bottom - bottom <= window.innerHeight);
 
-            }
+            // }
             const isInViewport =
                 rect.top + top >= 0 && rect.bottom - bottom <= window.innerHeight ;
             if (isInViewport) {

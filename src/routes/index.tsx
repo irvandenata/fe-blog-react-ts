@@ -13,6 +13,8 @@ import { checkAuthLoader, ifLogin, logout } from "@/utils/auth";
 import MainLayout from "@/components/Layouts/MainLayout";
 import ErrorPage from "@/pages/Error";
 import { middlewareLoader } from "@/utils/middleware";
+import SearchArticlePage from "@/pages/Blog/SearchArticle";
+import ArticleDetailPage from "@/pages/Blog/ArticleDetail";
 export default createBrowserRouter(
     [
         {
@@ -34,6 +36,19 @@ export default createBrowserRouter(
                     loader: logout,
                     element: <></>,
                 },
+                {
+                    path: "blogs",
+                    children: [
+                        {
+                            path: "",
+                            element: <SearchArticlePage />,
+                        },
+                        {
+                            path: ":slug",
+                            element: <ArticleDetailPage />,
+                        },
+                    ]
+                }
             ],
         },
         {

@@ -18,7 +18,7 @@ const WorkExperienceCard: React.FC<{ workExperience: any }> = ({
                             className="bg-slate-50 dark:bg-dark p-6 border-gray-dark my-4 rounded-xl border-2"
                             id={exp.id + "-work-exp-card"}
                             parentId="work-experience-container"
-                            inAnimate={`animate-fade-on delay-${500 * index}`}
+                            inAnimate={`animate-fade-in delay-${500 * index}`}
                             outAnimate="animate-go-away"
                             bottom={600}
                         >

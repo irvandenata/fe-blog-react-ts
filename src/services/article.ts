@@ -13,6 +13,17 @@ export async function fetchData(query?: {}): Promise<any> {
     return response;
 }
 
+export async function fetchDataNoAuth(query?: {}): Promise<any> {
+    const queryParam = new URLSearchParams(query).toString();
+    const url = `${API_ENDPOINT}/data/articles?${queryParam}`;
+    // handling when error
+    const response = await callAPI({
+        url,
+        method: "GET",
+    });
+    return response;
+}
+
 export async function createData(data: FormData): Promise<any> {
     const url = `${ROOT_API}/${API_VERSION}/articles`;
     // handling when error

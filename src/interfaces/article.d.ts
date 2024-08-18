@@ -47,6 +47,8 @@ export interface IArticle {
     link?: string;
     created_at: string;
     updated_at: string;
+    slug?: string;
+    category: IArticleCategory;
 }
 
 export interface IArticleTable {

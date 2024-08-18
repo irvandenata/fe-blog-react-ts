@@ -24,7 +24,8 @@ const landingSlice = createSlice({
         socialMedia: {
             is_load: false,
             data: [],
-        }
+        },
+        activeMenu:""
     },
     reducers: {
         setHeader: (state, action: PayloadAction<any>) => {
@@ -49,9 +50,12 @@ const landingSlice = createSlice({
             state.socialMedia.data = action.payload.data;
             state.socialMedia.is_load = true;
         }, 
+        setActiveMenu: (state, action: PayloadAction<string>) => {
+            state.activeMenu = action.payload;
+        }
     },
 });
 
-export const { setHeader, setTechStack, setWorkExperience , setProjects,setSocialMedia } =
+export const { setHeader, setTechStack, setWorkExperience , setProjects,setSocialMedia , setActiveMenu} =
     landingSlice.actions;
 export default landingSlice.reducer;

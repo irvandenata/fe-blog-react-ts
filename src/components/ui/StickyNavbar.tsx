@@ -1,9 +1,13 @@
+import { setActiveMenu } from "@/redux/slices/landingSlice";
 import React from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 
 export default function StickyNavbar() {
     const [openNav, setOpenNav] = React.useState(false);
 
+    const activeMenu = useSelector((state: any) => state.landing.activeMenu);
+    const dispatch = useDispatch();
     React.useEffect(() => {
         window.addEventListener(
             "resize",
@@ -41,57 +45,88 @@ export default function StickyNavbar() {
         element?.scrollIntoView({
             behavior: "smooth",
         });
+        dispatch(setActiveMenu(id));
     };
 
     const navList = (
-        <ul className="mt-2 mb-4 flex flex-col gap-2 lg:mb-0 lg:mt-0 lg:flex-row lg:items-center lg:gap-6">
-            <li className="p-1 dark:text-white font-normal">
+        <ul className="mt-2 mb-4 flex flex-col gap-2 lg:mb-0 lg:mt-0 lg:flex-row lg:items-center lg:gap-2">
+            <li className=" dark:text-white font-normal">
                 <Link
                     to="/#home"
                     onClick={() => handleDirectToSection("home")}
-                    className="flex items-center"
+                    className={
+                        "flex items-center px-2 py-1 rounded-lg hover:bg-primary hover:text-white " +
+                        (activeMenu === "home" ? "bg-primary text-white" : "")
+                    }
                 >
                     Home
                 </Link>
             </li>
-            <li className="p-1 dark:text-white font-normal">
+            <li className=" dark:text-white font-normal">
                 <Link
                     to="/#work-experience"
                     onClick={() => handleDirectToSection("work-experience")}
-                    className="flex items-center"
+                    className={
+                        "flex items-center px-2 py-1 rounded-lg hover:bg-primary hover:text-white " +
+                        (activeMenu === "work-experience"
+                            ? "bg-primary text-white"
+                            : "")
+                    }
                 >
                     Work Experience
                 </Link>
             </li>
-            <li className="p-1 dark:text-white font-normal">
+            <li className=" dark:text-white font-normal">
                 <Link
                     to="/#tech-stack"
                     onClick={() => handleDirectToSection("tech-stack")}
-                    className="flex items-center"
+                    className={
+                        "flex items-center px-2 py-1 rounded-lg hover:bg-primary hover:text-white " +
+                        (activeMenu === "tech-stack"
+                            ? "bg-primary text-white"
+                            : "")
+                    }
                 >
                     Tech Stack
                 </Link>
             </li>
-            <li className="p-1 dark:text-white font-normal">
+            <li className=" dark:text-white font-normal">
                 <Link
                     to="/#projects"
                     onClick={() => handleDirectToSection("projects")}
-                    className="flex items-center"
+                    className={
+                        "flex items-center px-2 py-1 rounded-lg hover:bg-primary hover:text-white " +
+                        (activeMenu === "projects"
+                            ? "bg-primary text-white"
+                            : "")
+                    }
                 >
                     Projects
                 </Link>
             </li>
-            <li className="p-1 dark:text-white font-normal">
+            <li className=" dark:text-white font-normal">
                 <Link
                     to="/#get-in-touch"
                     onClick={() => handleDirectToSection("get-in-touch")}
-                    className="flex items-center"
+                    className={
+                        "flex items-center px-2 py-1 rounded-lg hover:bg-primary hover:text-white " +
+                        (activeMenu === "get-in-touch"
+                            ? "bg-primary text-white"
+                            : "")
+                    }
                 >
                     Get in touch
                 </Link>
             </li>
-            <li className="p-1 dark:text-white font-normal">
-                <Link to="/login" className="flex items-center">
+            <li className=" dark:text-white font-normal">
+                <Link
+                    to="/blogs"
+                    onClick={() => dispatch(setActiveMenu("blogs"))}
+                    className={
+                        "flex items-center px-2 py-1 rounded-lg hover:bg-primary hover:text-white " +
+                        (activeMenu === "blogs" ? "bg-primary text-white" : "")
+                    }
+                >
                     Blogs
                 </Link>
             </li>
@@ -107,18 +142,18 @@ export default function StickyNavbar() {
                 >
                     <div className="w-6 h-6">
                         <svg
-                            fill="#ffffff"
+                            fill="#81263A"
                             version="1.1"
                             id="Capa_1"
                             xmlns="http://www.w3.org/2000/svg"
                             viewBox="0 0 94.504 94.504"
-                            stroke="#ffffff"
+                            stroke="#81263A"
                         >
-                            <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                            <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
                             <g
                                 id="SVGRepo_tracerCarrier"
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
                             ></g>
                             <g id="SVGRepo_iconCarrier">
                                 {" "}
@@ -134,7 +169,7 @@ export default function StickyNavbar() {
                             </g>
                         </svg>
                     </div>
-                    &nbsp; Ivd
+                    &nbsp; IVD
                 </Link>
 
                 <div className="flex items-center gap-4">
