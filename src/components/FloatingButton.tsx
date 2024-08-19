@@ -1,13 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { FaChevronUp } from "react-icons/fa";
 import { Button } from "./UI/moving-border";
-import { Link } from "react-router-dom";
 const FloatingButton = () => {
     const [showButton, setShowButton] = useState(false);
 
     useEffect(() => {
         const handleScroll = () => {
-            const homeSection = document.getElementById("home") ;
+            const homeSection = document.getElementById("home") || document.getElementById("main-layout");
             const homeSectionHeight = homeSection!.offsetHeight;
             const currentScroll = window.scrollY;
 

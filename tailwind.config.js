@@ -28,11 +28,12 @@ module.exports = {
             screens: {
                 "2xl": "1400px",
                 "xl": "1400px",
-               
-
             },
         },
         extend: {
+            fontFamily: {
+                sans: ['Nunito', 'sans-serif'], // Mengganti font default sans dengan 'Inter'
+              },
             animationFillMode: {
                 none: "none",
                 forwards: "forwards",
@@ -262,6 +263,7 @@ module.exports = {
                 "title-md2": ["26px", "30px"],
                 "title-sm": ["20px", "26px"],
                 "title-xsm": ["18px", "24px"],
+                "p": ["20px", "24px"],
             },
             spacing: {
                 4.5: "1.125rem",

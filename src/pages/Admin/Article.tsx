@@ -340,7 +340,6 @@ const Article = () => {
                                 <form
                                     onSubmit={(e) => {
                                         e.preventDefault();
-
                                         action === "create"
                                             ? handleSubmit()
                                             : handleUpdate(

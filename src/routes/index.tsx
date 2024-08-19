@@ -15,6 +15,7 @@ import ErrorPage from "@/pages/Error";
 import { middlewareLoader } from "@/utils/middleware";
 import SearchArticlePage from "@/pages/Blog/SearchArticle";
 import ArticleDetailPage from "@/pages/Blog/ArticleDetail";
+import NotFoundPage from "@/pages/404";
 export default createBrowserRouter(
     [
         {
@@ -25,6 +26,10 @@ export default createBrowserRouter(
                 {
                     path: "/",
                     element: <LandingPage />,
+                },
+                {
+                    path: "/not-found",
+                    element: <NotFoundPage />,
                 },
                 {
                     path: "login",

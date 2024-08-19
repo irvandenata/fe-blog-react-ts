@@ -39,7 +39,7 @@ export interface IArticle {
     id: number;
     title: string;
     subtitle: string;
-    description: string;
+    content: string;
     image_url?: string;
     icon?: string;
     start_date?: string;
@@ -48,7 +48,9 @@ export interface IArticle {
     created_at: string;
     updated_at: string;
     slug?: string;
+    tags: IArticleTag[];
     category: IArticleCategory;
+    category_name?: string;
 }
 
 export interface IArticleTable {

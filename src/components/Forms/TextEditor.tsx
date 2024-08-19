@@ -38,7 +38,7 @@ const TextEditor: FC<{
     };
 
     return (
-        <div className="h-[600px] border rounded p-5">
+        <div className="min-h-[600px] border rounded p-5">
             <Editor
                 editorState={editorState}
                 wrapperClassName="demo-wrapper"

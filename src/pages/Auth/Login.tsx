@@ -67,7 +67,7 @@ const Login = () => {
             });
     };
     return (
-        <div className="w-full h-screen grid place-content-center">
+        <div className="w-full relative z-10 h-screen grid place-content-center">
             <Toaster
                 toastOptions={{
                     className:

@@ -9,14 +9,12 @@ import {
     setActiveMenu,
     setHeader,
     setProjects,
-    setSocialMedia,
     setTechStack,
     setWorkExperience,
 } from "@/redux/slices/landingSlice";
 import {
     fetchDataProjects,
     fetchDataSetting,
-    fetchDataSocialMedia,
     fetchDataTechStack,
     fetchDataWorkExperience,
 } from "@/services/landing";
@@ -32,6 +30,36 @@ const LandingPage = () => {
     const techStack = useSelector((state: any) => state.landing.techStack);
     const projects = useSelector((state: any) => state.landing.projects);
     const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+
+    const homeRef = useRef(null);
+    const workExperienceRef = useRef(null);
+    const techStackRef = useRef(null);
+    const projectRef = useRef(null);
+    const getInTouchRef = useRef(null);
+
+    useEffect(() => {
+        if (isLoad) {
+            const observer = new IntersectionObserver(
+                (entries) => {
+                    console.log(entries);
+                    entries.forEach((entry) => {
+                        if (entry.isIntersecting) {
+                            dispatch(setActiveMenu(entry.target.id));
+                        }
+                    });
+                },
+                { threshold: 0.7 } // Aktif jika 70% dari section terlihat
+            );
+
+            observer.observe(homeRef.current!);
+            observer.observe(workExperienceRef.current!);
+            observer.observe(techStackRef.current!);
+            observer.observe(projectRef.current!);
+            observer.observe(getInTouchRef.current!);
+        }
+    }, [isLoad]);
+
+    const [showHeader, setShowHeader] = useState(false);
     const workExperience = useSelector(
         (state: any) => state.landing.workExperience
     );
@@ -104,11 +132,6 @@ const LandingPage = () => {
                     const response = res.data;
                     dispatch(setProjects({ data: response, is_load: true }));
                 });
-
-                fetchDataSocialMedia().then((res) => {
-                    const response = res.data;
-                    dispatch(setSocialMedia({ data: response, is_load: true }));
-                });
             } else {
                 setIsLoad(true);
                 setTimeout(() => {
@@ -122,6 +145,17 @@ const LandingPage = () => {
 
         loadPage();
     }, [url]);
+
+    useEffect(() => {
+        setTimeout(() => {
+            setShowHeader(true);
+        }, 1000);
+
+        return () => {
+            setShowHeader(false);
+            // dispatch(setHeader({ data: {}, is_load: false }));
+        };
+    }, [isLoad]);
 
     const onMouseEnter = (e: any) => {
         const captions = document.getElementsByClassName("icon-caption");
@@ -148,7 +182,7 @@ const LandingPage = () => {
             <div
                 id="spinner"
                 ref={loader}
-                className="w-full bg-white 
+                className="w-full dark:text-white dark:bg-dark bg-white text-dark
             
             h-screen z-99999 flex justify-center  items-center fixed top-0 left-0"
             >
@@ -158,6 +192,7 @@ const LandingPage = () => {
                     height="50"
                     className="animate-spin"
                     viewBox="0 0 512 512"
+                    fill="currentColor"
                 >
                     <path d="M304 48a48 48 0 1 0 -96 0 48 48 0 1 0 96 0zm0 416a48 48 0 1 0 -96 0 48 48 0 1 0 96 0zM48 304a48 48 0 1 0 0-96 48 48 0 1 0 0 96zm464-48a48 48 0 1 0 -96 0 48 48 0 1 0 96 0zM142.9 437A48 48 0 1 0 75 369.1 48 48 0 1 0 142.9 437zm0-294.2A48 48 0 1 0 75 75a48 48 0 1 0 67.9 67.9zM369.1 437A48 48 0 1 0 437 369.1 48 48 0 1 0 369.1 437z"></path>
                 </svg>
@@ -167,6 +202,7 @@ const LandingPage = () => {
         <>
             <div
                 id="home"
+                ref={homeRef}
                 className="relative z-10 justify-center items-center lg:h-screen w-full"
             >
                 <div className="grid lg:grid-cols-2 md:grid-cols-2 gap-8 place-content-center grid-col-1 min-h-screen">
@@ -175,7 +211,9 @@ const LandingPage = () => {
                             <AnimateSection
                                 id="home-image"
                                 parentId="home"
-                                className="lg:max-w-[50%] md:max-w-[50%]  max-w-[100%] relative z-10 mx-auto"
+                                className={`lg:max-w-[50%] md:max-w-[50%]  max-w-[100%] relative z-10 mx-auto ${
+                                    showHeader ? "" : "opacity-0"
+                                }`}
                                 inAnimate="animate-jump-in delay-1200 opacity-0"
                                 outAnimate="animate-go-away"
                             >
@@ -201,7 +239,11 @@ const LandingPage = () => {
                             inAnimate="animate-fade-in delay-500 opacity-0"
                             outAnimate="animate-go-away "
                         >
-                            <h1 className="md:text-2xl text-left mx-auto text-xl lg:text-4xl font-bold dark:text-white text-dark-custom-200 relative z-20">
+                            <h1
+                                className={`md:text-2xl text-left mx-auto text-xl lg:text-4xl font-bold dark:text-white text-dark-custom-200 relative z-20 ${
+                                    showHeader ? "" : "opacity-0"
+                                }`}
+                            >
                                 <span
                                     className="text-justify"
                                     dangerouslySetInnerHTML={{
@@ -213,7 +255,7 @@ const LandingPage = () => {
                         <AnimateSection
                             id="home-description"
                             parentId="home"
-                            className=""
+                            className={`${showHeader ? "" : "opacity-0"}`}
                             inAnimate="animate-fade-in delay-1000 opacity-0"
                             outAnimate="animate-go-away"
                         >
@@ -229,6 +271,7 @@ const LandingPage = () => {
             </div>
             <div
                 id="work-experience"
+                ref={workExperienceRef}
                 className="w-full z-10 lg:py-10 md:py-20 py-20 min-h-[80vh]"
             >
                 <AnimateSection
@@ -251,6 +294,7 @@ const LandingPage = () => {
             </div>
             <div
                 id="tech-stack"
+                ref={techStackRef}
                 className="w-full relative z-10 grid grid-cols-1 place-content-center  min-h-[80vh]"
             >
                 <AnimateSection
@@ -472,6 +516,7 @@ const LandingPage = () => {
 
             <div
                 id="projects"
+                ref={projectRef}
                 className="w-full py-10 lg:py-2 md:py-2 relative grid place-content-center grid-cols-1 z-10 min-h-screen"
             >
                 <AnimateSection
@@ -539,6 +584,7 @@ const LandingPage = () => {
             </div>
             <div
                 id="get-in-touch"
+                ref={getInTouchRef}
                 className="w-full grid grid-cols-1 place-content-center mx-auto  min-h-screen relative z-10"
             >
                 <CardGetInTouch />

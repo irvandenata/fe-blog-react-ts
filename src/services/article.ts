@@ -24,6 +24,18 @@ export async function fetchDataNoAuth(query?: {}): Promise<any> {
     return response;
 }
 
+
+export async function getDataBySlug(slug:string): Promise<any> {
+    const url = `${API_ENDPOINT}/data/articles/${slug}`;
+    // handling when error
+    const response = await callAPI({
+        url,
+        method: "GET",
+        token: true,
+    });
+    return response;
+}
+
 export async function createData(data: FormData): Promise<any> {
     const url = `${ROOT_API}/${API_VERSION}/articles`;
     // handling when error
