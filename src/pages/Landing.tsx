@@ -29,7 +29,7 @@ const LandingPage = () => {
     const loader = useRef<HTMLDivElement | null>(null);
     const techStack = useSelector((state: any) => state.landing.techStack);
     const projects = useSelector((state: any) => state.landing.projects);
-    const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+    const [isMobile, _] = useState(window.innerWidth < 768);
 
     const homeRef = useRef(null);
     const workExperienceRef = useRef(null);
@@ -41,7 +41,6 @@ const LandingPage = () => {
         if (isLoad) {
             const observer = new IntersectionObserver(
                 (entries) => {
-                    console.log(entries);
                     entries.forEach((entry) => {
                         if (entry.isIntersecting) {
                             dispatch(setActiveMenu(entry.target.id));
@@ -74,7 +73,7 @@ const LandingPage = () => {
         const url = window.location.href;
         const urlSplit = url.split("#");
 
-        if (urlSplit.length > 1) {
+        if (urlSplit.length > 1) {  
             const id = urlSplit[1];
             setUrl(id);
         }
@@ -169,7 +168,7 @@ const LandingPage = () => {
         }
     };
 
-    const onMouseLeave = (e: any) => {
+    const onMouseLeave = (_: any) => {
         // get all caption and hide
         const captions = document.getElementsByClassName("icon-caption");
         for (let i = 0; i < captions.length; i++) {
@@ -203,17 +202,18 @@ const LandingPage = () => {
             <div
                 id="home"
                 ref={homeRef}
-                className="relative z-10 justify-center items-center lg:h-screen w-full"
+                className="relative z-10 justify-center items-center lg:pt-0 md:pt-0 pt-12 lg:h-screen w-full"
             >
-                <div className="grid lg:grid-cols-2 md:grid-cols-2 gap-8 place-content-center grid-col-1 min-h-screen">
-                    <div className="lg:basis-1/2 md:basis-1/2 basis-1 mt-10 lg:my-auto md:my-auto">
-                        <div className="mx-auto text-center">
+                <div className="grid lg:grid-cols-2 md:grid-cols-2 gap-8 place-content-center grid-col-1  min-h-[100vh]">
+                    <div className="lg:basis-1/2 md:basis-1/2 basis-1 lg:my-auto md:my-auto">
+                        <div className="mx-auto text-center my-auto">
                             <AnimateSection
                                 id="home-image"
-                                parentId="home"
+                                parentId='home'
                                 className={`lg:max-w-[50%] md:max-w-[50%]  max-w-[100%] relative z-10 mx-auto ${
                                     showHeader ? "" : "opacity-0"
                                 }`}
+                                bottom={600}
                                 inAnimate="animate-jump-in delay-1200 opacity-0"
                                 outAnimate="animate-go-away"
                             >
@@ -236,6 +236,7 @@ const LandingPage = () => {
                             id="home-title"
                             parentId="home"
                             className=""
+                            bottom={600}
                             inAnimate="animate-fade-in delay-500 opacity-0"
                             outAnimate="animate-go-away "
                         >
@@ -255,12 +256,13 @@ const LandingPage = () => {
                         <AnimateSection
                             id="home-description"
                             parentId="home"
+                            bottom={600}
                             className={`${showHeader ? "" : "opacity-0"}`}
                             inAnimate="animate-fade-in delay-1000 opacity-0"
                             outAnimate="animate-go-away"
                         >
                             <div
-                                className="lg:pr-32 mt-3"
+                                className="lg:pr-32 mt-3 lg:text-left md:text-left text-justify"
                                 dangerouslySetInnerHTML={{
                                     __html: header.data.description,
                                 }}
@@ -567,7 +569,7 @@ const LandingPage = () => {
                                 }
                                 inAnimate="animate-fade-on delay-1500"
                                 outAnimate="animate-go-away"
-                                bottom={200}
+                                bottom={600}
                             >
                                 <Button
                                     borderRadius="1.75rem"

@@ -1,6 +1,5 @@
 import { convertDate } from "@/utils/common";
 import AnimateSection from "../UI/AnimateSection";
-import { useEffect, useRef } from "react";
 
 const WorkExperienceCard: React.FC<{ workExperience: any }> = ({
     workExperience,

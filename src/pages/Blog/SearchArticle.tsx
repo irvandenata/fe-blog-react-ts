@@ -1,16 +1,14 @@
 import Card3D from "@/components/Cards/Card3D";
 import AnimateSection from "@/components/UI/AnimateSection";
-import { Button } from "@/components/UI/moving-border";
 import { IArticle } from "@/interfaces/article";
 import { setActiveMenu } from "@/redux/slices/landingSlice";
 import { fetchDataNoAuth } from "@/services/article";
 import { useEffect, useRef, useState } from "react";
 import { useDispatch } from "react-redux";
-import { Link } from "react-router-dom";
 
 const SearchArticlePage = () => {
     const dispatch = useDispatch();
-    const [isMobile, setIsMobile] = useState(false);
+    const [isMobile, _] = useState(false);
 
     const [articles, setArticles] = useState<IArticle[]>([]);
     const searchInput = useRef<HTMLInputElement>(null);
@@ -21,16 +19,6 @@ const SearchArticlePage = () => {
         sort: "asc",
         search: "",
     });
-
-    const loadData = () => {
-        fetchDataNoAuth(query).then((res) => {
-            setArticles([...res.data]);
-            setQuery({
-                ...query,
-                page: res.meta.current_page + 1,
-            });
-        });
-    };
 
     const loadOtherData = () => {
         fetchDataNoAuth(query).then((res) => {
@@ -56,8 +44,6 @@ const SearchArticlePage = () => {
             page: 1,
             search: search,
         });
-        console.log(search);
-        console.log(query);
     }, [search]);
 
     return (

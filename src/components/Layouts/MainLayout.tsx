@@ -8,8 +8,8 @@ import FloatingButton from "../FloatingButton";
 import { useState } from "react";
 import { fetchDataSocialMedia } from "@/services/landing";
 import { setSocialMedia } from "@/redux/slices/landingSlice";
+import { Toaster } from "react-hot-toast";
 function MainLayout() {
-
     const socialMedia = useSelector((state: any) => state.landing.socialMedia);
     const dispatch = useDispatch();
     useState(() => {
@@ -20,16 +20,28 @@ function MainLayout() {
     });
     return (
         <>
+            <Toaster
+                toastOptions={{
+                    className:
+                        "dark:bg-dark-custom-200 dark:text-white text-sm z-[9999]",
+                    style: {
+                        zIndex: 9999,
+                    },
+                }}
+            />
             <div id="nav" className=" w-full">
                 <StickyNavbar />
             </div>
-            <main className=" bg-white dark:bg-dark relative h-full" id="main-layout">
+            <main
+                className=" bg-white dark:bg-dark relative h-full"
+                id="main-layout"
+            >
                 <div
                     id="background"
                     className="p-5 bg-white dark:bg-dark h-screen w-full"
                 ></div>
                 <div className="lg:mx-20 md:mx-20 mx-6">
-                    <div className="fixed z-9999 bottom-0 left-4">
+                    <div className="fixed z-9999 bottom-2 left-4">
                         <AnimateSection
                             id="btn-social-media"
                             parentId=""

@@ -1,5 +1,3 @@
-import { setMenu } from '@/redux/slices/menuSlice';
-import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 interface BreadcrumbProps {

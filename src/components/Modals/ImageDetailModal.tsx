@@ -6,7 +6,6 @@ const ImageDetailModal: React.FC<ImageDetailModalProps> = ({
     onSubmit,
     onClose,
     onUpdate,
-    children,
 }) => {
     const modal = useSelector((state: any) => state.imageModal);
     const handleSubmit = () => {

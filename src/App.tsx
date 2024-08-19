@@ -1,4 +1,4 @@
-import { FC, useState } from "react";
+import { FC} from "react";
 import { RouterProvider } from "react-router-dom";
 
 import "./App.css";

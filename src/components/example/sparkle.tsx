@@ -1,13 +1,10 @@
 "use client";
 import { SparklesCore } from "@/components/UI/sparkles";
-import { Meteors } from "../UI/meteors";
 
 export function SparklesPreview() {
     return (
         <div>
-         
             <div className="h-[100%] w-full dark:bg-dark bg-white flex flex-col items-center justify-center overflow-hidden rounded-md">
-               
                 <div className="w-[40rem] h-40 relative">
                     {/* Gradients */}
                     <div className="absolute inset-x-20 top-0 bg-gradient-to-r from-transparent via-indigo-500 to-transparent h-[2px] w-3/4 blur-sm" />

@@ -18,7 +18,7 @@ const SocialMediaButton: React.FC<{
         }
     };
 
-    const onMouseLeave = (e: any) => {
+    const onMouseLeave = (_: any) => {
         // get all caption and hide
         const captions = document.getElementsByClassName("icon-caption");
         for (let i = 0; i < captions.length; i++) {

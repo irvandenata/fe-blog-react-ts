@@ -18,7 +18,7 @@ const ArticleDetailPage = () => {
             .then((res) => {
                 setArticle(res.data);
             })
-            .catch((err) => {
+            .catch((_) => {
                 navigate("/not-found");
             });
     }, []);

@@ -7,6 +7,7 @@ export default function StickyNavbar() {
     const [openNav, setOpenNav] = React.useState(false);
 
     const activeMenu = useSelector((state: any) => state.landing.activeMenu);
+    const [isDark, setIsDark] = React.useState(true);
     const dispatch = useDispatch();
     React.useEffect(() => {
         window.addEventListener(
@@ -19,22 +20,19 @@ export default function StickyNavbar() {
         // get id theme-toggle-dark-icon
         const darkIcon = document.getElementById("theme-toggle-dark-icon");
         const lightIcon = document.getElementById("theme-toggle-light-icon");
-        if (localStorage.theme === "dark" || !("theme" in localStorage)) {
-            //add class=dark in html element
-            document.documentElement.classList.add("dark");
-            darkIcon!.classList.add("hidden");
-            lightIcon!.classList.remove("hidden");
-        } else {
-            //remove class=dark in html element
+        // check if dark mode is enabled
+        if (isDark) {
+            // enable dark mode
             document.documentElement.classList.remove("dark");
-            darkIcon!.classList.remove("hidden");
-            lightIcon!.classList.add("hidden");
-        }
-
-        if (localStorage.theme === "dark") {
-            localStorage.theme = "light";
+            darkIcon?.classList.remove("hidden");
+            lightIcon?.classList.add("hidden");
+            setIsDark(false);
         } else {
-            localStorage.theme = "dark";
+            // disable dark mode
+            document.documentElement.classList.add("dark");
+            darkIcon?.classList.add("hidden");
+            lightIcon?.classList.remove("hidden");
+            setIsDark(true);
         }
     };
 
@@ -121,7 +119,10 @@ export default function StickyNavbar() {
             <li className=" dark:text-white font-normal">
                 <Link
                     to="/blogs"
-                    onClick={() => dispatch(setActiveMenu("blogs"))}
+                    onClick={() => {
+                        openNav ? setOpenNav(false) : null;
+                        dispatch(setActiveMenu("blogs"))
+                    }}
                     className={
                         "flex items-center px-2 py-1 rounded-lg hover:bg-primary hover:text-white " +
                         (activeMenu === "blogs" ? "bg-primary text-white" : "")

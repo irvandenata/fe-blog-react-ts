@@ -1,4 +1,4 @@
-import React, { useState, useEffect, Ref } from "react";
+import React, { useState, useEffect} from "react";
 
 const SearchableSelect: React.FC<{
     getData: (params: any) => Promise<any>;

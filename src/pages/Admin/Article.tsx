@@ -5,7 +5,6 @@ import { setMenu } from "@/redux/slices/menuSlice";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import {
     endProccess,
-    setModal,
     startProccess,
 } from "@/redux/slices/modalSlice";
 
