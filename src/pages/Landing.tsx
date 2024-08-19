@@ -1,12 +1,9 @@
 import { Card3D } from "@/components/Cards/Card3D";
 import CardGetInTouch from "@/components/Cards/CardGetInTouch";
 import WorkExperienceCard from "@/components/Cards/WorkExperienceCard";
-import FloatingButton from "@/components/FloatingButton";
-import SocialMediaButton from "@/components/SocialMediaButton";
 import AnimateSection from "@/components/UI/AnimateSection";
 import { BorderMoveCard } from "@/components/UI/BorderMoveCard";
 import { TechStack } from "@/components/UI/TechStack";
-import { Meteors } from "@/components/UI/meteors";
 import { Button } from "@/components/UI/moving-border";
 import {
     setActiveMenu,
@@ -70,6 +67,7 @@ const LandingPage = () => {
                     loader.current?.addEventListener("animationend", () => {
                         loader.current?.classList.add("hidden");
                     });
+
                     setIsLoad(true);
                     setTimeout(() => {
                         handleDirectToSection(url);
@@ -167,7 +165,6 @@ const LandingPage = () => {
         </div>
     ) : (
         <>
-            <FloatingButton />
             <div
                 id="home"
                 className="relative z-10 justify-center items-center lg:h-screen w-full"

@@ -16,24 +16,43 @@ const SearchArticlePage = () => {
     const [articles, setArticles] = useState<IArticle[]>([]);
     const [query, setQuery] = useState({
         page: 1,
-        per_page: 10,
+        per_page: 9,
         sort: "asc",
         search: "",
     });
 
     const loadData = () => {
         fetchDataNoAuth(query).then((res) => {
-            setArticles(res.data);
+            setArticles([...res.data]);
+            setQuery({
+                ...query,
+                page: res.meta.current_page + 1,
+            });
+        });
+    };
+
+    const loadOtherData = () => {
+        fetchDataNoAuth(query).then((res) => {
+            setArticles([...articles, ...res.data]);
+            if (!(res.meta.current_page === res.meta.last_page)) {
+                setQuery({
+                    ...query,
+                    page: res.meta.current_page + 1,
+                });
+            }
         });
     };
 
     useEffect(() => {
-        loadData();
+        loadOtherData();
     }, [query]);
+    useEffect(() => {
+        loadData();
+    }, []);
 
     return (
         <div id="article-content">
-            <div className="flex flex-col items-center text-bodydark1  justify-center relative z-10 mt-40 mb-20">
+            <div id="home" className="flex flex-col items-center text-bodydark1  justify-center relative z-10 mt-40 mb-20">
                 <p className="bg-primary py-1 px-2 mb-4 rounded-lg">
                     Read My Mind
                 </p>
@@ -91,13 +110,17 @@ const SearchArticlePage = () => {
                     <div className="grid grid-cols-1 lg:grid-cols-3 md:grid-cols-3 gap-5 ">
                         {articles.map((item: IArticle, index: number) => (
                             <div key={index + "-articles"} className="">
-                                <div className={`animate-fade-in delay-${index * 500}`}> 
+                                <div
+                                    className={`animate-fade-in `}
+                                    style={{
+                                        transitionDelay:  `${index * 1}s`,
+                                    }}
+                                >
                                     <Card3D
                                         title={item.title}
                                         category={item.category.name}
                                         image_url={item.image_url ?? ""}
                                         slug={item.slug ?? ""}
-                                        
                                     />
                                 </div>
                             </div>

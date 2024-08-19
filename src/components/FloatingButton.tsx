@@ -7,7 +7,7 @@ const FloatingButton = () => {
 
     useEffect(() => {
         const handleScroll = () => {
-            const homeSection = document.getElementById("home");
+            const homeSection = document.getElementById("home") ;
             const homeSectionHeight = homeSection!.offsetHeight;
             const currentScroll = window.scrollY;
 
@@ -31,9 +31,8 @@ const FloatingButton = () => {
 
     return (
         <>
-            <Link
+            <a
                 onClick={() => handleDirectToSection("home")}
-                to="/#home"
                 className={`fixed bottom-4 z-9999 right-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full shadow-lg transition-all duration-300 ease-in-out ${
                     showButton
                         ? "opacity-100 translate-y-0"
@@ -48,7 +47,7 @@ const FloatingButton = () => {
                         <FaChevronUp className="h-6 w-6 text-white" />
                     </Button>
                 </div>
-            </Link>
+            </a>
         </>
     );
 };

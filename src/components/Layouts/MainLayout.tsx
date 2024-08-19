@@ -4,6 +4,7 @@ import { Meteors } from "../UI/meteors";
 import AnimateSection from "../UI/AnimateSection";
 import { useSelector } from "react-redux";
 import SocialMediaButton from "../SocialMediaButton";
+import FloatingButton from "../FloatingButton";
 function MainLayout() {
     const socialMedia = useSelector((state: any) => state.landing.socialMedia);
     return (
@@ -43,6 +44,8 @@ function MainLayout() {
                         </AnimateSection>
                     </div>
                     <div className="relative">
+                        <FloatingButton />
+
                         <Outlet />
                     </div>
 
