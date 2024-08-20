@@ -5,6 +5,7 @@ import AnimateSection from "@/components/UI/AnimateSection";
 import { BorderMoveCard } from "@/components/UI/BorderMoveCard";
 import { TechStack } from "@/components/UI/TechStack";
 import { Button } from "@/components/UI/moving-border";
+import { setCategoryFilter } from "@/redux/slices/articleSlice";
 import {
     setActiveMenu,
     setHeader,
@@ -20,6 +21,7 @@ import {
 } from "@/services/landing";
 import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 const LandingPage = () => {
     const dispatch = useDispatch();
@@ -30,6 +32,7 @@ const LandingPage = () => {
     const techStack = useSelector((state: any) => state.landing.techStack);
     const projects = useSelector((state: any) => state.landing.projects);
     const [isMobile, _] = useState(window.innerWidth < 768);
+    const navigate = useNavigate();
 
     const homeRef = useRef(null);
     const workExperienceRef = useRef(null);
@@ -73,7 +76,7 @@ const LandingPage = () => {
         const url = window.location.href;
         const urlSplit = url.split("#");
 
-        if (urlSplit.length > 1) {  
+        if (urlSplit.length > 1) {
             const id = urlSplit[1];
             setUrl(id);
         }
@@ -182,8 +185,8 @@ const LandingPage = () => {
                 id="spinner"
                 ref={loader}
                 className="w-full dark:text-white dark:bg-dark bg-white text-dark
-            
-            h-screen z-99999 flex justify-center  items-center fixed top-0 left-0"
+                
+                h-screen z-99999 flex justify-center  items-center fixed top-0 left-0"
             >
                 <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -202,19 +205,19 @@ const LandingPage = () => {
             <div
                 id="home"
                 ref={homeRef}
-                className="relative z-10 justify-center items-center lg:pt-0 md:pt-0 pt-12 lg:h-screen w-full"
+                className={`relative z-10 justify-center items-center lg:pt-0 md:pt-0 pt-12 lg:h-screen w-full`}
             >
                 <div className="grid lg:grid-cols-2 md:grid-cols-2 gap-8 place-content-center grid-col-1  min-h-[100vh]">
                     <div className="lg:basis-1/2 md:basis-1/2 basis-1 lg:my-auto md:my-auto">
                         <div className="mx-auto text-center my-auto">
                             <AnimateSection
                                 id="home-image"
-                                parentId='home'
+                                parentId="home"
                                 className={`lg:max-w-[50%] md:max-w-[50%]  max-w-[100%] relative z-10 mx-auto ${
                                     showHeader ? "" : "opacity-0"
                                 }`}
                                 bottom={600}
-                                inAnimate="animate-jump-in delay-1200 opacity-0"
+                                inAnimate="animate-jump-in delay-1200"
                                 outAnimate="animate-go-away"
                             >
                                 <BorderMoveCard
@@ -235,15 +238,13 @@ const LandingPage = () => {
                         <AnimateSection
                             id="home-title"
                             parentId="home"
-                            className=""
+                            className={` ${showHeader ? "" : "opacity-0 "}`}
                             bottom={600}
-                            inAnimate="animate-fade-in delay-500 opacity-0"
+                            inAnimate="animate-fade-in delay-500"
                             outAnimate="animate-go-away "
                         >
                             <h1
-                                className={`md:text-2xl text-left mx-auto text-xl lg:text-4xl font-bold dark:text-white text-dark-custom-200 relative z-20 ${
-                                    showHeader ? "" : "opacity-0"
-                                }`}
+                                className={`md:text-2xl text-left mx-auto text-xl lg:text-4xl font-bold dark:text-white text-dark-custom-200 relative z-20`}
                             >
                                 <span
                                     className="text-justify"
@@ -257,8 +258,8 @@ const LandingPage = () => {
                             id="home-description"
                             parentId="home"
                             bottom={600}
-                            className={`${showHeader ? "" : "opacity-0"}`}
-                            inAnimate="animate-fade-in delay-1000 opacity-0"
+                            className={`${showHeader ? "" : "opacity-0 "}`}
+                            inAnimate="animate-fade-in delay-1000"
                             outAnimate="animate-go-away"
                         >
                             <div
@@ -305,7 +306,7 @@ const LandingPage = () => {
                     parentId="tech-stack"
                     inAnimate="animate-fade-on"
                     outAnimate="animate-go-away"
-                    bottom={200}
+                    bottom={600}
                 >
                     <div>Tech Stack</div>
                 </AnimateSection>
@@ -314,11 +315,11 @@ const LandingPage = () => {
                         <div className=" lg:mx-6">
                             <AnimateSection
                                 className="text-start"
-                                id="be-title"
+                                id="fe-title"
                                 parentId="tech-stack"
                                 inAnimate="animate-fade-on"
                                 outAnimate="animate-go-away"
-                                bottom={200}
+                                bottom={600}
                             >
                                 <h2 className="text-lg">Frontend</h2>
                             </AnimateSection>
@@ -328,7 +329,10 @@ const LandingPage = () => {
                                         <div
                                             key={item.id}
                                             id={`icon-stack-` + item.id}
-                                            className="flex-row justify-center static"
+                                            className={`flex-row justify-center  relative `}
+                                            style={{
+                                                zIndex:100-index
+                                            }}
                                         >
                                             <AnimateSection
                                                 className={`text-start `}
@@ -338,9 +342,9 @@ const LandingPage = () => {
                                                     200 * index
                                                 }`}
                                                 outAnimate="animate-go-away"
-                                                bottom={200}
+                                                bottom={600}
                                             >
-                                                <div className="relative z-100">
+                                                <div className={`relative -z-${index+1}`}>
                                                     <div
                                                         onMouseEnter={
                                                             onMouseEnter
@@ -348,7 +352,7 @@ const LandingPage = () => {
                                                         onMouseLeave={
                                                             onMouseLeave
                                                         }
-                                                        className="absolute bg-transparent  top-0 left-0 z-999 h-full w-full"
+                                                        className="absolute bg-transparent  top-0 left-0 z-20 h-full w-full"
                                                     ></div>
                                                     <TechStack
                                                         captionId={
@@ -368,7 +372,7 @@ const LandingPage = () => {
                                                 </div>
                                                 <p
                                                     id={`caption-id-` + item.id}
-                                                    className="icon-caption border-2 dark:border-2 dark:border-gray-dark border-bodydark2  text-sm absolute invisible   dark:font-thin font-medium text-center mt-2 bg-slate-50 dark:bg-gray-dark p-1 rounded"
+                                                    className="icon-caption z-30 border-2 dark:border-2  border-bodydark2  text-sm absolute  dark:font-thin font-medium text-center mt-2 bg-slate-50 dark:bg-gray-dark p-1 invisible rounded"
                                                 >
                                                     {item.title}
                                                 </p>
@@ -385,7 +389,7 @@ const LandingPage = () => {
                                 parentId="tech-stack"
                                 inAnimate="animate-fade-on"
                                 outAnimate="animate-go-away"
-                                bottom={200}
+                                bottom={600}
                             >
                                 <h2 className="text-lg">Backend</h2>
                             </AnimateSection>
@@ -395,7 +399,10 @@ const LandingPage = () => {
                                         <div
                                             key={item.id}
                                             id={`icon-stack-` + item.id}
-                                            className="flex-row justify-center static"
+                                            className={`flex-row justify-center  relative `}
+                                            style={{
+                                                zIndex:100-index
+                                            }}
                                         >
                                             <AnimateSection
                                                 className={`text-start `}
@@ -405,9 +412,9 @@ const LandingPage = () => {
                                                     200 * index
                                                 }`}
                                                 outAnimate="animate-go-away"
-                                                bottom={200}
+                                                bottom={600}
                                             >
-                                                <div className="relative z-100">
+                                                <div className={`relative -z-${index+1}`}>
                                                     <div
                                                         onMouseEnter={
                                                             onMouseEnter
@@ -435,7 +442,7 @@ const LandingPage = () => {
                                                 </div>
                                                 <p
                                                     id={`caption-id-` + item.id}
-                                                    className="icon-caption border-2 dark:border-2 dark:border-gray-dark border-bodydark2  text-sm absolute invisible   dark:font-thin font-medium text-center mt-2 bg-slate-50 dark:bg-gray-dark p-1 rounded"
+                                                    className="icon-caption z-999 border-2 dark:border-2  border-bodydark2  text-sm absolute invisible   dark:font-thin font-medium text-center mt-2 bg-slate-50 dark:bg-gray-dark p-1 rounded"
                                                 >
                                                     {item.title}
                                                 </p>
@@ -448,11 +455,11 @@ const LandingPage = () => {
                         <div className=" lg:mx-6">
                             <AnimateSection
                                 className="text-start"
-                                id="be-title"
+                                id="ot-title"
                                 parentId="tech-stack"
                                 inAnimate="animate-fade-on"
                                 outAnimate="animate-go-away"
-                                bottom={200}
+                                bottom={600}
                             >
                                 <h2 className="text-lg">Others</h2>
                             </AnimateSection>
@@ -462,7 +469,10 @@ const LandingPage = () => {
                                         <div
                                             key={item.id}
                                             id={`icon-stack-` + item.id}
-                                            className="flex-row justify-center static"
+                                            className={`flex-row justify-center  relative `}
+                                            style={{
+                                                zIndex:100-index
+                                            }}
                                         >
                                             <AnimateSection
                                                 className={`text-start `}
@@ -472,9 +482,9 @@ const LandingPage = () => {
                                                     200 * index
                                                 }`}
                                                 outAnimate="animate-go-away"
-                                                bottom={200}
+                                                bottom={600}
                                             >
-                                                <div className="relative z-100">
+                                                <div className={`relative -z-${index+1}`}>
                                                     <div
                                                         onMouseEnter={
                                                             onMouseEnter
@@ -502,7 +512,7 @@ const LandingPage = () => {
                                                 </div>
                                                 <p
                                                     id={`caption-id-` + item.id}
-                                                    className="icon-caption border-2 dark:border-2 dark:border-gray-dark border-bodydark2  text-sm absolute invisible   dark:font-thin font-medium text-center mt-2 bg-slate-50 dark:bg-gray-dark p-1 rounded"
+                                                    className="icon-caption z-999 border-2 dark:border-2  border-bodydark2  text-sm absolute invisible   dark:font-thin font-medium text-center mt-2 bg-slate-50 dark:bg-gray-dark p-1 rounded"
                                                 >
                                                     {item.title}
                                                 </p>
@@ -572,10 +582,18 @@ const LandingPage = () => {
                                 bottom={600}
                             >
                                 <Button
+                                    onClick={() => {
+                                        dispatch(
+                                            setCategoryFilter({
+                                                category: 1,
+                                            })
+                                        );
+                                        navigate("/blogs");
+                                    }}
                                     borderRadius="1.75rem"
                                     className="bg-white px-10 py-2
-                                        dark:hover:bg-primary
-                                    dark:bg-slate-900 text-black font-extrabold dark:text-white border-neutral-200 dark:border-slate-800"
+                                            dark:hover:bg-primary
+                                        dark:bg-slate-900 text-black font-extrabold dark:text-white border-neutral-200 dark:border-slate-800"
                                 >
                                     More Projects
                                 </Button>
@@ -587,7 +605,7 @@ const LandingPage = () => {
             <div
                 id="get-in-touch"
                 ref={getInTouchRef}
-                className="w-full grid grid-cols-1 place-content-center mx-auto  min-h-screen relative z-10"
+                className="w-full lg:py-20 md:py-20 py-30 grid grid-cols-1 place-content-center mx-auto  min-h-screen relative z-10"
             >
                 <CardGetInTouch />
             </div>

@@ -2,9 +2,9 @@ import Card3D from "@/components/Cards/Card3D";
 import AnimateSection from "@/components/UI/AnimateSection";
 import { IArticle } from "@/interfaces/article";
 import { setActiveMenu } from "@/redux/slices/landingSlice";
-import { fetchDataNoAuth } from "@/services/article";
+import { fetchDataCategories, fetchDataNoAuth } from "@/services/article";
 import { useEffect, useRef, useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 const SearchArticlePage = () => {
     const dispatch = useDispatch();
@@ -13,28 +13,48 @@ const SearchArticlePage = () => {
     const [articles, setArticles] = useState<IArticle[]>([]);
     const searchInput = useRef<HTMLInputElement>(null);
     const [search, setSearch] = useState("");
+    const [category, setCategory] = useState(
+        useSelector((state: any) => state.article.filter.category)
+    );
+    const [articleCategory, setArticleCategory] = useState([]);
+
+    const [isLoad, setIsLoad] = useState(false);
+
     const [query, setQuery] = useState({
         page: 1,
         per_page: 9,
         sort: "asc",
         search: "",
+        search_category_id: category !== 0 ? category : "",
     });
 
     const loadOtherData = () => {
-        fetchDataNoAuth(query).then((res) => {
-            setArticles([...articles, ...res.data]);
-            if (!(res.meta.current_page === res.meta.last_page)) {
-                setQuery({
-                    ...query,
-                    page: res.meta.current_page + 1,
-                });
-            }
+        setIsLoad(true);
+        fetchDataNoAuth(query)
+            .then((res) => {
+                setArticles([...articles, ...res.data]);
+                if (!(res.meta.current_page === res.meta.last_page)) {
+                    setQuery({
+                        ...query,
+                        page: res.meta.current_page + 1,
+                    });
+                }
+                setIsLoad(false);
+            })
+            .catch((_) => {
+                setIsLoad(false);
+            });
+    };
+
+    const loadCategories = () => {
+        fetchDataCategories().then((res) => {
+            setArticleCategory(res.data);
         });
     };
 
     useEffect(() => {
+        loadCategories();
         loadOtherData();
-        console.log("load other data");
     }, [query]);
     useEffect(() => {
         dispatch(setActiveMenu("blogs"));
@@ -43,14 +63,15 @@ const SearchArticlePage = () => {
             ...query,
             page: 1,
             search: search,
+            search_category_id: category !== 0 ? category : "",
         });
-    }, [search]);
+    }, [search, category]);
 
     return (
         <div id="article-content">
             <div
                 id="home"
-                className="flex flex-col items-center text-dark dark:text-bodydark1  justify-center relative z-10 pt-40 pb-10"
+                className="flex flex-col items-center text-center text-dark dark:text-bodydark1  justify-center relative z-10 pt-40 pb-10"
             >
                 <p className="bg-primary dark:text-white text-white py-1 px-2 mb-4 rounded-lg">
                     Read My Mind
@@ -108,6 +129,32 @@ const SearchArticlePage = () => {
                                 Search
                             </button>
                         </div>
+                        {/* filter category */}
+                        <div className="flex justify-center mt-6">
+                            <select
+                                className="w-40 p-2 rounded-lg block cursor-pointer   text-sm text-gray-900  border-gray-300  dark:bg-gray-dark bg-white focus:ring-primary focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary dark:focus:border-primary border-2"
+                                onChange={(e) => {
+                                    if (e.target.value === "0") {
+                                        setCategory(0);
+                                    } else {
+                                        setCategory(parseInt(e.target.value));
+                                    }
+                                }}
+                            >
+                                <option value="0">All Category</option>
+                                {articleCategory.map(
+                                    (item: any, index: number) => (
+                                        <option
+                                            key={index + "-category"}
+                                            value={item.id}
+                                            selected={category === item.id}
+                                        >
+                                            {item.name}
+                                        </option>
+                                    )
+                                )}
+                            </select>
+                        </div>
                     </form>
                 </div>
                 {search != "" && (
@@ -141,15 +188,17 @@ const SearchArticlePage = () => {
                         ))}
                     </div>
 
-                    {articles.length <= 0 && search != "" && (
-                        <div className="flex justify-center">
-                            <p className="text-lg font-bold">
-                                No article found
-                            </p>
-                        </div>
-                    )}
+                    {articles.length <= 0 &&
+                        (search != "" || category !== 0) &&
+                        !isLoad && (
+                            <div className="flex justify-center">
+                                <p className="text-lg font-bold">
+                                    No article found
+                                </p>
+                            </div>
+                        )}
 
-                    {articles.length <= 0 && search === "" && (
+                    {isLoad && (
                         <div className="flex justify-center">
                             <div className="text-dark dark:text-white">
                                 <svg

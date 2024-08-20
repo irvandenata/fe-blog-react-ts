@@ -9,7 +9,7 @@ export const Card3D: React.FC<{
     category: any;
     image_url: string;
     slug: string;
-}> = ({ title, content, category, image_url,slug }) => {
+}> = ({ title, content, category, image_url, slug }) => {
     return (
         <CardContainer className="inter-var w-full">
             <CardBody className="bg-gray-50 relative group/card  dark:hover :shadow-2xl dark:hover:shadow-emerald-500/[0.1] bg-slate-100 dark:bg-dark dark:border-gray-dark dark:border-2 border-bodydark2 w-full  h-auto rounded-xl p-6 border-2  ">
@@ -55,13 +55,13 @@ export const Card3D: React.FC<{
 
                 <div className="flex justify-between items-center mt-8">
                     <Link to={`/blogs/${slug}`}>
-                    <CardItem
-                        translateZ={20}
-                        as="button"
-                        className="px-4 py-2 rounded-xl bg-black dark:bg-white  hover:bg-primary dark:hover:bg-primary dark:hover:text-white dark:text-black text-white text-xs font-bold"
-                    >
-                        Read More <span className="ml-2">→</span>
-                    </CardItem>
+                        <CardItem
+                            translateZ={20}
+                            as="button"
+                            className="px-4 py-2 rounded-xl bg-black dark:bg-white  hover:bg-primary dark:hover:bg-primary dark:hover:text-white dark:text-black text-white text-xs font-bold"
+                        >
+                            Read More <span className="ml-2">→</span>
+                        </CardItem>
                     </Link>
                 </div>
             </CardBody>

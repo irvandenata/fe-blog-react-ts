@@ -6,6 +6,7 @@ import imageModalReducer from '@/redux/slices/imageModalSlice';
 import dataReducer from '@/redux/slices/dataSlice';
 import userReducer from '@/redux/slices/userSlice';
 import landingReducer from '@/redux/slices/landingSlice';
+import articleReducer from '@/redux/slices/articleSlice';
 const store = configureStore({
     reducer: {
         menu: menuReducer,
@@ -15,6 +16,7 @@ const store = configureStore({
         data: dataReducer,
         user: userReducer,
         landing: landingReducer,
+        article: articleReducer,
     },
 });
 

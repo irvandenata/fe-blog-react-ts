@@ -58,3 +58,16 @@ export async function fetchDataProjects(): Promise<any> {
     return response;
 }
 
+
+export async function sendMessage(formData:any): Promise<any> {
+    const url = `${ROOT_API}/${API_VERSION}/send-message`;
+    // handling when error
+    const response = await callAPI({
+        url,
+        method: "POST",
+        data: formData
+    });
+
+    return response;
+}
+

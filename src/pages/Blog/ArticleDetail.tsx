@@ -10,7 +10,6 @@ const ArticleDetailPage = () => {
     const [article, setArticle] = useState<IArticle | null>(null);
     const param = useParams<{ slug: string }>();
     const dispatch = useDispatch();
-
     const navigate = useNavigate();
     useEffect(() => {
         dispatch(setActiveMenu("blogs"));

@@ -3,6 +3,7 @@
 import { useState } from "react";
 import AnimateSection from "../UI/AnimateSection";
 import toast from "react-hot-toast";
+import { sendMessage } from "@/services/landing";
 
 const CardGetInTouch = () => {
     const [captchaText, setCaptchaText] = useState("");
@@ -13,6 +14,8 @@ const CardGetInTouch = () => {
 
     const handleSubmit = (e: any) => {
         e.preventDefault();
+        // disable button submit
+        e.target.querySelector("button").disabled = true;
         console.log(e.target.captcha.value);
         if (e.target.captcha.value === captchaText) {
             const data = {
@@ -20,21 +23,38 @@ const CardGetInTouch = () => {
                 email: e.target.email.value,
                 message: e.target.message.value,
             };
-            console.log(data);
-            e.target.reset();
-        }else{
+            toast
+                .promise(
+                    sendMessage(data),
+                    {
+                        loading: "Sending message...",
+                        success: "Message sent successfully",
+                        error: "Failed to send message",
+                    },
+                    {
+                        duration: 3000,
+                    }
+                )
+                .then(() => {
+                    const captcha = Math.random().toString(36).substring(2, 7);
+                    setCaptchaText(captcha);
+                    e.target.reset();
+                    e.target.querySelector("button").disabled = false;
+                });
+        } else {
             toast.error("Captcha is not correct !");
+            e.target.querySelector("button").disabled = false;
         }
     };
     return (
-        <div className="w-full lg:p-10 ">
+        <div className="w-full lg:p-10  ">
             <AnimateSection
                 className=""
                 id="content-get-in-touch"
                 parentId="get-in-touch"
                 inAnimate="animate-fade-on"
                 outAnimate="animate-go-away"
-                bottom={200}
+                bottom={1000}
             >
                 <div className="flex justify-center">
                     <h1 className="text-3xl font-bold">
