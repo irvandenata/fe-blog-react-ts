@@ -281,9 +281,9 @@ const LandingPage = () => {
                     className="text-3xl py-10 text-center font-bold dark:text-white text-dark-custom-200"
                     id="we-title"
                     parentId="work-experience"
-                    inAnimate="animate-fade-on"
+                    inAnimate="animate-fade-on delay-0 "
                     outAnimate="animate-go-away delay-0 "
-                    bottom={600}
+                    bottom={900}
                 >
                     <div>Work Experience</div>
                 </AnimateSection>

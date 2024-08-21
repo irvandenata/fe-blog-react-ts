@@ -36,7 +36,7 @@ export async function fetchDataSocialMedia(): Promise<any> {
 }
 
 export async function fetchDataWorkExperience(): Promise<any> {
-    const url = `${ROOT_API}/${API_VERSION}/data/custom-informations?per_page=1000&search_type_id=3&"`;
+    const url = `${ROOT_API}/${API_VERSION}/data/custom-informations?per_page=1000&search_type_id=3&order_desc_by=start_date&"`;
     // handling when error
     const response = await callAPI({
         url,

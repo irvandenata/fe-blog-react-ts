@@ -19,7 +19,7 @@ const WorkExperienceCard: React.FC<{ workExperience: any }> = ({
                             parentId="work-experience-container"
                             inAnimate={`animate-fade-in delay-${500 * index}`}
                             outAnimate="animate-go-away"
-                            bottom={600}
+                            bottom={900}
                         >
                             <li className="lg:mb-6 md:mb-6 ms-6 lg:px-4 md:px-4 ">
                                 <span className="absolute border-s-2 dark:border-s-primary flex mt-2 items-center justify-center w-6 h-6 bg-slate-50 dark:bg-dark rounded-full -start-3 ring-8 ring-dark dark:ring-gray-dark dark:border-gray-900 dark:bg-blue-900">
@@ -41,7 +41,9 @@ const WorkExperienceCard: React.FC<{ workExperience: any }> = ({
                                 </p>
                                 <time className="block mb-2 text-sm font-semibold leading-none text-gray-400 dark:text-gray-500">
                                     {convertDate(exp.start_date, "mm-yyyy")} -{" "}
-                                    {convertDate(exp.end_date, "mm-yyyy")}
+                                    {exp.end_date
+                                        ? convertDate(exp.end_date, "mm-yyyy")
+                                        : "Present"}
                                 </time>
                                 <p
                                     className="mb-4 text-sm font-thin text-gray-500 dark:text-gray-400"
