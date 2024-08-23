@@ -37,10 +37,29 @@ export async function fetchDataNoAuth(query?: {}): Promise<any> {
 }
 
 
-export async function getDataBySlug(slug:string): Promise<any> {
-    const url = `${API_ENDPOINT}/data/articles/${slug}`;
+export async function fetchComments(slug:string): Promise<any> {
+    const url = `${API_ENDPOINT}/data/comments/${slug}`;
     // handling when error
     const response = await callAPI({
+        url,
+        method: "GET",
+    });
+    return response;
+}
+
+
+export async function getDataBySlug(slug:string,count:boolean): Promise<any> {
+    const url = `${API_ENDPOINT}/data/articles/${slug}`;
+    let headers ={};
+
+    if(count){
+        headers = {
+            "count": "true",
+        };
+    }
+    // handling when error
+    const response = await callAPI({
+        headers,
         url,
         method: "GET",
         token: true,
@@ -93,5 +112,18 @@ export async function deleteDataById(id:number): Promise<any> {
         method: "DELETE",
         token: true,
     });
+    return response;
+}
+
+
+export async function createComment(data: FormData): Promise<any> {
+    const url = `${ROOT_API}/${API_VERSION}/comment`;
+    // handling when error
+    const response = await callAPI({
+        url,
+        method: "POST",
+        data,
+    });
+
     return response;
 }

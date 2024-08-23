@@ -9,13 +9,13 @@ interface CallAPIProps extends AxiosRequestConfig {
 }
 
 export default async function callAPI({
+    headers,
     url,
     method,
     data,
     token,
     serverToken,
 }: CallAPIProps) {
-    let headers = {};
     if (serverToken) {
         headers = {
             Authorization: `Bearer ${serverToken}`,

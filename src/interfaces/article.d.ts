@@ -51,6 +51,7 @@ export interface IArticle {
     tags: IArticleTag[];
     category: IArticleCategory;
     category_name?: string;
+    views: number;
 }
 
 export interface IArticleTable {
