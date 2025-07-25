@@ -17,5 +17,42 @@
   z-index: 100;
 }
 
+/*
+  Gunakan kelas ini pada elemen wrapper untuk mengembalikan gaya bawaan browser 
+  yang dihapus oleh Preflight Tailwind.
+*/
+.prose-revert {
+  all: revert; /* Mengembalikan semua properti ke nilai bawaan browser */
+}
+
+/* Targetkan elemen spesifik di dalam wrapper untuk memastikan gayanya kembali.
+  Ini perlu karena 'all: revert' pada parent tidak selalu menurun ke semua child.
+*/
+.prose-revert h1,
+.prose-revert h2,
+.prose-revert h3,
+.prose-revert h4,
+.prose-revert h5,
+.prose-revert h6,
+.prose-revert p,
+.prose-revert ul,
+.prose-revert ol,
+.prose-revert li,
+.prose-revert a,
+.prose-revert blockquote {
+  all: revert;
+}
+
+/* Khusus untuk list agar menampilkan bullet/nomor */
+.prose-revert ul {
+  list-style: disc;
+  margin-left: 2rem; /* Beri margin agar bullet terlihat */
+}
+
+.prose-revert ol {
+  list-style: decimal;
+  margin-left: 2rem; /* Beri margin agar nomor terlihat */
+}
+
 
 

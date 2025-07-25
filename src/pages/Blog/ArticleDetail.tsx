@@ -24,6 +24,7 @@ const ArticleDetailPage = () => {
         dispatch(setActiveMenu("blogs"));
         getDataBySlug(param.slug ?? "", count)
             .then((res) => {
+                console.log(res);
                 setArticle(res.data);
                 // set cookies just for one day
                 const date = new Date();
@@ -112,17 +113,20 @@ const ArticleDetailPage = () => {
                         className="w-full   rounded-xl border-2 border-bodydark2 h-full object-cover"
                     />
                 </div>
-                <div
-                    className="w-full lg:px-60"
-                    style={{
-                        // width: "calc(100% - 100px)",
-                        // margin: "0 auto",
+                <div className="w-full lg:px-60 ">
+                    <div
+                        className="prose-revert"
+                        style={{
+                            // width: "calc(100% - 100px)",
+                            // margin: "0 auto",
                         textAlign: "justify",
                     }}
                     dangerouslySetInnerHTML={{
                         __html: article?.content ?? "",
                     }}
                 ></div>
+                </div>
+               
                 <div className="lg:pb-40 w-full mb:pb-40 pb-30 lg:px-60">
                     <CommentCard
                         articleId={article.id.toString()}

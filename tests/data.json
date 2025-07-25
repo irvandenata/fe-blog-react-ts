@@ -1,0 +1,232 @@
+{
+    "title": "testing",
+    "steps": [
+        {
+            "type": "setViewport",
+            "width": 1038,
+            "height": 935,
+            "deviceScaleFactor": 1,
+            "isMobile": false,
+            "hasTouch": false,
+            "isLandscape": false
+        },
+        {
+            "type": "navigate",
+            "url": "http://ivd.my.id/login",
+            "assertedEvents": [
+                {
+                    "type": "navigation",
+                    "url": "http://ivd.my.id/login",
+                    "title": "Ivd"
+                }
+            ]
+        },
+        {
+            "type": "click",
+            "target": "main",
+            "selectors": [
+                [
+                    "aria/Email Address"
+                ],
+                [
+                    "#email"
+                ],
+                [
+                    "xpath///*[@id=\"email\"]"
+                ],
+                [
+                    "pierce/#email"
+                ]
+            ],
+            "offsetY": 33,
+            "offsetX": 120.328125
+        },
+        {
+            "type": "change",
+            "value": "admin@mail.com",
+            "selectors": [
+                [
+                    "aria/Email Address"
+                ],
+                [
+                    "#email"
+                ],
+                [
+                    "xpath///*[@id=\"email\"]"
+                ],
+                [
+                    "pierce/#email"
+                ]
+            ],
+            "target": "main"
+        },
+        {
+            "type": "click",
+            "target": "main",
+            "selectors": [
+                [
+                    "aria/Password"
+                ],
+                [
+                    "#password"
+                ],
+                [
+                    "xpath///*[@id=\"password\"]"
+                ],
+                [
+                    "pierce/#password"
+                ]
+            ],
+            "offsetY": 26,
+            "offsetX": 99.328125
+        },
+        {
+            "type": "change",
+            "value": "password",
+            "selectors": [
+                [
+                    "aria/Password"
+                ],
+                [
+                    "#password"
+                ],
+                [
+                    "xpath///*[@id=\"password\"]"
+                ],
+                [
+                    "pierce/#password"
+                ]
+            ],
+            "target": "main"
+        },
+        {
+            "type": "click",
+            "target": "main",
+            "selectors": [
+                [
+                    "div.max-w-md div > div > div"
+                ],
+                [
+                    "xpath///*[@id=\"main-layout\"]/div[2]/div[2]/div/div[2]/form/button/div/div/div"
+                ],
+                [
+                    "pierce/div.max-w-md div > div > div"
+                ],
+                [
+                    "text/Login →"
+                ]
+            ],
+            "offsetY": 20,
+            "offsetX": 129.328125
+        },
+        {
+            "type": "click",
+            "target": "main",
+            "selectors": [
+                [
+                    "aria/Article"
+                ],
+                [
+                    "nav > div:nth-of-type(1) > ul > li:nth-of-type(2) > a"
+                ],
+                [
+                    "xpath///*[@id=\"root\"]/div[3]/div/aside/div[2]/nav/div[1]/ul/li[2]/a"
+                ],
+                [
+                    "pierce/nav > div:nth-of-type(1) > ul > li:nth-of-type(2) > a"
+                ],
+                [
+                    "text/Article"
+                ]
+            ],
+            "offsetY": 7,
+            "offsetX": 87
+        },
+        {
+            "type": "click",
+            "target": "main",
+            "selectors": [
+                [
+                    "aria/Article"
+                ],
+                [
+                    "nav > div:nth-of-type(1) > ul > li:nth-of-type(2) > a"
+                ],
+                [
+                    "xpath///*[@id=\"root\"]/div[3]/div/aside/div[2]/nav/div[1]/ul/li[2]/a"
+                ],
+                [
+                    "pierce/nav > div:nth-of-type(1) > ul > li:nth-of-type(2) > a"
+                ],
+                [
+                    "text/Article"
+                ]
+            ],
+            "offsetY": 7,
+            "offsetX": 87
+        },
+        {
+            "type": "click",
+            "target": "main",
+            "selectors": [
+                [
+                    "aria/Post"
+                ],
+                [
+                    "li:nth-of-type(2) li:nth-of-type(1) > a"
+                ],
+                [
+                    "xpath///*[@id=\"root\"]/div[3]/div/aside/div[2]/nav/div[1]/ul/li[2]/div/ul/li[1]/a"
+                ],
+                [
+                    "pierce/li:nth-of-type(2) li:nth-of-type(1) > a"
+                ],
+                [
+                    "text/Post"
+                ]
+            ],
+            "offsetY": 16,
+            "offsetX": 68
+        },
+        {
+            "type": "click",
+            "target": "main",
+            "selectors": [
+                [
+                    "tr:nth-of-type(1) button.bg-warning"
+                ],
+                [
+                    "xpath///*[@id=\"root\"]/div[3]/div/div/main/div/div/div/div/div[2]/div[3]/table/tbody/tr[1]/td[7]/button[1]"
+                ],
+                [
+                    "pierce/tr:nth-of-type(1) button.bg-warning"
+                ]
+            ],
+            "offsetY": 15,
+            "offsetX": 17.5703125
+        },
+        {
+            "type": "click",
+            "target": "main",
+            "selectors": [
+                [
+                    "aria/Update"
+                ],
+                [
+                    "button.bg-primary"
+                ],
+                [
+                    "xpath///*[@id=\"root\"]/div[3]/div/div/main/div/div/div/div/div[2]/form/div[7]/button[2]"
+                ],
+                [
+                    "pierce/button.bg-primary"
+                ],
+                [
+                    "text/Update"
+                ]
+            ],
+            "offsetY": 17,
+            "offsetX": 22.8203125
+        }
+    ]
+}
