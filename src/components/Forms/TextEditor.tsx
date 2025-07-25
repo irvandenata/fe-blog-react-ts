@@ -38,12 +38,17 @@ const TextEditor: FC<{
     };
 
     return (
-        <div className="min-h-[600px] border rounded p-5">
+        <div className="h-[700px] border rounded p-5">
             <Editor
-                editorState={editorState}
-                wrapperClassName="demo-wrapper"
-                editorClassName="demo-editor"
-                onEditorStateChange={onEditorStateChange}
+            editorState={editorState}
+            wrapperClassName="demo-wrapper"
+            editorClassName="demo-editor"
+            onEditorStateChange={onEditorStateChange}
+            editorStyle={{
+                height: "500px",
+                overflowY: "auto",
+                padding: "10px",
+            }}
             />
         </div>
     );

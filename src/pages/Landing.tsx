@@ -106,9 +106,9 @@ const LandingPage = () => {
 
                 fetchDataTechStack().then((res) => {
                     const response = res.data;
-                    let fe: any = [];
-                    let be: any = [];
-                    let ot: any = [];
+                    const fe: any = [];
+                    const be: any = [];
+                    const ot: any = [];
                     response.forEach((item: any) => {
                         if (item.subtitle === "frontend") {
                             fe.push(item);
