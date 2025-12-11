@@ -1,7 +1,7 @@
 "use client";
 
 import { Link } from "react-router-dom";
-import { CardBody, CardContainer, CardItem } from "../UI/3d-card";
+import { CardBody, CardContainer, CardItem } from "../ui/3d-card";
 
 export const Card3D: React.FC<{
     title: string;

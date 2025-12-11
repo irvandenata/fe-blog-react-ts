@@ -1,5 +1,5 @@
 "use client";
-import { SparklesCore } from "@/components/UI/sparkles";
+import { SparklesCore } from "@/components/ui/sparkles";
 
 export function SparklesPreview() {
     return (

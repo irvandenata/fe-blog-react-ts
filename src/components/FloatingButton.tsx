@@ -1,6 +1,6 @@
 import  { useEffect, useState } from "react";
 import { FaChevronUp } from "react-icons/fa";
-import { Button } from "./UI/moving-border";
+import { Button } from "./ui/moving-border";
 const FloatingButton = () => {
     const [showButton, setShowButton] = useState(false);
 

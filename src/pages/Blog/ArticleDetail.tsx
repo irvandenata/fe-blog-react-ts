@@ -6,7 +6,7 @@ import { convertDate } from "@/utils/common";
 import { useEffect, useState, useMemo, useCallback } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
-import { Button } from "@/components/UI/moving-border";
+import { Button } from "@/components/ui/moving-border";
 import SEOHead from "@/components/SEO/SEOHead";
 import {
     generateTitle,

@@ -1,5 +1,5 @@
 import Card3D from "@/components/Cards/Card3D";
-import AnimateSection from "@/components/UI/AnimateSection";
+import AnimateSection from "@/components/ui/AnimateSection";
 import { IArticle } from "@/interfaces/article";
 import { setActiveMenu } from "@/redux/slices/landingSlice";
 import { fetchDataCategories, fetchDataNoAuth } from "@/services/article";

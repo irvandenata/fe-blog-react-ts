@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { cn } from "@/utils/aceternity";
-import { Label } from "@/components/UI/label";
-import { Input } from "@/components/UI/input";
+import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
 import toast, { Toaster } from "react-hot-toast";
 import { login } from "@/services/auth";
 import { ILogin } from "@/interfaces/auth";

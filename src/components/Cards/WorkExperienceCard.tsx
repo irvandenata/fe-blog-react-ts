@@ -1,6 +1,6 @@
 import { convertDate } from "@/utils/common";
 import { memo, useMemo } from "react";
-import AnimateSection from "../UI/AnimateSection";
+import AnimateSection from "../ui/AnimateSection";
 
 interface WorkExperience {
     id: string | number;

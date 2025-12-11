@@ -1,4 +1,4 @@
-import { Button } from "./UI/moving-border";
+import { Button } from "./ui/moving-border";
 const SocialMediaButton: React.FC<{
     icon: string;
     id: string;

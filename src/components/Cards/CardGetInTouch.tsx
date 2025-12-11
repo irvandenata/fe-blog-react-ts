@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import AnimateSection from "../UI/AnimateSection";
+import AnimateSection from "../ui/AnimateSection";
 import toast from "react-hot-toast";
 import { sendMessage } from "@/services/landing";
 

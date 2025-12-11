@@ -1,10 +1,10 @@
 import { Card3D } from "@/components/Cards/Card3D";
 import CardGetInTouch from "@/components/Cards/CardGetInTouch";
 import WorkExperienceCard from "@/components/Cards/WorkExperienceCard";
-import AnimateSection from "@/components/UI/AnimateSection";
-import { BorderMoveCard } from "@/components/UI/BorderMoveCard";
-import { TechStack } from "@/components/UI/TechStack";
-import { Button } from "@/components/UI/moving-border";
+import AnimateSection from "@/components/ui/AnimateSection";
+import { BorderMoveCard } from "@/components/ui/BorderMoveCard";
+import { TechStack } from "@/components/ui/TechStack";
+import { Button } from "@/components/ui/moving-border";
 import { setCategoryFilter } from "@/redux/slices/articleSlice";
 import {
     setActiveMenu,

@@ -1,7 +1,7 @@
 import { Outlet } from "react-router-dom";
-import StickyNavbar from "@/components/UI/StickyNavbar";
-import { Meteors } from "../UI/meteors";
-import AnimateSection from "../UI/AnimateSection";
+import StickyNavbar from "@/components/ui/StickyNavbar";
+import { Meteors } from "../ui/meteors";
+import AnimateSection from "../ui/AnimateSection";
 import { useDispatch, useSelector } from "react-redux";
 import SocialMediaButton from "../SocialMediaButton";
 import FloatingButton from "../FloatingButton";
