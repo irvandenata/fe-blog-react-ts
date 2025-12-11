@@ -22,3 +22,6 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Generated sitemap (will be regenerated on build)
+public/sitemap.xml

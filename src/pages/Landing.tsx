@@ -22,6 +22,14 @@ import {
 import { useEffect, useRef, useState, useCallback, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import SEOHead from "@/components/SEO/SEOHead";
+import {
+    generateTitle,
+    generateWebsiteSchema,
+    generatePersonSchema,
+    getAbsoluteUrl,
+    stripHtmlTags,
+} from "@/utils/seo";
 
 const ANIMATION_DELAYS = {
     HEADER_SHOW: 1000,
@@ -246,31 +254,99 @@ const LandingPage = () => {
         [renderTechStackItem]
     );
 
+    // SEO configuration - memoized untuk performa
+    const seoData = useMemo(() => {
+        const title = header.data?.title ? stripHtmlTags(header.data.title) : "IRVAN DENATA";
+        const description = header.data?.description
+            ? stripHtmlTags(header.data.description).substring(0, 155)
+            : "Portfolio website showcasing projects, blog articles, and technical expertise in full-stack development.";
+
+        return {
+            title: generateTitle(title, "Full Stack Developer Portfolio"),
+            description,
+            image: header.data?.image || `${window.location.origin}/og-image.png`,
+            url: getAbsoluteUrl("/"),
+            keywords: [
+                "portfolio",
+                "full-stack developer",
+                "react developer",
+                "typescript",
+                "web development",
+                "software engineer",
+                "IRVAN DENATA",
+            ],
+        };
+    }, [header.data]);
+
+    // Structured Data untuk SEO
+    const structuredData = useMemo(() => {
+        const websiteSchema = generateWebsiteSchema({
+            name: "IRVAN DENATA Portfolio",
+            description: seoData.description,
+            url: seoData.url,
+        });
+
+        const personSchema = generatePersonSchema({
+            name: "IRVAN DENATA",
+            description: seoData.description,
+            image: seoData.image,
+            url: seoData.url,
+            jobTitle: "Full Stack Developer",
+            sameAs: [
+                // Tambahkan social media URLs
+                "https://github.com/IRVAN DENATA",
+                "https://linkedin.com/in/IRVAN DENATA",
+            ],
+        });
+
+        return [websiteSchema, personSchema];
+    }, [seoData]);
+
     if (!isLoad) {
         return (
-            <div className="h-screen w-full relative z-9999">
-                <div
-                    id="spinner"
-                    ref={loader}
-                    className="w-full dark:text-white dark:bg-dark bg-white text-dark h-screen z-99999 flex justify-center items-center fixed top-0 left-0"
-                >
-                    <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="50"
-                        height="50"
-                        className="animate-spin"
-                        viewBox="0 0 512 512"
-                        fill="currentColor"
+            <>
+                <SEOHead
+                    title={seoData.title}
+                    description={seoData.description}
+                    keywords={seoData.keywords}
+                    image={seoData.image}
+                    url={seoData.url}
+                    type="website"
+                    structuredData={structuredData}
+                />
+                <div className="h-screen w-full relative z-9999">
+                    <div
+                        id="spinner"
+                        ref={loader}
+                        className="w-full dark:text-white dark:bg-dark bg-white text-dark h-screen z-99999 flex justify-center items-center fixed top-0 left-0"
                     >
-                        <path d="M304 48a48 48 0 1 0 -96 0 48 48 0 1 0 96 0zm0 416a48 48 0 1 0 -96 0 48 48 0 1 0 96 0zM48 304a48 48 0 1 0 0-96 48 48 0 1 0 0 96zm464-48a48 48 0 1 0 -96 0 48 48 0 1 0 96 0zM142.9 437A48 48 0 1 0 75 369.1 48 48 0 1 0 142.9 437zm0-294.2A48 48 0 1 0 75 75a48 48 0 1 0 67.9 67.9zM369.1 437A48 48 0 1 0 437 369.1 48 48 0 1 0 369.1 437z" />
-                    </svg>
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="50"
+                            height="50"
+                            className="animate-spin"
+                            viewBox="0 0 512 512"
+                            fill="currentColor"
+                        >
+                            <path d="M304 48a48 48 0 1 0 -96 0 48 48 0 1 0 96 0zm0 416a48 48 0 1 0 -96 0 48 48 0 1 0 96 0zM48 304a48 48 0 1 0 0-96 48 48 0 1 0 0 96zm464-48a48 48 0 1 0 -96 0 48 48 0 1 0 96 0zM142.9 437A48 48 0 1 0 75 369.1 48 48 0 1 0 142.9 437zm0-294.2A48 48 0 1 0 75 75a48 48 0 1 0 67.9 67.9zM369.1 437A48 48 0 1 0 437 369.1 48 48 0 1 0 369.1 437z" />
+                        </svg>
+                    </div>
                 </div>
-            </div>
+            </>
         );
     }
 
     return (
         <>
+            <SEOHead
+                title={seoData.title}
+                description={seoData.description}
+                keywords={seoData.keywords}
+                image={seoData.image}
+                url={seoData.url}
+                type="website"
+                structuredData={structuredData}
+            />
             <div
                 id="home"
                 ref={homeRef}
