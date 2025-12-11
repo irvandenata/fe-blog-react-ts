@@ -16,6 +16,7 @@ import { middlewareLoader } from "@/utils/middleware";
 import SearchArticlePage from "@/pages/Blog/SearchArticle";
 import ArticleDetailPage from "@/pages/Blog/ArticleDetail";
 import NotFoundPage from "@/pages/404";
+import ArticleCreateOrEdit from "@/pages/Admin/ArticleCreateOrEdit";
 export default createBrowserRouter(
     [
         {
@@ -98,6 +99,10 @@ export default createBrowserRouter(
                         {
                             path: "posts",
                             element: <ArticlePage />,
+                        },
+                        {
+                            path: "posts/action",
+                            element: <ArticleCreateOrEdit />,
                         },
                         {
                             path: "categories",

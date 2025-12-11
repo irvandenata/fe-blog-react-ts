@@ -21,6 +21,7 @@ const store = configureStore({
 });
 
 store.subscribe(() => {
-   console.log("Store Change : ", store.getState());
+    //if env development 
+    //  console.log("Store Change : ", store.getState());
 });
 export default store;

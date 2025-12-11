@@ -143,12 +143,12 @@ export default function StickyNavbar() {
                 >
                     <div className="w-6 h-6">
                         <svg
-                            fill="#81263A"
+                            fill="#FBBA16"
                             version="1.1"
                             id="Capa_1"
                             xmlns="http://www.w3.org/2000/svg"
                             viewBox="0 0 94.504 94.504"
-                            stroke="#81263A"
+                            stroke="#FBBA16"
                         >
                             <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
                             <g

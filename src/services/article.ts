@@ -51,12 +51,12 @@ export async function fetchComments(slug:string): Promise<any> {
 export async function getDataBySlug(slug:string,count:boolean): Promise<any> {
     const url = `${API_ENDPOINT}/data/articles/${slug}`;
     let headers ={};
-
     if(count){
         headers = {
             "count": "true",
         };
     }
+
     // handling when error
     const response = await callAPI({
         headers,

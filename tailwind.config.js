@@ -1,20 +1,18 @@
-const defaultTheme = require("tailwindcss/defaultTheme");
-const colors = require("tailwindcss/colors");
-const flowbite = require("flowbite-react/tailwind");
-const {
-    default: flattenColorPalette,
-} = require("tailwindcss/lib/util/flattenColorPalette");
+import defaultTheme from "tailwindcss/defaultTheme";
+import colors from "tailwindcss/colors";
+import flowbitePlugin from "flowbite-react/plugin";
+import flattenColorPalette from "tailwindcss/lib/util/flattenColorPalette";
 /** @type {import('tailwindcss').Config} */
-module.exports = {
+export default {
     darkMode: "class",
     content: [
         "./pages/**/*.{ts,tsx}",
         "./components/**/*.{ts,tsx}",
         "./app/**/*.{ts,tsx}",
         "./src/**/*.{ts,tsx}",
-        "/node_modules/@material-tailwind/react/components/**/*.{js,ts,jsx,tsx}",
-        "/node_modules/@material-tailwind/react/theme/components/**/*.{js,ts,jsx,tsx}",
-        flowbite.content(),
+        "./node_modules/@material-tailwind/react/components/**/*.{js,ts,jsx,tsx}",
+        "./node_modules/@material-tailwind/react/theme/components/**/*.{js,ts,jsx,tsx}",
+        "./node_modules/flowbite-react/**/*.{js,jsx,ts,tsx}",
     ],
     prefix: "",
     screen: {
@@ -189,7 +187,7 @@ module.exports = {
             colors: {
                 background:'#212121',
                 background2:'#2F2F2F',
-                primary: "#81263A",
+                primary: "#FBBA16",
                 secondary: "#FF5C00",
                 blue: "#1fb6ff",
                 purple: "#7e5bef",
@@ -425,7 +423,7 @@ module.exports = {
         require("tailwindcss-animate"),
         require("tailwind-scrollbar"),
         addVariablesForColors,
-        flowbite.plugin(),
+        flowbitePlugin,
     ],
 };
 

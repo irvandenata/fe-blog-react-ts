@@ -12,7 +12,8 @@ const ArticleDetailPage = () => {
     const param = useParams<{ slug: string }>();
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    useEffect(() => {
+
+    const loadData = async () => {
         const cookie = document.cookie;
         let count = true;
         const flag = cookie
@@ -22,7 +23,7 @@ const ArticleDetailPage = () => {
             count = false;
         }
         dispatch(setActiveMenu("blogs"));
-        getDataBySlug(param.slug ?? "", count)
+        await getDataBySlug(param.slug ?? "", count)
             .then((res) => {
                 setArticle(res.data);
                 // set cookies just for one day
@@ -35,8 +36,10 @@ const ArticleDetailPage = () => {
             .catch((_) => {
                 navigate("/not-found");
             });
+    };
 
-        // get flag count form cookies
+    useEffect(() => {
+        loadData();
     }, []);
 
     //set direction to top
