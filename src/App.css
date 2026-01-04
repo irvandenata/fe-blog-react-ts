@@ -23,6 +23,8 @@
 */
 .prose-revert {
   all: revert; /* Mengembalikan semua properti ke nilai bawaan browser */
+  color: inherit; /* Tetap mengikuti warna tema */
+  font-family: inherit; /* Pertahankan font global aplikasi */
 }
 
 /* Targetkan elemen spesifik di dalam wrapper untuk memastikan gayanya kembali.
@@ -53,6 +55,5 @@
   list-style: decimal;
   margin-left: 2rem; /* Beri margin agar nomor terlihat */
 }
-
 
 

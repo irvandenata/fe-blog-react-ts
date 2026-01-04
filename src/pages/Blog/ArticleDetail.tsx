@@ -189,7 +189,7 @@ const ArticleDetailPage = () => {
                             ))}
                         </div>
 
-                        <div className="flex justify-center mt-5">
+                        <div className="flex justify-center mt-5 mb-2">
                             <div className="flex w-auto mx-auto rounded-xl mt-5 px-4 py-2 bg-boxdark text-center">
                                 <svg
                                     width="20px"
@@ -222,10 +222,7 @@ const ArticleDetailPage = () => {
 
                     <article className="w-full">
                         <div
-                            className="prose prose-lg dark:prose-invert max-w-none"
-                            style={{
-                                textAlign: "justify",
-                            }}
+                            className="prose-revert"
                             dangerouslySetInnerHTML={{
                                 __html: article.content ?? "",
                             }}
@@ -272,7 +269,11 @@ const ArticleDetailPage = () => {
                     </div>
 
                     <div className="lg:pb-40 w-full mb:pb-40 pb-30 mt-20">
-                        <CommentCard articleId={article.id.toString()} slug={article.slug ?? ""} />
+                        <CommentCard
+                            key={`comment-${article.id}-${article.slug ?? ""}`}
+                            articleId={article.id.toString()}
+                            slug={article.slug ?? ""}
+                        />
                     </div>
                 </div>
             </div>
