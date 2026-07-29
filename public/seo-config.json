@@ -1,0 +1,53 @@
+{
+  "siteName": "Irvan Denata",
+  "siteUrl": "https://ivd.my.id",
+  "locale": "id_ID",
+  "defaultTitle": "Irvan Denata — Full Stack Developer",
+  "titleTemplate": "%s | Irvan Denata",
+  "defaultDescription": "Portfolio dan blog Irvan Denata, full stack developer. Catatan teknis seputar React, TypeScript, Laravel, dan pengembangan web.",
+  "defaultKeywords": [
+    "Irvan Denata",
+    "full stack developer",
+    "react developer",
+    "typescript",
+    "laravel",
+    "blog programming indonesia"
+  ],
+  "defaultImage": "/og-image.png",
+  "author": {
+    "name": "Irvan Denata",
+    "jobTitle": "Full Stack Developer",
+    "url": "https://ivd.my.id",
+    "sameAs": [
+      "https://github.com/irvandta",
+      "https://www.linkedin.com/in/irvandta"
+    ]
+  },
+  "twitter": {
+    "card": "summary_large_image",
+    "site": "",
+    "creator": ""
+  },
+  "robots": "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1",
+  "verification": {
+    "google": "cBvsZNYqf5FcJu_zi2EgL6bq6DsnnDIR436vavO1Cgo",
+    "bing": "",
+    "yandex": ""
+  },
+  "organization": {
+    "name": "Irvan Denata",
+    "logo": "/logo.png"
+  },
+  "pages": {
+    "home": {
+      "title": "Irvan Denata — Full Stack Developer",
+      "description": "Portfolio Irvan Denata, full stack developer. Proyek, pengalaman kerja, dan tulisan seputar React, TypeScript, dan Laravel.",
+      "keywords": ["portfolio", "full stack developer", "Irvan Denata"]
+    },
+    "blogs": {
+      "title": "Blog",
+      "description": "Kumpulan tulisan dan catatan teknis seputar pengembangan web, React, TypeScript, dan rekayasa perangkat lunak.",
+      "keywords": ["blog", "artikel teknis", "tutorial web development"]
+    }
+  }
+}

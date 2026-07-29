@@ -1,26 +1,17 @@
-# robots.txt for IRVAN DENATA Portfolio
+# robots.txt for Irvan Denata
 # https://www.robotstxt.org/robotstxt.html
 
 User-agent: *
 Allow: /
-Allow: /blogs
-Allow: /blogs/*
-Allow: /sitemap.xml
 Disallow: /admin
-Disallow: /admin/*
-Disallow: /api/*
+Disallow: /admin/
+Disallow: /login
+Disallow: /logout
+Disallow: /not-found
 
-# Sitemaps
 Sitemap: https://ivd.my.id/sitemap.xml
 
-# Crawl-delay for aggressive bots
-User-agent: Baiduspider
-Crawl-delay: 10
-
-User-agent: Yandex
-Crawl-delay: 5
-
-# Allow important bots
+# --- Search engines ---
 User-agent: Googlebot
 Allow: /
 
@@ -30,5 +21,60 @@ Allow: /
 User-agent: Bingbot
 Allow: /
 
+User-agent: DuckDuckBot
+Allow: /
+
 User-agent: Slurp
 Allow: /
+
+# --- AI / LLM crawlers ---
+# Explicitly allowed so articles can be cited and surfaced in AI answers.
+# Change any of these to "Disallow: /" to opt that model out.
+User-agent: GPTBot
+Allow: /
+
+User-agent: OAI-SearchBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: Claude-Web
+Allow: /
+
+User-agent: anthropic-ai
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Perplexity-User
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: Applebot
+Allow: /
+
+User-agent: Applebot-Extended
+Allow: /
+
+User-agent: meta-externalagent
+Allow: /
+
+User-agent: CCBot
+Allow: /
+
+User-agent: cohere-ai
+Allow: /
+
+# --- Rate-limited bots ---
+User-agent: Baiduspider
+Crawl-delay: 10
+
+User-agent: YandexBot
+Crawl-delay: 5

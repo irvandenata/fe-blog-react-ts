@@ -2,110 +2,86 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://ivd.my.id/</loc>
-    <lastmod>2025-12-11T07:05:26.298Z</lastmod>
+    <lastmod>2026-07-29T08:30:26.836Z</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
     <loc>https://ivd.my.id/blogs</loc>
-    <lastmod>2025-12-11T07:05:26.299Z</lastmod>
+    <lastmod>2026-07-29T08:30:26.837Z</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://ivd.my.id/blogs/hidup-akan-berakhir</loc>
-    <lastmod>2025-12-11T05:13:55.000Z</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://ivd.my.id/blogs/aplikasi-chatbot-canggih-dengan-mudah-menggunakan-nextjs-dan-supabase</loc>
-    <lastmod>2025-11-25T02:15:50.000Z</lastmod>
+    <loc>https://ivd.my.id/blogs/hidup-harus-terus-berjalan</loc>
+    <lastmod>2026-07-29T08:28:53.000Z</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://ivd.my.id/blogs/akhir-dari-aku</loc>
-    <lastmod>2025-12-11T05:13:44.000Z</lastmod>
+    <lastmod>2026-07-29T08:28:54.000Z</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://ivd.my.id/blogs/dua-5-tahun</loc>
-    <lastmod>2025-07-25T17:26:15.000Z</lastmod>
+    <lastmod>2026-07-29T08:29:46.000Z</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://ivd.my.id/blogs/tanpa-tujuan-dan-hidup</loc>
-    <lastmod>2025-07-26T02:37:11.000Z</lastmod>
+    <lastmod>2026-07-29T08:28:57.000Z</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://ivd.my.id/blogs/kita-tidak-menghargai-sehat</loc>
-    <lastmod>2025-10-22T02:46:20.000Z</lastmod>
+    <lastmod>2026-07-29T08:28:58.000Z</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://ivd.my.id/blogs/menaklukkan-mata-kuliah-kalkulus</loc>
-    <lastmod>2025-06-20T08:02:46.000Z</lastmod>
+    <lastmod>2026-07-29T08:29:00.000Z</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://ivd.my.id/blogs/sebuah-impian-dan-harapan</loc>
-    <lastmod>2025-12-11T05:05:52.000Z</lastmod>
+    <lastmod>2026-07-29T08:29:01.000Z</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://ivd.my.id/blogs/dari-aku-melintasi-waktu-untuk-aku</loc>
-    <lastmod>2025-10-02T00:29:29.000Z</lastmod>
+    <lastmod>2026-07-29T08:29:02.000Z</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://ivd.my.id/blogs/aplikasi-pemetaan-potensi-wilayah-perbatasan-kalimantan-barat</loc>
-    <lastmod>2025-11-28T03:14:36.000Z</lastmod>
+    <lastmod>2026-07-29T08:29:04.000Z</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://ivd.my.id/blogs/aplikasi-quiz-dengan-manajemen-soal-dan-multi-variatif-jenis-soal</loc>
-    <lastmod>2025-11-12T10:32:56.000Z</lastmod>
+    <lastmod>2026-07-29T08:29:05.000Z</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://ivd.my.id/blogs/dequizer-aplikasi-quis-untuk-mengenal-indonesia</loc>
-    <lastmod>2025-11-20T14:30:04.000Z</lastmod>
+    <lastmod>2026-07-29T08:29:06.000Z</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://ivd.my.id/blogs/aplikasi-website-rekomendasi-laptop-dengan-menerapkan-algoritma-fuzzy</loc>
-    <lastmod>2025-11-20T14:30:02.000Z</lastmod>
+    <lastmod>2026-07-29T08:29:07.000Z</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://ivd.my.id/blogs?category=1</loc>
-    <lastmod>2025-12-11T07:05:26.300Z</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://ivd.my.id/blogs?category=2</loc>
-    <lastmod>2025-12-11T07:05:26.300Z</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://ivd.my.id/blogs?category=4</loc>
-    <lastmod>2025-12-11T07:05:26.300Z</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
   </url>
 </urlset>

@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="675" viewBox="0 0 1200 675" role="img" aria-label="Irvan Denata">
+  <defs>
+    <linearGradient id="c" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#171717"/>
+      <stop offset="100%" stop-color="#1F1F1F"/>
+    </linearGradient>
+    
+    <pattern id="ch" width="14" height="14" patternUnits="userSpaceOnUse"
+             patternTransform="rotate(45)">
+      <line x1="0" y1="0" x2="0" y2="14" stroke="#FBBA16" stroke-width="1"
+            opacity="0.06" />
+    </pattern>
+  </defs>
+  <rect width="1200" height="675" fill="url(#c)"/>
+  <rect width="1200" height="675" fill="url(#ch)"/>
+  <rect x="0" y="0" width="1200" height="6" fill="#FBBA16"/>
+  <rect x="536" y="268" width="128" height="128" rx="30" fill="none" stroke="#FBBA16" stroke-width="4"/>
+  <text x="600" y="356" font-family="Nunito, Inter, Helvetica, Arial, sans-serif" font-size="58" font-weight="800" fill="#FBBA16" text-anchor="middle">ID</text>
+  <text x="600" y="470" font-family="Nunito, Inter, Helvetica, Arial, sans-serif" font-size="30" font-weight="600" fill="#8A8A8A" text-anchor="middle" letter-spacing="3">ivd.my.id</text>
+</svg>

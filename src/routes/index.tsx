@@ -1,14 +1,6 @@
 import { createBrowserRouter } from "react-router-dom";
-import AdminLayout from "../components/Layouts/AdminLayout";
+import { lazy, Suspense, type ReactNode } from "react";
 import LandingPage from "../pages/Landing";
-import LoginPage from "../pages/Auth/Login";
-import DashboardPage from "../pages/Admin/Dashboard";
-import SettingPage from "../pages/Admin/Setting";
-import CustomInformationPage from "../pages/Admin/CustomInformation";
-import ArticleCategoryPage from "../pages/Admin/ArticleCategory";
-import ArticlePage from "../pages/Admin/Article";
-import ArticleTagPage from "../pages/Admin/ArticleTag";
-import CustomInformationTypePage from "../pages/Admin/CustomInformationType";
 import { checkAuthLoader, ifLogin, logout } from "@/utils/auth";
 import MainLayout from "@/components/Layouts/MainLayout";
 import ErrorPage from "@/pages/Error";
@@ -16,7 +8,36 @@ import { middlewareLoader } from "@/utils/middleware";
 import SearchArticlePage from "@/pages/Blog/SearchArticle";
 import ArticleDetailPage from "@/pages/Blog/ArticleDetail";
 import NotFoundPage from "@/pages/404";
-import ArticleCreateOrEdit from "@/pages/Admin/ArticleCreateOrEdit";
+
+/**
+ * Admin and auth screens are lazy-loaded so their heavy dependencies
+ * (TinyMCE, draft-js, PrimeReact tables) stay out of the public bundle.
+ * Public routes are imported eagerly — they are what gets prerendered and
+ * what visitors and crawlers actually land on.
+ */
+const AdminLayout = lazy(() => import("../components/Layouts/AdminLayout"));
+const LoginPage = lazy(() => import("../pages/Auth/Login"));
+const DashboardPage = lazy(() => import("../pages/Admin/Dashboard"));
+const SettingPage = lazy(() => import("../pages/Admin/Setting"));
+const SeoPage = lazy(() => import("../pages/Admin/Seo"));
+const CustomInformationPage = lazy(() => import("../pages/Admin/CustomInformation"));
+const CustomInformationTypePage = lazy(() => import("../pages/Admin/CustomInformationType"));
+const ArticlePage = lazy(() => import("../pages/Admin/Article"));
+const ArticleCategoryPage = lazy(() => import("../pages/Admin/ArticleCategory"));
+const ArticleTagPage = lazy(() => import("../pages/Admin/ArticleTag"));
+const ArticleCreateOrEdit = lazy(() => import("@/pages/Admin/ArticleCreateOrEdit"));
+
+const withSuspense = (node: ReactNode) => (
+    <Suspense
+        fallback={
+            <div className="grid min-h-screen place-content-center dark:text-white">
+                Loading…
+            </div>
+        }
+    >
+        {node}
+    </Suspense>
+);
 
 export default createBrowserRouter(
     [
@@ -35,7 +56,7 @@ export default createBrowserRouter(
                 },
                 {
                     path: "login",
-                    element: <LoginPage />,
+                    element: withSuspense(<LoginPage />),
                     loader: ifLogin,
                 },
                 {
@@ -54,13 +75,13 @@ export default createBrowserRouter(
                             path: ":slug",
                             element: <ArticleDetailPage />,
                         },
-                    ]
-                }
+                    ],
+                },
             ],
         },
         {
             path: "admin",
-            element: <AdminLayout />,
+            element: withSuspense(<AdminLayout />),
             errorElement: <ErrorPage />,
             loader: checkAuthLoader,
             action: () => {
@@ -69,51 +90,50 @@ export default createBrowserRouter(
             children: [
                 {
                     path: "dashboard",
-                    element: <DashboardPage />,
+                    element: withSuspense(<DashboardPage />),
                     loader: middlewareLoader,
                 },
                 {
                     path: "settings",
-                    element: <SettingPage />,
+                    element: withSuspense(<SettingPage />),
+                    loader: middlewareLoader,
+                },
+                {
+                    path: "seo",
+                    element: withSuspense(<SeoPage />),
                     loader: middlewareLoader,
                 },
                 {
                     path: "custom-informations/items",
-                    element: <CustomInformationPage />,
+                    element: withSuspense(<CustomInformationPage />),
                     loader: middlewareLoader,
                 },
                 {
                     path: "custom-informations/types",
-                    element: <CustomInformationTypePage />,
+                    element: withSuspense(<CustomInformationTypePage />),
                     loader: middlewareLoader,
                 },
-                {
-                    path: "custom-informations/items",
-                    element: <CustomInformationPage />,
-                    loader: middlewareLoader,
-                },
-
                 {
                     path: "article",
                     loader: middlewareLoader,
-                    children:[
+                    children: [
                         {
                             path: "posts",
-                            element: <ArticlePage />,
+                            element: withSuspense(<ArticlePage />),
                         },
                         {
                             path: "posts/action",
-                            element: <ArticleCreateOrEdit />,
+                            element: withSuspense(<ArticleCreateOrEdit />),
                         },
                         {
                             path: "categories",
-                            element: <ArticleCategoryPage />,
+                            element: withSuspense(<ArticleCategoryPage />),
                         },
                         {
                             path: "tags",
-                            element: <ArticleTagPage />,
-                        }
-                    ]
+                            element: withSuspense(<ArticleTagPage />),
+                        },
+                    ],
                 },
             ],
         },

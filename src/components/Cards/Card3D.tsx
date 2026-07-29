@@ -2,6 +2,7 @@
 
 import { Link } from "react-router-dom";
 import { CardBody, CardContainer, CardItem } from "../ui/3d-card";
+import { getCoverImage } from "@/utils/seo";
 
 export const Card3D: React.FC<{
     title: string;
@@ -9,17 +10,22 @@ export const Card3D: React.FC<{
     category: any;
     image_url: string;
     slug: string;
-}> = ({ title, content, category, image_url, slug }) => {
+    /** Set on above-the-fold cards so the LCP image is not lazy-loaded. */
+    priority?: boolean;
+}> = ({ title, content, category, image_url, slug, priority = false }) => {
     return (
         <CardContainer className="inter-var w-full">
             <CardBody className="bg-gray-50 relative group/card  dark:hover :shadow-2xl dark:hover:shadow-emerald-500/[0.1] bg-slate-100 dark:bg-dark dark:border-gray-dark dark:border-2 border-bodydark2 w-full  h-auto rounded-xl p-6 border-2  ">
                 <CardItem translateZ="100" className="w-full">
                     <img
-                        src={image_url}
-                        height="1000"
-                        width="1000"
+                        src={getCoverImage(image_url)}
+                        height="675"
+                        width="1200"
+                        loading={priority ? "eager" : "lazy"}
+                        fetchPriority={priority ? "high" : "auto"}
+                        decoding="async"
                         className="h-60 w-full object-cover rounded-xl group-hover/card:shadow-xl"
-                        alt="thumbnail"
+                        alt={title}
                     />
                 </CardItem>
                 <CardItem

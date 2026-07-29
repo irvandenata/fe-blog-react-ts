@@ -1,7 +1,44 @@
 /**
  * SEO Utility Functions
- * Provides helper functions for SEO optimization
+ *
+ * All site-wide SEO values live in `public/seo-config.json` so they can be
+ * edited without touching code. The same JSON is read by scripts/prerender.js
+ * and scripts/generate-sitemap.js at build time.
+ *
+ * Everything here must stay SSR-safe: the prerenderer runs these in Node,
+ * where `window` and `DOMParser` do not exist.
  */
+import rawConfig from "../../public/seo-config.json";
+
+export interface SeoPageConfig {
+    title: string;
+    description: string;
+    keywords?: string[];
+}
+
+export interface SeoSiteConfig {
+    siteName: string;
+    siteUrl: string;
+    locale: string;
+    defaultTitle: string;
+    titleTemplate: string;
+    defaultDescription: string;
+    defaultKeywords: string[];
+    defaultImage: string;
+    author: {
+        name: string;
+        jobTitle?: string;
+        url?: string;
+        sameAs?: string[];
+    };
+    twitter: { card: string; site?: string; creator?: string };
+    robots: string;
+    verification: { google?: string; bing?: string; yandex?: string };
+    organization: { name: string; logo: string };
+    pages: Record<string, SeoPageConfig>;
+}
+
+export const seoConfig = rawConfig as SeoSiteConfig;
 
 export interface SEOConfig {
     title: string;
@@ -16,57 +53,124 @@ export interface SEOConfig {
     tags?: string[];
     category?: string;
     canonical?: string;
+    noindex?: boolean;
 }
 
 /**
- * Generate meta title with site name
+ * Site origin. Prefers the runtime origin in the browser so preview/staging
+ * deploys self-reference correctly, and falls back to the configured siteUrl
+ * during prerender where there is no window.
  */
-export const generateTitle = (pageTitle: string, siteName: string = "IRVAN DENATA"): string => {
-    return pageTitle ? `${pageTitle} | ${siteName}` : siteName;
+export const getSiteUrl = (): string => {
+    if (typeof window !== "undefined" && window.location?.origin) {
+        return window.location.origin;
+    }
+    return seoConfig.siteUrl;
 };
 
 /**
- * Truncate description to optimal length for SEO
- * Google typically shows 155-160 characters
- */
-export const truncateDescription = (text: string, maxLength: number = 155): string => {
-    if (text.length <= maxLength) return text;
-    return text.substring(0, maxLength - 3) + "...";
-};
-
-/**
- * Strip HTML tags from content
- */
-export const stripHtmlTags = (html: string): string => {
-    const doc = new DOMParser().parseFromString(html, "text/html");
-    return doc.body.textContent || "";
-};
-
-/**
- * Generate excerpt from HTML content
- */
-export const generateExcerpt = (htmlContent: string, maxLength: number = 155): string => {
-    const plainText = stripHtmlTags(htmlContent);
-    return truncateDescription(plainText, maxLength);
-};
-
-/**
- * Generate keywords array from tags
- */
-export const generateKeywords = (tags: string[], additionalKeywords: string[] = []): string[] => {
-    return [...new Set([...tags, ...additionalKeywords])];
-};
-
-/**
- * Get absolute URL
+ * Build an absolute URL from a path, passing through already-absolute URLs.
  */
 export const getAbsoluteUrl = (path: string): string => {
-    const baseUrl = window.location.origin;
-    return `${baseUrl}${path.startsWith("/") ? path : `/${path}`}`;
+    if (!path) return getSiteUrl();
+    if (/^https?:\/\//i.test(path)) return path;
+    return `${getSiteUrl()}${path.startsWith("/") ? path : `/${path}`}`;
 };
 
 /**
- * Generate structured data for Article (Schema.org)
+ * Apply the configured title template, falling back to the default title.
+ */
+export const generateTitle = (pageTitle?: string): string => {
+    if (!pageTitle) return seoConfig.defaultTitle;
+    const trimmed = pageTitle.trim();
+    if (trimmed === seoConfig.defaultTitle) return trimmed;
+    // Skip the suffix when the title already names the site, so titles do not
+    // read "Hi There, I'm Irvan Denata | Irvan Denata".
+    if (trimmed.toLowerCase().includes(seoConfig.siteName.toLowerCase())) {
+        return trimmed;
+    }
+    return seoConfig.titleTemplate.replace("%s", trimmed);
+};
+
+/**
+ * Truncate to the length Google renders, cutting on a word boundary so
+ * descriptions do not end mid-word.
+ */
+export const truncateDescription = (text: string, maxLength: number = 155): string => {
+    const clean = text.replace(/\s+/g, " ").trim();
+    if (clean.length <= maxLength) return clean;
+    const sliced = clean.slice(0, maxLength - 1);
+    const lastSpace = sliced.lastIndexOf(" ");
+    const cut = lastSpace > maxLength * 0.6 ? sliced.slice(0, lastSpace) : sliced;
+    return `${cut.trimEnd()}…`;
+};
+
+/**
+ * Strip HTML tags with a regex rather than DOMParser, so this also works in
+ * Node during prerender. Entities the editor commonly emits are decoded.
+ */
+export const stripHtmlTags = (html: string): string => {
+    if (!html) return "";
+    return html
+        .replace(/<(script|style)[^>]*>[\s\S]*?<\/\1>/gi, " ")
+        .replace(/<[^>]+>/g, " ")
+        .replace(/&nbsp;/gi, " ")
+        .replace(/&amp;/gi, "&")
+        .replace(/&quot;/gi, '"')
+        .replace(/&#39;/gi, "'")
+        .replace(/&lt;/gi, "<")
+        .replace(/&gt;/gi, ">")
+        .replace(/\s+/g, " ")
+        .trim();
+};
+
+export const generateExcerpt = (htmlContent: string, maxLength: number = 155): string => {
+    return truncateDescription(stripHtmlTags(htmlContent), maxLength);
+};
+
+/**
+ * Branded placeholder used when an article has no cover image.
+ * Generated by scripts/generate-images.js.
+ */
+export const DEFAULT_COVER_IMAGE = "/default-cover.svg";
+
+/**
+ * Resolve an article cover, falling back to the branded placeholder.
+ * Blank strings count as missing — the API returns "" as often as null.
+ */
+export const getCoverImage = (imageUrl?: string | null): string => {
+    const trimmed = imageUrl?.trim();
+    return trimmed ? trimmed : DEFAULT_COVER_IMAGE;
+};
+
+export const generateKeywords = (
+    tags: string[] = [],
+    additionalKeywords: string[] = []
+): string[] => {
+    return [...new Set([...tags, ...additionalKeywords])].filter(Boolean);
+};
+
+/**
+ * Resolve a page preset from seo-config.json into a full SEOConfig.
+ */
+export const getPageSEO = (key: string, path: string = "/"): SEOConfig => {
+    const page = seoConfig.pages[key];
+    return {
+        title: generateTitle(page?.title),
+        description: page?.description || seoConfig.defaultDescription,
+        keywords: generateKeywords(page?.keywords, seoConfig.defaultKeywords),
+        author: seoConfig.author.name,
+        image: getAbsoluteUrl(seoConfig.defaultImage),
+        url: getAbsoluteUrl(path),
+        type: "website",
+    };
+};
+
+export const getDefaultSEOConfig = (): SEOConfig => getPageSEO("home", "/");
+
+/**
+ * Schema.org BlogPosting for article detail pages. This is the structured
+ * data Google and AI crawlers use to attribute and summarise the content.
  */
 export const generateArticleSchema = (config: {
     title: string;
@@ -78,78 +182,78 @@ export const generateArticleSchema = (config: {
     url: string;
     tags?: string[];
     category?: string;
+    wordCount?: number;
 }) => {
     return {
         "@context": "https://schema.org",
-        "@type": "Article",
-        headline: config.title,
+        "@type": "BlogPosting",
+        headline: truncateDescription(config.title, 110),
         description: config.description,
-        image: config.image ? [config.image] : [],
+        image: config.image ? [getAbsoluteUrl(config.image)] : [],
         datePublished: config.publishedTime,
         dateModified: config.modifiedTime || config.publishedTime,
+        inLanguage: seoConfig.locale.split("_")[0],
         author: {
             "@type": "Person",
-            name: config.author || "IRVAN DENATA",
+            name: config.author || seoConfig.author.name,
+            url: seoConfig.author.url,
         },
         publisher: {
             "@type": "Organization",
-            name: "IRVAN DENATA",
+            name: seoConfig.organization.name,
             logo: {
                 "@type": "ImageObject",
-                url: `${window.location.origin}/logo.png`,
+                url: getAbsoluteUrl(seoConfig.organization.logo),
             },
         },
         mainEntityOfPage: {
             "@type": "WebPage",
             "@id": config.url,
         },
+        ...(config.wordCount ? { wordCount: config.wordCount } : {}),
         keywords: config.tags?.join(", ") || "",
         articleSection: config.category || "",
     };
 };
 
-/**
- * Generate structured data for Person (Schema.org)
- */
 export const generatePersonSchema = (config: {
-    name: string;
+    name?: string;
     description?: string;
     image?: string;
-    url: string;
+    url?: string;
     jobTitle?: string;
     sameAs?: string[];
 }) => {
     return {
         "@context": "https://schema.org",
         "@type": "Person",
-        name: config.name,
+        name: config.name || seoConfig.author.name,
         description: config.description,
         image: config.image,
-        url: config.url,
-        jobTitle: config.jobTitle,
-        sameAs: config.sameAs || [],
+        url: config.url || seoConfig.author.url,
+        jobTitle: config.jobTitle || seoConfig.author.jobTitle,
+        sameAs: config.sameAs || seoConfig.author.sameAs || [],
     };
 };
 
-/**
- * Generate structured data for Website (Schema.org)
- */
 export const generateWebsiteSchema = (config: {
-    name: string;
-    description: string;
-    url: string;
+    name?: string;
+    description?: string;
+    url?: string;
 }) => {
+    const url = config.url || getSiteUrl();
     return {
         "@context": "https://schema.org",
         "@type": "WebSite",
-        name: config.name,
-        description: config.description,
-        url: config.url,
+        name: config.name || seoConfig.siteName,
+        description: config.description || seoConfig.defaultDescription,
+        url,
+        inLanguage: seoConfig.locale.split("_")[0],
         potentialAction: {
             "@type": "SearchAction",
             target: {
                 "@type": "EntryPoint",
-                urlTemplate: `${config.url}/blogs?search={search_term_string}`,
+                urlTemplate: `${url}/blogs?search={search_term_string}`,
             },
             "query-input": "required name=search_term_string",
         },
@@ -157,8 +261,32 @@ export const generateWebsiteSchema = (config: {
 };
 
 /**
- * Generate breadcrumb structured data (Schema.org)
+ * Schema.org Blog for the listing page, so it is understood as a collection
+ * of posts rather than a generic page.
  */
+export const generateBlogSchema = (
+    articles: { title: string; slug?: string; created_at?: string }[] = []
+) => {
+    return {
+        "@context": "https://schema.org",
+        "@type": "Blog",
+        name: `${seoConfig.siteName} Blog`,
+        description: seoConfig.pages.blogs?.description || seoConfig.defaultDescription,
+        url: getAbsoluteUrl("/blogs"),
+        inLanguage: seoConfig.locale.split("_")[0],
+        publisher: {
+            "@type": "Organization",
+            name: seoConfig.organization.name,
+        },
+        blogPost: articles.slice(0, 20).map((article) => ({
+            "@type": "BlogPosting",
+            headline: article.title,
+            url: getAbsoluteUrl(`/blogs/${article.slug}`),
+            datePublished: article.created_at,
+        })),
+    };
+};
+
 export const generateBreadcrumbSchema = (items: { name: string; url: string }[]) => {
     return {
         "@context": "https://schema.org",
@@ -169,28 +297,5 @@ export const generateBreadcrumbSchema = (items: { name: string; url: string }[])
             name: item.name,
             item: item.url,
         })),
-    };
-};
-
-/**
- * Get default SEO config
- */
-export const getDefaultSEOConfig = (): SEOConfig => {
-    return {
-        title: "IRVAN DENATA - Full Stack Developer Portfolio",
-        description:
-            "Portfolio website showcasing projects, blog articles, and technical expertise in full-stack development. Explore my work in React, TypeScript, Node.js, and more.",
-        keywords: [
-            "portfolio",
-            "developer",
-            "full-stack",
-            "react",
-            "typescript",
-            "node.js",
-            "web development",
-        ],
-        author: "IRVAN DENATA",
-        type: "website",
-        url: getAbsoluteUrl("/"),
     };
 };

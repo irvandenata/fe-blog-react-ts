@@ -13,7 +13,11 @@ import {
     generateExcerpt,
     generateArticleSchema,
     generateBreadcrumbSchema,
+    generateKeywords,
     getAbsoluteUrl,
+    getCoverImage,
+    stripHtmlTags,
+    seoConfig,
 } from "@/utils/seo";
 
 const ArticleDetailPage = () => {
@@ -61,34 +65,36 @@ const ArticleDetailPage = () => {
     // SEO Data - memoized
     const seoData = useMemo(() => {
         if (!article) {
+            // Still loading: mark noindex so a crawler reaching the
+            // pre-hydration state never indexes an empty shell.
             return {
-                title: generateTitle("Loading Article...", "IRVAN DENATA Blog"),
-                description: "Loading article content...",
-                keywords: [],
+                title: generateTitle("Memuat artikel"),
+                description: seoConfig.defaultDescription,
+                keywords: [] as string[],
                 url: getAbsoluteUrl(`/blogs/${param.slug}`),
                 image: "",
+                wordCount: 0,
+                noindex: true,
             };
         }
 
-        const title = generateTitle(article.title, "IRVAN DENATA Blog");
-        const description = generateExcerpt(article.content, 155);
-        const keywords = [
-            ...article.tags.map((tag) => tag.name),
-            article.category?.name || "",
-            "blog",
-            "article",
-        ];
+        const plainContent = stripHtmlTags(article.content ?? "");
 
         return {
-            title,
-            description,
-            keywords,
+            title: generateTitle(article.title),
+            description: generateExcerpt(article.content ?? "", 155),
+            keywords: generateKeywords(
+                article.tags.map((tag) => tag.name),
+                [article.category?.name || "", "blog", "artikel"]
+            ),
             url: getAbsoluteUrl(`/blogs/${article.slug}`),
-            image: article.image_url || `${window.location.origin}/og-image.png`,
+            image: article.image_url || seoConfig.defaultImage,
             publishedTime: article.created_at,
             modifiedTime: article.updated_at,
             category: article.category?.name,
             tags: article.tags.map((tag) => tag.name),
+            wordCount: plainContent ? plainContent.split(/\s+/).length : 0,
+            noindex: false,
         };
     }, [article, param.slug]);
 
@@ -100,18 +106,18 @@ const ArticleDetailPage = () => {
             title: article.title,
             description: seoData.description,
             image: seoData.image,
-            author: "IRVAN DENATA",
             publishedTime: article.created_at,
             modifiedTime: article.updated_at,
             url: seoData.url,
             tags: article.tags.map((tag) => tag.name),
             category: article.category?.name,
+            wordCount: seoData.wordCount,
         });
 
         const breadcrumbSchema = generateBreadcrumbSchema([
             { name: "Home", url: getAbsoluteUrl("/") },
             { name: "Blog", url: getAbsoluteUrl("/blogs") },
-            { name: article.category?.name || "Article", url: seoData.url },
+            { name: article.title, url: seoData.url },
         ]);
 
         return [articleSchema, breadcrumbSchema];
@@ -126,6 +132,7 @@ const ArticleDetailPage = () => {
                     keywords={seoData.keywords}
                     url={seoData.url}
                     type="article"
+                    noindex
                 />
                 <div className="w-full min-h-screen relative z-10 dark:bg-dark text-white">
                     <div className="w-full h-screen grid place-content-center text-dark dark:text-white">
@@ -159,14 +166,17 @@ const ArticleDetailPage = () => {
                 structuredData={structuredData}
             />
             <div className="w-full min-h-screen relative z-10 dark:bg-dark lg:pt-40 md:pt-40 pt-30">
-                <div className="lg:px-60 w-full">
-                    <div className="text-center">
+                <article className="lg:px-60 w-full">
+                    <header className="text-center">
                         <h1 className="text-4xl font-bold dark:text-white text-dark-custom-200 mb-5">
                             {article.title}
                         </h1>
                         <div className="flex justify-center items-center gap-3 mb-5">
                             <p className="text-sm text-gray-500 dark:text-gray-400">
-                                Published on {convertDate(article.created_at)}
+                                Published on{" "}
+                                <time dateTime={article.created_at}>
+                                    {convertDate(article.created_at)}
+                                </time>
                             </p>
                             {article.category && (
                                 <>
@@ -207,27 +217,35 @@ const ArticleDetailPage = () => {
                                 <p className="text-md my-auto font-bold rounded-xl">{article.views} Views</p>
                             </div>
                         </div>
-                    </div>
+                    </header>
 
                     <div
                         id="article-image"
                         className="w-full lg:px-5 md:px-5 lg:mb-20 mb:mb-20 mb-10 lg:h-[600px] md:h-[600px] animate-fade-on"
                     >
+                        {/* LCP element: eager + high priority, with explicit
+                            dimensions so it reserves space and does not shift. */}
                         <img
-                            src={article.image_url ?? "https://picsum.photos/id/237/200/300"}
+                            src={getCoverImage(article.image_url)}
                             alt={article.title}
-                            className="w-full rounded-xl border-2 border-bodydark2 h-full object-cover"
+                            width={1200}
+                            height={675}
+                            loading="eager"
+                            fetchPriority="high"
+                            decoding="async"
+                            // aspect-video keeps a 16:9 box on small screens,
+                            // where the container sets no height; lg:h-full
+                            // hands control back to it on desktop.
+                            className="w-full aspect-video lg:aspect-auto lg:h-full rounded-xl border-2 border-bodydark2 object-cover"
                         />
                     </div>
 
-                    <article className="w-full">
-                        <div
-                            className="prose-revert"
-                            dangerouslySetInnerHTML={{
-                                __html: article.content ?? "",
-                            }}
-                        />
-                    </article>
+                    <div
+                        className="prose-revert w-full"
+                        dangerouslySetInnerHTML={{
+                            __html: article.content ?? "",
+                        }}
+                    />
 
                     <div id="article-related" className="w-full relative grid place-content-center grid-cols-1 z-10 mt-20">
                         <div className="text-2xl py-10 text-center font-bold dark:text-white text-dark-custom-200">
@@ -275,7 +293,7 @@ const ArticleDetailPage = () => {
                             slug={article.slug ?? ""}
                         />
                     </div>
-                </div>
+                </article>
             </div>
         </>
     );

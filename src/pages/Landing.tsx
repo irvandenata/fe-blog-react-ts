@@ -27,8 +27,9 @@ import {
     generateTitle,
     generateWebsiteSchema,
     generatePersonSchema,
-    getAbsoluteUrl,
+    getPageSEO,
     stripHtmlTags,
+    truncateDescription,
 } from "@/utils/seo";
 
 const ANIMATION_DELAYS = {
@@ -254,49 +255,36 @@ const LandingPage = () => {
         [renderTechStackItem]
     );
 
-    // SEO configuration - memoized untuk performa
+    // SEO configuration - memoized untuk performa.
+    // Defaults come from public/seo-config.json; the landing header from the
+    // settings API overrides them when present.
     const seoData = useMemo(() => {
-        const title = header.data?.title ? stripHtmlTags(header.data.title) : "IRVAN DENATA";
-        const description = header.data?.description
-            ? stripHtmlTags(header.data.description).substring(0, 155)
-            : "Portfolio website showcasing projects, blog articles, and technical expertise in full-stack development.";
+        const base = getPageSEO("home", "/");
 
         return {
-            title: generateTitle(title, "Full Stack Developer Portfolio"),
-            description,
-            image: header.data?.image || `${window.location.origin}/og-image.png`,
-            url: getAbsoluteUrl("/"),
-            keywords: [
-                "portfolio",
-                "full-stack developer",
-                "react developer",
-                "typescript",
-                "web development",
-                "software engineer",
-                "IRVAN DENATA",
-            ],
+            ...base,
+            title: header.data?.title
+                ? generateTitle(stripHtmlTags(header.data.title))
+                : base.title,
+            description: header.data?.description
+                ? truncateDescription(stripHtmlTags(header.data.description), 155)
+                : base.description,
+            image: header.data?.image || base.image,
         };
     }, [header.data]);
 
-    // Structured Data untuk SEO
+    // Structured Data untuk SEO. Author identity and social profiles come
+    // from seo-config.json so they stay consistent across pages.
     const structuredData = useMemo(() => {
         const websiteSchema = generateWebsiteSchema({
-            name: "IRVAN DENATA Portfolio",
             description: seoData.description,
             url: seoData.url,
         });
 
         const personSchema = generatePersonSchema({
-            name: "IRVAN DENATA",
             description: seoData.description,
             image: seoData.image,
             url: seoData.url,
-            jobTitle: "Full Stack Developer",
-            sameAs: [
-                // Tambahkan social media URLs
-                "https://github.com/IRVAN DENATA",
-                "https://linkedin.com/in/IRVAN DENATA",
-            ],
         });
 
         return [websiteSchema, personSchema];

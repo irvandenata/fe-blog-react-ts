@@ -1,0 +1,6 @@
+onlyBuiltDependencies:
+  - '@swc/core'
+  - esbuild
+  - core-js
+  - '@tsparticles/engine'
+  - puppeteer

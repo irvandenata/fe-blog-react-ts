@@ -12,9 +12,13 @@ import { fileURLToPath } from 'url';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-// Configuration
+// Configuration. siteUrl comes from the same seo-config.json the app uses, so
+// the sitemap can never disagree with the canonical URLs the pages emit.
+const seoConfig = JSON.parse(
+    fs.readFileSync(path.join(__dirname, '..', 'public', 'seo-config.json'), 'utf8')
+);
 const API_BASE_URL = process.env.VITE_API_URL || 'https://api.ivd.my.id/api/v1';
-const SITE_URL = process.env.VITE_SITE_URL || 'https://ivd.my.id';
+const SITE_URL = process.env.VITE_SITE_URL || seoConfig.siteUrl;
 const OUTPUT_PATH = path.join(__dirname, '..', 'public', 'sitemap.xml');
 
 /**
@@ -118,27 +122,6 @@ async function fetchArticles() {
 }
 
 /**
- * Fetch categories from API
- */
-async function fetchCategories() {
-    try {
-        console.log('Fetching categories from API...');
-        const response = await fetch(`${API_BASE_URL}/data/article-categories?all_data=1&per_page=100`);
-
-        if (!response.ok) {
-            throw new Error(`API responded with status: ${response.status}`);
-        }
-
-        const data = await response.json();
-        console.log(`✓ Fetched ${data.data?.length || 0} categories`);
-        return data.data || [];
-    } catch (error) {
-        console.error('Error fetching categories:', error.message);
-        return [];
-    }
-}
-
-/**
  * Generate article URLs
  */
 function generateArticlePages(articles) {
@@ -147,18 +130,6 @@ function generateArticlePages(articles) {
         lastmod: article.updated_at || article.created_at,
         changefreq: 'monthly',
         priority: 0.8,
-    }));
-}
-
-/**
- * Generate category URLs
- */
-function generateCategoryPages(categories) {
-    return categories.map((category) => ({
-        loc: `${SITE_URL}/blogs?category=${category.id}`,
-        lastmod: new Date().toISOString(),
-        changefreq: 'weekly',
-        priority: 0.7,
     }));
 }
 
@@ -174,23 +145,19 @@ async function main() {
 
     try {
         // Fetch data from API
-        const [articles, categories] = await Promise.all([
-            fetchArticles(),
-            fetchCategories(),
-        ]);
+        const articles = await fetchArticles();
 
-        // Generate URLs
+        // Generate URLs. Category URLs (/blogs?category=N) are deliberately
+        // excluded: they are filtered views of /blogs whose canonical already
+        // points at /blogs, so listing them invites duplicate-content reports.
         const staticPages = generateStaticPages();
         const articlePages = generateArticlePages(articles);
-        const categoryPages = generateCategoryPages(categories);
 
-        // Combine all URLs
-        const allUrls = [...staticPages, ...articlePages, ...categoryPages];
+        const allUrls = [...staticPages, ...articlePages];
 
         console.log('\nURL Summary:');
         console.log(`  Static pages: ${staticPages.length}`);
         console.log(`  Article pages: ${articlePages.length}`);
-        console.log(`  Category pages: ${categoryPages.length}`);
         console.log(`  Total URLs: ${allUrls.length}\n`);
 
         // Generate XML

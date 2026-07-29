@@ -4,6 +4,9 @@ import { useLocation, useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import { Editor } from "@tinymce/tinymce-react";
 import { MultiSelect } from "primereact/multiselect";
+// Imported here rather than globally: this is the only page that renders a
+// PrimeReact component, and the theme pulls in ~1 MB of CSS and fonts.
+import "primereact/resources/themes/lara-light-blue/theme.css";
 
 import SearchableSelect from "@/components/Forms/SearchAbleSelect";
 import { setMenu } from "@/redux/slices/menuSlice";

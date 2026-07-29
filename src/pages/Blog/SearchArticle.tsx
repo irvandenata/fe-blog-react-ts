@@ -3,8 +3,15 @@ import AnimateSection from "@/components/ui/AnimateSection";
 import { IArticle } from "@/interfaces/article";
 import { setActiveMenu } from "@/redux/slices/landingSlice";
 import { fetchDataCategories, fetchDataNoAuth } from "@/services/article";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import SEOHead from "@/components/SEO/SEOHead";
+import {
+    getPageSEO,
+    generateBlogSchema,
+    generateBreadcrumbSchema,
+    getAbsoluteUrl,
+} from "@/utils/seo";
 
 const SearchArticlePage = () => {
     const dispatch = useDispatch();
@@ -67,8 +74,38 @@ const SearchArticlePage = () => {
         });
     }, [search, category]);
 
+    const seoData = useMemo(() => getPageSEO("blogs", "/blogs"), []);
+
+    // Rebuilt as articles load so the listing schema reflects real posts.
+    const structuredData = useMemo(
+        () => [
+            generateBlogSchema(
+                articles.map((item) => ({
+                    title: item.title,
+                    slug: item.slug,
+                    created_at: item.created_at,
+                }))
+            ),
+            generateBreadcrumbSchema([
+                { name: "Home", url: getAbsoluteUrl("/") },
+                { name: "Blog", url: getAbsoluteUrl("/blogs") },
+            ]),
+        ],
+        [articles]
+    );
+
     return (
         <div id="article-content">
+            {/* Search/filter results are query-driven; canonical always points
+                at the clean /blogs URL to avoid duplicate-content variants. */}
+            <SEOHead
+                title={seoData.title}
+                description={seoData.description}
+                keywords={seoData.keywords}
+                url={seoData.url}
+                canonical={getAbsoluteUrl("/blogs")}
+                structuredData={structuredData}
+            />
             <div
                 id="home"
                 className="flex flex-col items-center text-center text-dark dark:text-bodydark1  justify-center relative z-10 pt-40 pb-10"
@@ -181,6 +218,7 @@ const SearchArticlePage = () => {
                                         title={item.title}
                                         category={item.category.name}
                                         image_url={item.image_url ?? ""}
+                                        priority={index < 3}
                                         slug={item.slug ?? ""}
                                     />
                                 </AnimateSection>

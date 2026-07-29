@@ -1,5 +1,9 @@
-@import url("https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200..1000;1,200..1000&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
-@import 'primereact/resources/themes/lara-light-blue/theme.css';
+/* Nunito only — Poppins was requested but never referenced by any rule.
+   Weights trimmed to those actually used; italics dropped (unused). */
+@import url("https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap");
+/* The PrimeReact theme (~338 kB CSS + ~726 kB of bundled Inter woff2) is
+   imported by the one admin page that uses it, not globally — public pages
+   never render a PrimeReact component. See pages/Admin/ArticleCreateOrEdit. */
 
 @tailwind base;
 @tailwind components;

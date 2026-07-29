@@ -1,15 +1,28 @@
 <!doctype html>
-<html class="dark">
+<html lang="id" class="dark">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="favicon" href="/src/assets/favicon.ico" />
+    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="google-site-verification" content="cBvsZNYqf5FcJu_zi2EgL6bq6DsnnDIR436vavO1Cgo" />
-    <title>Hola! I'm Irvan Denata</title>
+    <meta name="theme-color" content="#1a202c" />
+
+    <!-- Warm up the API origin early: first paint depends on it. -->
+    <link rel="preconnect" href="https://api.ivd.my.id" crossorigin />
+    <link rel="dns-prefetch" href="https://api.ivd.my.id" />
+
+    <!-- Fallback metadata only. react-helmet-async replaces these per route,
+         and prerendered pages already ship route-specific values. -->
+    <title>Irvan Denata — Full Stack Developer</title>
+    <meta
+      name="description"
+      content="Portfolio dan blog Irvan Denata, full stack developer. Catatan teknis seputar React, TypeScript, Laravel, dan pengembangan web."
+    />
   </head>
-  <div class="bg-slate-50 dark:bg-dark dark:text-white">
+  <body class="bg-slate-50 dark:bg-dark dark:text-white">
     <div id="root"></div>
+    <script>
+      const global = globalThis;
+    </script>
     <script type="module" src="/src/main.tsx"></script>
-    <script> const global = globalThis; </script>
   </body>
 </html>
